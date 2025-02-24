@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h2 {
+    @apply text-gray-900;
+  }
+  h3 {
+    @apply text-gray-900;
+  }
+  label {
+    @apply text-gray-900;
+  }
+  input, select, textarea {
+    @apply text-gray-900;
+  }
+  div {
+    @apply text-gray-900;
+  }
+  span {
+    @apply text-gray-900;
+  }
+  p {
+    @apply text-gray-900;
+  }
+} 

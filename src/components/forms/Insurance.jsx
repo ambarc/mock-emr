@@ -21,7 +21,7 @@ function Insurance() {
 
   return (
     <div className="max-w-2xl">
-      <h2 className="text-xl font-semibold mb-6">Insurance Information</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Insurance Information</h2>
       
       <div className="mb-4">
         <div className="flex space-x-4 mb-4">

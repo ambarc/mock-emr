@@ -81,7 +81,7 @@ function SubstanceHistory() {
                 <select
                   value={formData.alcohol.frequency}
                   onChange={(e) => handleChange('alcohol', 'frequency', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  className="w-full text-gray-900 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                 >
                   <option value="">Select frequency</option>
                   <option value="daily">Daily</option>
@@ -91,7 +91,7 @@ function SubstanceHistory() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-900 mb-1">
                   Type
                 </label>
                 <input
@@ -99,7 +99,7 @@ function SubstanceHistory() {
                   value={formData.alcohol.type}
                   onChange={(e) => handleChange('alcohol', 'type', e.target.value)}
                   placeholder="e.g., Beer, Wine, Spirits"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  className="w-full text-gray-900 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                 />
               </div>
             </div>

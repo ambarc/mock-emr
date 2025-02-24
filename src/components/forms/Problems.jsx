@@ -35,11 +35,11 @@ function Problems() {
 
   return (
     <div className="max-w-2xl">
-      <h2 className="text-xl font-semibold mb-6">Problem List</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Problem List</h2>
 
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
             Add Problem
           </label>
           <div className="relative">
@@ -68,7 +68,7 @@ function Problems() {
         </div>
 
         <div>
-          <h3 className="text-lg font-medium mb-3">Active Problems</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-3">Active Problems</h3>
           <div className="space-y-2">
             {selectedProblems.map(problem => (
               <div

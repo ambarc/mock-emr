@@ -44,11 +44,11 @@ function Medications() {
 
   return (
     <div className="max-w-3xl">
-      <h2 className="text-xl font-semibold mb-6">Medications</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Medications</h2>
 
       <div className="space-y-6">
         <div className="bg-white p-4 rounded-md border border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
             Add Medication
           </label>
           <div className="space-y-4">
@@ -87,7 +87,7 @@ function Medications() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-900 mb-1">
                   Dosage
                 </label>
                 <input
@@ -99,7 +99,7 @@ function Medications() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-900 mb-1">
                   Frequency
                 </label>
                 <input
@@ -126,7 +126,7 @@ function Medications() {
         </div>
 
         <div>
-          <h3 className="text-lg font-medium mb-3">Current Medications</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-3">Current Medications</h3>
           <div className="space-y-2">
             {selectedMeds.map(med => (
               <div

@@ -4,6 +4,7 @@ import PatientSearch from './components/PatientSearch';
 import PatientChart from './components/PatientChart';
 import Dashboard from './components/Dashboard';
 import { PatientProvider } from './context/PatientContext';
+import './styles/globals.css';
 
 function Header() {
   return (

@@ -72,7 +72,7 @@ function FoodPreferences() {
 
   return (
     <div className="max-w-3xl">
-      <h2 className="text-xl font-semibold mb-6">Food Preferences</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Food Preferences</h2>
 
       <div className="bg-white p-6 rounded-md border border-gray-200 space-y-6">
         <div>

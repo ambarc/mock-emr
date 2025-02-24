@@ -33,11 +33,11 @@ function WeightHistory() {
 
   return (
     <div className="max-w-3xl">
-      <h2 className="text-xl font-semibold mb-6">Weight History</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Weight History</h2>
 
       <div className="space-y-6">
         <div className="bg-white p-6 rounded-md border border-gray-200">
-          <h3 className="text-lg font-medium mb-4">Add Weight Entry</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Add Weight Entry</h3>
           
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -107,7 +107,7 @@ function WeightHistory() {
         </div>
 
         <div>
-          <h3 className="text-lg font-medium mb-3">Weight History Log</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-3">Weight History Log</h3>
           <div className="space-y-2">
             {weightEntries.sort((a, b) => new Date(b.date) - new Date(a.date)).map(entry => (
               <div

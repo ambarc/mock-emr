@@ -2,7 +2,22 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { mockPatientData } from '@/app/lib/mockPatientData';
+import { mockPatients, Patient, Allergy, Problem, Medication, Surgery, ClinicalNote, WeightEntry, Exercise, Insurance, SubstanceHistory } from '@/app/lib/mockPatientData';
+import { useParams } from 'next/navigation';
+
+const formatPhoneNumber = (value: string) => {
+  // Remove all non-digit characters
+  const phoneNumber = value.replace(/\D/g, '');
+  
+  // Format the number as the user types
+  if (phoneNumber.length <= 3) {
+    return phoneNumber;
+  } else if (phoneNumber.length <= 6) {
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+  } else {
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  }
+};
 
 type FormSection = 
   | 'Demographics'
@@ -19,7 +34,9 @@ type FormSection =
   | 'Sleep History'
   | 'Food Preferences';
 
-export default function PatientChart({ params }: { params: { id: string } }) {
+export default function PatientChart() {
+  const params = useParams();
+  const patientId = typeof params.id === 'string' ? parseInt(params.id) : 2; // default to Michael Chen if invalid ID
   const [selectedSection, setSelectedSection] = useState<FormSection>('Demographics');
   const [insuranceType, setInsuranceType] = useState<'primary' | 'secondary'>('primary');
   const [newInsurance, setNewInsurance] = useState({
@@ -87,7 +104,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
     additionalNotes: ''
   });
   const [searchTerm, setSearchTerm] = useState('');
-  const [patient, setPatient] = useState(mockPatientData);
+  const [patient, setPatient] = useState<Patient>(mockPatients[patientId]);
   const [newSubstanceHistory, setNewSubstanceHistory] = useState({
     alcohol: {
       current: false,
@@ -126,6 +143,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
     reaction: '',
     dateIdentified: new Date().toISOString().split('T')[0]
   });
+  const [showSaveSuccess, setShowSaveSuccess] = useState(false);
 
   const commonSurgeries = [
     { name: 'Appendectomy', category: 'General' },
@@ -157,8 +175,27 @@ export default function PatientChart({ params }: { params: { id: string } }) {
 
   const handleAddMedication = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically make an API call to add the medication
-    console.log('Adding medication:', newMedication);
+    
+    // Create updated patient data with new medication
+    const updatedPatient = {
+      ...patient,
+      medications: [
+        ...patient.medications,
+        {
+          id: Date.now(), // Using timestamp as a simple unique ID
+          name: newMedication.name,
+          dosage: newMedication.dosage,
+          frequency: newMedication.frequency,
+          instructions: newMedication.instructions,
+          dateAdded: new Date().toISOString().split('T')[0],
+          severity: 1 // Default severity
+        }
+      ]
+    };
+
+    // Update local patient data
+    setPatient(updatedPatient);
+    
     // Reset form
     setNewMedication({
       name: '',
@@ -166,6 +203,9 @@ export default function PatientChart({ params }: { params: { id: string } }) {
       frequency: '',
       instructions: ''
     });
+
+    // Log the update (this would typically be an API call)
+    console.log('Added new medication:', updatedPatient.medications[updatedPatient.medications.length - 1]);
   };
 
   const handleDiscontinueMedication = (medId: number) => {
@@ -415,12 +455,44 @@ export default function PatientChart({ params }: { params: { id: string } }) {
 
   const handleUpdateSubstanceHistory = (e: React.FormEvent) => {
     e.preventDefault();
-    const updatedPatient = {
-      ...patient,
-      substanceHistory: newSubstanceHistory
+    const formData = new FormData(e.target as HTMLFormElement);
+    
+    const substanceHistory: SubstanceHistory = {
+      alcohol: {
+        current: formData.get('alcoholCurrent') === 'true',
+        frequency: formData.get('alcoholFrequency') as string,
+        type: formData.get('alcoholType') as string,
+        amount: formData.get('alcoholAmount') as string,
+        yearsOfUse: formData.get('alcoholYearsOfUse') as string,
+        lastUse: formData.get('alcoholLastUse') as string,
+      },
+      tobacco: {
+        current: formData.get('tobaccoCurrent') === 'true',
+        type: formData.get('tobaccoType') as string,
+      },
+      caffeine: {
+        coffee: {
+          cupsPerDay: formData.get('coffeeCupsPerDay') as string,
+          type: formData.get('coffeeType') as string,
+        },
+        soda: {
+          ouncesPerDay: formData.get('sodaOuncesPerDay') as string,
+          type: formData.get('sodaType') as string,
+        },
+        energyDrinks: {
+          frequency: formData.get('energyDrinksFrequency') as string,
+          type: formData.get('energyDrinksType') as string,
+        },
+      },
     };
-    setPatient(updatedPatient);
-    console.log('Updated substance history:', newSubstanceHistory);
+
+    setPatient(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        substanceHistory
+      };
+    });
   };
 
   const handleAddAllergy = (e: React.FormEvent) => {
@@ -455,46 +527,88 @@ export default function PatientChart({ params }: { params: { id: string } }) {
     setPatient(updatedPatient);
   };
 
+  const handleInsuranceChange = (type: 'primary' | 'secondary', field: keyof Insurance, value: string) => {
+    setPatient(prev => ({
+      ...prev,
+      insurance: {
+        ...prev.insurance,
+        [type]: type === 'secondary' && !prev.insurance.secondary 
+          ? { provider: '', memberId: '', groupNumber: '', preAuthNotes: '', [field]: value }
+          : {
+              ...(type === 'primary' ? prev.insurance.primary : prev.insurance.secondary),
+              [field]: value
+            }
+      }
+    }));
+  };
+
+  const handleSaveDemographics = () => {
+    console.log('Demographics saved:', patient.demographics);
+    setShowSaveSuccess(true);
+    setTimeout(() => setShowSaveSuccess(false), 3000); // Hide after 3 seconds
+  };
+
   const renderFormContent = () => {
     switch (selectedSection) {
       case 'Demographics':
         return (
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-900">Name</label>
                 <input
                   type="text"
-                  defaultValue={patient.name}
+                  value={patient.name}
+                  onChange={(e) => setPatient(prev => ({
+                    ...prev,
+                    name: e.target.value
+                  }))}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900"
-                  readOnly
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-900">Date of Birth</label>
                 <input
-                  type="text"
-                  defaultValue={patient.dob}
+                  type="date"
+                  value={patient.dob}
+                  onChange={(e) => setPatient(prev => ({
+                    ...prev,
+                    dob: e.target.value
+                  }))}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900"
-                  readOnly
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-900">Phone</label>
                 <input
-                  type="text"
-                  defaultValue={patient.demographics.phone}
+                  type="tel"
+                  value={patient.demographics.phone}
+                  onChange={(e) => setPatient(prev => ({
+                    ...prev,
+                    demographics: {
+                      ...prev.demographics,
+                      phone: formatPhoneNumber(e.target.value)
+                    }
+                  }))}
+                  maxLength={14}
+                  placeholder="(555) 555-5555"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900"
-                  readOnly
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-900">Email</label>
                 <input
-                  type="text"
-                  defaultValue={patient.demographics.email}
+                  type="email"
+                  value={patient.demographics.email}
+                  onChange={(e) => setPatient(prev => ({
+                    ...prev,
+                    demographics: {
+                      ...prev.demographics,
+                      email: e.target.value
+                    }
+                  }))}
+                  placeholder="patient@example.com"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900"
-                  readOnly
                 />
               </div>
             </div>
@@ -502,10 +616,79 @@ export default function PatientChart({ params }: { params: { id: string } }) {
               <label className="block text-sm font-medium text-gray-900">Address</label>
               <input
                 type="text"
-                defaultValue={patient.demographics.address}
+                value={patient.demographics.address}
+                onChange={(e) => setPatient(prev => ({
+                  ...prev,
+                  demographics: {
+                    ...prev.demographics,
+                    address: e.target.value
+                  }
+                }))}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900"
-                readOnly
               />
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-900">City</label>
+                <input
+                  type="text"
+                  value={patient.demographics.city}
+                  onChange={(e) => setPatient(prev => ({
+                    ...prev,
+                    demographics: {
+                      ...prev.demographics,
+                      city: e.target.value
+                    }
+                  }))}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-900">State</label>
+                <input
+                  type="text"
+                  value={patient.demographics.state}
+                  onChange={(e) => setPatient(prev => ({
+                    ...prev,
+                    demographics: {
+                      ...prev.demographics,
+                      state: e.target.value
+                    }
+                  }))}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-900">ZIP</label>
+                <input
+                  type="text"
+                  value={patient.demographics.zip}
+                  onChange={(e) => setPatient(prev => ({
+                    ...prev,
+                    demographics: {
+                      ...prev.demographics,
+                      zip: e.target.value
+                    }
+                  }))}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end mt-4">
+              <div className="flex items-center gap-4">
+                {showSaveSuccess && (
+                  <span className="text-green-600 text-sm">
+                    Demographics saved successfully!
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={handleSaveDemographics}
+                  className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800"
+                >
+                  Save Demographics
+                </button>
+              </div>
             </div>
           </div>
         );
@@ -616,7 +799,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
               )}
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-6 rounded-lg shadow text-gray-900">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Medication</h3>
               <form onSubmit={handleAddMedication} className="space-y-4">
                 <div>
@@ -655,7 +838,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                     id="med-frequency"
                     value={newMedication.frequency}
                     onChange={(e) => setNewMedication({ ...newMedication, frequency: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     required
                   >
                     <option value="">Select frequency</option>
@@ -696,13 +879,11 @@ export default function PatientChart({ params }: { params: { id: string } }) {
       case 'Allergies':
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold mb-6">Allergies</h2>
-            
             <div className="bg-white p-6 rounded-md border border-gray-200">
-              <h3 className="text-lg font-medium mb-4">Add New Allergy</h3>
+              <h3 className="text-lg font-medium mb-4 text-gray-900">Add New Allergy</h3>
               <form onSubmit={handleAddAllergy} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-1">
                     Allergen
                   </label>
                   <div className="relative">
@@ -710,7 +891,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                       type="text"
                       value={newAllergy.name}
                       onChange={(e) => setNewAllergy({ ...newAllergy, name: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                      className="w-full px-3 py-2 border border-gray-900 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                       placeholder="Enter or select allergen..."
                       list="common-allergens"
                     />
@@ -722,9 +903,9 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 text-gray-900 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-900 mb-1">
                       Severity
                     </label>
                     <select
@@ -739,7 +920,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-900 mb-1">
                       Date Identified
                     </label>
                     <input
@@ -752,13 +933,13 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-1">
                     Reaction
                   </label>
                   <textarea
                     value={newAllergy.reaction}
                     onChange={(e) => setNewAllergy({ ...newAllergy, reaction: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="w-full px-3 py-2 text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                     rows={2}
                     placeholder="Describe the allergic reaction..."
                   />
@@ -775,7 +956,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
             </div>
 
             <div>
-              <h3 className="text-lg font-medium mb-3">Known Allergies</h3>
+              <h3 className="text-lg font-medium mb-3 text-gray-900">Known Allergies</h3>
               <div className="space-y-2">
                 {patient.allergies?.map((allergy) => (
                   <div
@@ -783,29 +964,29 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                     className="flex justify-between items-start p-4 bg-gray-50 rounded-md"
                   >
                     <div>
-                      <div className="font-medium">{allergy.name}</div>
-                      <div className="text-sm text-gray-500">
+                      <div className="font-medium text-gray-900">{allergy.name}</div>
+                      <div className="text-sm text-gray-900">
                         Severity: {allergy.severity}
                       </div>
                       {allergy.reaction && (
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-gray-900">
                           Reaction: {allergy.reaction}
                         </div>
                       )}
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-gray-900">
                         Identified: {new Date(allergy.dateIdentified).toLocaleDateString()}
                       </div>
                     </div>
                     <button
                       onClick={() => handleRemoveAllergy(allergy.id)}
-                      className="text-gray-400 hover:text-gray-600"
+                      className="text-gray-600 hover:text-gray-900"
                     >
                       Remove
                     </button>
                   </div>
                 ))}
                 {!patient.allergies?.length && (
-                  <div className="text-gray-500 text-center py-4">
+                  <div className="text-gray-900 text-center py-4">
                     No known allergies
                   </div>
                 )}
@@ -847,7 +1028,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-6 rounded-lg shadow text-gray-900">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Surgery</h3>
               <form onSubmit={handleAddSurgery} className="space-y-4">
                 <div>
@@ -986,20 +1167,20 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-900">Provider</label>
-                    <div className="text-gray-900">{patient.insurance.primary.provider}</div>
+                    <div className="text-gray-900">{patient.insurance.primary?.provider}</div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-900">Member ID</label>
-                    <div className="text-gray-900">{patient.insurance.primary.memberId}</div>
+                    <div className="text-gray-900">{patient.insurance.primary?.memberId}</div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-900">Group Number</label>
-                    <div className="text-gray-900">{patient.insurance.primary.groupNumber}</div>
+                    <div className="text-gray-900">{patient.insurance.primary?.groupNumber}</div>
                   </div>
-                  {patient.insurance.primary.preAuthNotes && (
+                  {patient.insurance.primary?.preAuthNotes && (
                     <div className="col-span-2">
                       <label className="block text-sm font-medium text-gray-900">Pre-Authorization Notes</label>
-                      <div className="text-gray-900">{patient.insurance.primary.preAuthNotes}</div>
+                      <div className="text-gray-900">{patient.insurance.primary?.preAuthNotes}</div>
                     </div>
                   )}
                 </div>
@@ -1011,9 +1192,9 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-900">Provider</label>
-                    <div className="text-gray-900">{patient.insurance.secondary.provider || 'None'}</div>
+                    <div className="text-gray-900">{patient.insurance.secondary?.provider || 'None'}</div>
                   </div>
-                  {patient.insurance.secondary.provider && (
+                  {patient.insurance.secondary?.provider && (
                     <>
                       <div>
                         <label className="block text-sm font-medium text-gray-900">Member ID</label>
@@ -1036,7 +1217,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
             </div>
 
             {/* Update Insurance Form */}
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-6 rounded-lg shadow text-gray-900">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Update Insurance Information</h3>
               
               <div className="mb-6">
@@ -1257,9 +1438,9 @@ export default function PatientChart({ params }: { params: { id: string } }) {
 
       case 'Clinical Notes':
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 text-gray-900">
             {/* Add New Note Form */}
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white text-gray-900 p-6 rounded-lg shadow">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Clinical Note</h3>
               <form onSubmit={handleAddNote} className="space-y-4">
                 <div>
@@ -1318,162 +1499,134 @@ export default function PatientChart({ params }: { params: { id: string } }) {
 
       case 'Substance History':
         return (
-          <div className="max-w-3xl">
-            <h2 className="text-xl font-semibold mb-6">Substance History</h2>
-            <form onSubmit={handleUpdateSubstanceHistory} className="space-y-8">
-              {/* Alcohol Section */}
-              <div className="bg-white p-6 rounded-md border border-gray-200">
-                <h3 className="text-lg font-medium mb-4">Alcohol Use</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id="currentAlcohol"
-                      checked={newSubstanceHistory.alcohol.current}
-                      onChange={(e) => setNewSubstanceHistory(prev => ({
-                        ...prev,
-                        alcohol: { ...prev.alcohol, current: e.target.checked }
-                      }))}
-                      className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
-                    />
-                    <label htmlFor="currentAlcohol" className="ml-2 block text-sm text-gray-700">
-                      Current alcohol use
-                    </label>
-                  </div>
+          <form onSubmit={handleUpdateSubstanceHistory} className="max-w-3xl space-y-6">
+            <div className="bg-white p-6 rounded-md border border-gray-200">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Alcohol Use</h3>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="alcoholCurrent"
+                    name="alcoholCurrent"
+                    defaultChecked={patient?.substanceHistory.alcohol.current}
+                    className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="alcoholCurrent" className="ml-2 text-sm text-gray-700">
+                    Current alcohol use
+                  </label>
+                </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Frequency
-                      </label>
-                      <select
-                        value={newSubstanceHistory.alcohol.frequency}
-                        onChange={(e) => setNewSubstanceHistory(prev => ({
-                          ...prev,
-                          alcohol: { ...prev.alcohol, frequency: e.target.value }
-                        }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
-                      >
-                        <option value="">Select frequency</option>
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="occasionally">Occasionally</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Type
-                      </label>
-                      <input
-                        type="text"
-                        value={newSubstanceHistory.alcohol.type}
-                        onChange={(e) => setNewSubstanceHistory(prev => ({
-                          ...prev,
-                          alcohol: { ...prev.alcohol, type: e.target.value }
-                        }))}
-                        placeholder="e.g., Beer, Wine, Spirits"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
-                      />
-                    </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Frequency</label>
+                    <select
+                      name="alcoholFrequency"
+                      defaultValue={patient?.substanceHistory.alcohol.frequency}
+                      className="mt-1 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+                    >
+                      <option value="">Select frequency</option>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="occasionally">Occasionally</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Type</label>
+                    <input
+                      type="text"
+                      name="alcoholType"
+                      defaultValue={patient?.substanceHistory.alcohol.type}
+                      className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+                      placeholder="e.g., Beer, Wine, Spirits"
+                    />
                   </div>
                 </div>
-              </div>
 
-              {/* Tobacco Section */}
-              <div className="bg-white p-6 rounded-md border border-gray-200">
-                <h3 className="text-lg font-medium mb-4">Tobacco Use</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-900">Amount</label>
                     <input
-                      type="checkbox"
-                      id="currentTobacco"
-                      checked={newSubstanceHistory.tobacco.current}
-                      onChange={(e) => setNewSubstanceHistory(prev => ({
-                        ...prev,
-                        tobacco: { ...prev.tobacco, current: e.target.checked }
-                      }))}
-                      className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
+                      type="text"
+                      name="alcoholAmount"
+                      defaultValue={patient?.substanceHistory.alcohol.amount}
+                      className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+                      placeholder="e.g., 2-3 drinks per occasion"
                     />
-                    <label htmlFor="currentTobacco" className="ml-2 block text-sm text-gray-700">
-                      Current tobacco use
-                    </label>
                   </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Type
-                      </label>
-                      <select
-                        value={newSubstanceHistory.tobacco.type}
-                        onChange={(e) => setNewSubstanceHistory(prev => ({
-                          ...prev,
-                          tobacco: { ...prev.tobacco, type: e.target.value }
-                        }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
-                      >
-                        <option value="">Select type</option>
-                        <option value="cigarettes">Cigarettes</option>
-                        <option value="vaping">Vaping</option>
-                        <option value="cigars">Cigars</option>
-                        <option value="smokeless">Smokeless tobacco</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Packs per day
-                      </label>
-                      <input
-                        type="text"
-                        value={newSubstanceHistory.tobacco.packsPerDay}
-                        onChange={(e) => setNewSubstanceHistory(prev => ({
-                          ...prev,
-                          tobacco: { ...prev.tobacco, packsPerDay: e.target.value }
-                        }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-900">Years of Use</label>
+                    <input
+                      type="text"
+                      name="alcoholYearsOfUse"
+                      defaultValue={patient?.substanceHistory.alcohol.yearsOfUse}
+                      className="mt-1 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+                    />
                   </div>
                 </div>
-              </div>
 
-              {/* Caffeine Section */}
-              <div className="bg-white p-6 rounded-md border border-gray-200">
-                <h3 className="text-lg font-medium mb-4">Caffeine Intake</h3>
-                <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-900">Last Use</label>
+                  <input
+                    type="date"
+                    name="alcoholLastUse"
+                    defaultValue={patient?.substanceHistory.alcohol.lastUse}
+                    className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-md border border-gray-200">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Tobacco Use</h3>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="tobaccoCurrent"
+                    name="tobaccoCurrent"
+                    defaultChecked={patient?.substanceHistory.tobacco.current}
+                    className="h-4 w-4 text-gray-900 focus:ring-gray-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="tobaccoCurrent" className="ml-2 text-sm text-gray-700">
+                    Current tobacco use
+                  </label>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Type</label>
+                  <input
+                    type="text"
+                    name="tobaccoType"
+                    defaultValue={patient?.substanceHistory.tobacco.type}
+                    className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+                    placeholder="e.g., Cigarettes, Vaping, etc."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-md border border-gray-200">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Caffeine Intake</h3>
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Coffee</h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Coffee (cups per day)
-                      </label>
+                      <label className="block text-sm text-gray-700">Cups per day</label>
                       <input
-                        type="number"
-                        value={newSubstanceHistory.caffeine.coffee.cupsPerDay}
-                        onChange={(e) => setNewSubstanceHistory(prev => ({
-                          ...prev,
-                          caffeine: {
-                            ...prev.caffeine,
-                            coffee: { ...prev.caffeine.coffee, cupsPerDay: e.target.value }
-                          }
-                        }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                        type="text"
+                        name="coffeeCupsPerDay"
+                        defaultValue={patient?.substanceHistory.caffeine.coffee.cupsPerDay}
+                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Coffee Type
-                      </label>
+                      <label className="block text-sm text-gray-700">Type</label>
                       <select
-                        value={newSubstanceHistory.caffeine.coffee.type}
-                        onChange={(e) => setNewSubstanceHistory(prev => ({
-                          ...prev,
-                          caffeine: {
-                            ...prev.caffeine,
-                            coffee: { ...prev.caffeine.coffee, type: e.target.value }
-                          }
-                        }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                        name="coffeeType"
+                        defaultValue={patient?.substanceHistory.caffeine.coffee.type}
+                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
                       >
                         <option value="">Select type</option>
                         <option value="regular">Regular</option>
@@ -1481,39 +1634,26 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                       </select>
                     </div>
                   </div>
+                </div>
 
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Soda</h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Soda (oz per day)
-                      </label>
+                      <label className="block text-sm text-gray-700">Ounces per day</label>
                       <input
-                        type="number"
-                        value={newSubstanceHistory.caffeine.soda.ouncesPerDay}
-                        onChange={(e) => setNewSubstanceHistory(prev => ({
-                          ...prev,
-                          caffeine: {
-                            ...prev.caffeine,
-                            soda: { ...prev.caffeine.soda, ouncesPerDay: e.target.value }
-                          }
-                        }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                        type="text"
+                        name="sodaOuncesPerDay"
+                        defaultValue={patient?.substanceHistory.caffeine.soda.ouncesPerDay}
+                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Soda Type
-                      </label>
+                      <label className="block text-sm text-gray-700">Type</label>
                       <select
-                        value={newSubstanceHistory.caffeine.soda.type}
-                        onChange={(e) => setNewSubstanceHistory(prev => ({
-                          ...prev,
-                          caffeine: {
-                            ...prev.caffeine,
-                            soda: { ...prev.caffeine.soda, type: e.target.value }
-                          }
-                        }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                        name="sodaType"
+                        defaultValue={patient?.substanceHistory.caffeine.soda.type}
+                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
                       >
                         <option value="">Select type</option>
                         <option value="regular">Regular</option>
@@ -1522,38 +1662,49 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Other Substances */}
-              <div className="bg-white p-6 rounded-md border border-gray-200">
-                <h3 className="text-lg font-medium mb-4">Other Substances</h3>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Additional Notes
-                  </label>
-                  <textarea
-                    value={newSubstanceHistory.otherSubstances}
-                    onChange={(e) => setNewSubstanceHistory(prev => ({
-                      ...prev,
-                      otherSubstances: e.target.value
-                    }))}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
-                    placeholder="Enter any additional substance use information..."
-                  />
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Energy Drinks</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-900 text-sm text-gray-700">Frequency</label>
+                      <select
+                        name="energyDrinksFrequency"
+                        defaultValue={patient?.substanceHistory.caffeine.energyDrinks.frequency}
+                        className="mt-1 text-gray-900 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+                      >
+                        <option value="">Select frequency</option>
+                        <option value="never">Never</option>
+                        <option value="occasionally">Occasionally</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="daily">Daily</option>
+                        <option value="multiple_daily">Multiple times per day</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-gray-900 text-sm text-gray-700">Type</label>
+                      <input
+                        type="text"
+                        name="energyDrinksType"
+                        defaultValue={patient?.substanceHistory.caffeine.energyDrinks.type}
+                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+                        placeholder="e.g., Red Bull, Monster, etc."
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
-                >
-                  Save Substance History
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              >
+                Save Substance History
+              </button>
+            </div>
+          </form>
         );
 
       case 'Work History':
@@ -1606,7 +1757,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
 
       case 'Weight History':
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 text-gray-900">
             {/* Add New Weight Entry Form */}
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Weight Measurement</h3>
@@ -1627,7 +1778,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                   />
                 </div>
 
-                <div>
+                <div className="text-gray-900">
                   <label htmlFor="weight-date" className="block text-sm font-medium text-gray-700">
                     Date
                   </label>
@@ -1641,7 +1792,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
                   />
                 </div>
 
-                <div>
+                <div className="text-gray-900">
                   <label htmlFor="weight-context" className="block text-sm font-medium text-gray-700">
                     Context
                   </label>
@@ -1672,12 +1823,12 @@ export default function PatientChart({ params }: { params: { id: string } }) {
             </div>
 
             {/* Existing Weight History */}
-            <div className="space-y-4">
+            <div className="space-y-4 text-gray-900">
               {patient.weightHistory.map(entry => (
                 <div key={entry.id} className="p-4 bg-gray-50 rounded-md">
                   <div className="font-medium text-gray-900">
                     {entry.weight} lbs
-                    <span className="text-sm ml-2 capitalize">({entry.context})</span>
+                    <span className="text-sm ml-2 capitalize text-gray-900">({entry.context})</span>
                   </div>
                   <div className="text-sm text-gray-900">
                     Date: {new Date(entry.date).toLocaleDateString()}
@@ -1690,7 +1841,7 @@ export default function PatientChart({ params }: { params: { id: string } }) {
 
       case 'Exercise History':
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 text-gray-900">
             {/* Add New Exercise Form */}
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Exercise Activity</h3>
