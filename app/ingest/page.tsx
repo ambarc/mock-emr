@@ -117,7 +117,6 @@ export default function IntakeSurveyReview() {
                     <li>Penicillin - Severe (anaphylaxis)</li>
                     <li>Sulfa Drugs - Moderate (rash)</li>
                     <li>Shellfish - Mild (itching)</li>
-                    <li>Lactose Intolerance - Mild GI symptoms</li>
                   </ul>
                 </div>
                 <div>
