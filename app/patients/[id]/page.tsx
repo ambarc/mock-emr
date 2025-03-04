@@ -2411,7 +2411,7 @@ export default function PatientChart() {
           <div className="p-4">
             <h2 className="text-lg font-semibold text-gray-900">{patient.name}</h2>
             <p className="text-sm text-gray-700">
-              DOB: {new Date(patient.dob).toLocaleDateString()}
+              DOB: {patient.dob}
             </p>
           </div>
           <nav className="mt-4">
