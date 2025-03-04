@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 const mockPatients = [
   { id: 1, name: 'Sarah Johnson', dob: '1985-03-15' },
   { id: 2, name: 'Michael Chen', dob: '1992-07-22' },
-  { id: 3, name: 'James Smith', dob: '1980-08-14' }
+  { id: 3, name: 'James Smith', dob: '1980-08-15' }
 ];
 
 export default function PatientSearch() {
