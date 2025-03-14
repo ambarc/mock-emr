@@ -1,9 +1,6 @@
-import { Metadata } from 'next';
+"use client"
 
-export const metadata: Metadata = {
-  title: 'Revolution Sample Form | Clinic EMR',
-  description: 'Sample obesity intake survey form for Revolution Medicine',
-};
+import { usePDF } from 'react-to-pdf';
 
 // Complete form schema from original form
 const formioSchema = {
@@ -992,6 +989,13 @@ const originalData = {
 };
 
 export default function RevolutionSamplePage() {
+  const handleDownload = () => {
+    const iframe = document.getElementById('formContainer') as HTMLIFrameElement;
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'download-pdf' }, '*');
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto py-8">
       <div className="bg-white shadow-sm rounded-lg overflow-hidden">
@@ -999,16 +1003,24 @@ export default function RevolutionSamplePage() {
         <div className="px-8 py-6 bg-gradient-to-r from-blue-600 to-blue-700">
           <div className="flex justify-between items-baseline">
             <div>
-              <h1 className="text-2xl font-semibold text-white">Revolution Sample Form</h1>
+              <div className="flex items-center space-x-4">
+                <h1 className="text-2xl font-semibold text-white">Revolution Sample Form</h1>
+                <button
+                  onClick={handleDownload}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Download PDF
+                </button>
+              </div>
               <p className="mt-2 text-blue-100 text-sm">Submitted on March 15, 2024 at 2:30 PM</p>
             </div>
             <div className="text-right bg-white/5 backdrop-blur-sm rounded-lg p-4">
-              <h2 className="text-lg font-medium text-white">John Smith</h2>
+              <h2 className="text-lg font-medium text-white">James Smith</h2>
               <div className="mt-2 space-y-1">
-                <p className="text-sm text-blue-100">DOB: 01/01/1980</p>
-                <p className="text-sm text-blue-100">ID: ABC123456789</p>
-                <p className="text-sm text-blue-100">Phone: (555) 123-4567</p>
-                <p className="text-sm text-blue-100">Email: john.smith@email.com</p>
+                <p className="text-sm text-blue-100">DOB: 01/02/1992</p>
+                <p className="text-sm text-blue-100">ID: 123456789</p>
+                <p className="text-sm text-blue-100">Phone: (555) 555-5555</p>
+                <p className="text-sm text-blue-100">Email: james.smith@example.com</p>
               </div>
             </div>
           </div>
@@ -1025,6 +1037,7 @@ export default function RevolutionSamplePage() {
                 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
                 <title>Form Container</title>
                 <script src="https://cdn.form.io/formiojs/formio.full.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
                 <link rel="stylesheet" href="https://cdn.form.io/formiojs/formio.full.min.css"/>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
                 <style>
@@ -1044,7 +1057,6 @@ export default function RevolutionSamplePage() {
                     font-size: 15px;
                   }
                   
-                  /* Panel styling */
                   .card {
                     border: 1px solid var(--border-color) !important;
                     box-shadow: none !important;
@@ -1069,7 +1081,6 @@ export default function RevolutionSamplePage() {
                     background-color: var(--background-color) !important;
                   }
                   
-                  /* Form controls */
                   .form-control {
                     width: 100% !important;
                     border-radius: 0.375rem !important;
@@ -1087,7 +1098,6 @@ export default function RevolutionSamplePage() {
                     outline: none !important;
                   }
                   
-                  /* Labels */
                   label.col-form-label {
                     font-weight: 500 !important;
                     color: var(--text-color) !important;
@@ -1095,14 +1105,12 @@ export default function RevolutionSamplePage() {
                     font-size: 0.95rem !important;
                   }
                   
-                  /* Section titles */
                   .card-title {
                     font-size: 1.1rem !important;
                     font-weight: 600 !important;
                     color: var(--text-color) !important;
                   }
                   
-                  /* Checkboxes and radios */
                   .form-check {
                     margin-bottom: 0.5rem !important;
                     padding-left: 1.5rem !important;
@@ -1117,18 +1125,15 @@ export default function RevolutionSamplePage() {
                     margin-top: 0.25rem !important;
                   }
                   
-                  /* Required field indicator */
                   .field-required:after {
                     color: #ef4444 !important;
                     margin-left: 0.25rem !important;
                   }
                   
-                  /* Textarea */
                   textarea.form-control {
                     min-height: 80px !important;
                   }
                   
-                  /* Grid layout improvements */
                   .row {
                     margin-left: -0.5rem !important;
                     margin-right: -0.5rem !important;
@@ -1139,19 +1144,16 @@ export default function RevolutionSamplePage() {
                     padding-right: 0.5rem !important;
                   }
                   
-                  /* Form groups spacing */
                   .form-group {
                     margin-bottom: 1.25rem !important;
                   }
                   
-                  /* Help text */
                   .form-text {
                     color: #6b7280 !important;
                     font-size: 0.875rem !important;
                     margin-top: 0.25rem !important;
                   }
                   
-                  /* Error states */
                   .has-error .form-control {
                     border-color: #ef4444 !important;
                   }
@@ -1162,45 +1164,10 @@ export default function RevolutionSamplePage() {
                     margin-top: 0.25rem !important;
                   }
 
-                  /* Nested panels */
-                  .card .card {
-                    border-left: 2px solid #f3f4f6 !important;
-                    border-radius: 0 !important;
-                    margin-left: 0.5rem !important;
-                  }
-
-                  .card .card .card-header {
-                    background: transparent !important;
-                    padding-left: 0.75rem !important;
-                    font-size: 1rem !important;
-                    color: #4b5563 !important;
-                  }
-
-                  /* Data grid styling */
-                  .datagrid-table {
-                    border: 1px solid var(--border-color) !important;
-                    border-radius: 0.375rem !important;
-                    overflow: hidden !important;
-                  }
-
-                  .datagrid-table th {
-                    background: var(--panel-background) !important;
-                    font-weight: 500 !important;
-                    padding: 0.75rem !important;
-                  }
-
-                  .datagrid-table td {
-                    padding: 0.75rem !important;
-                  }
-
-                  /* Remove excess padding */
-                  #formio_holder {
-                    padding: 0 !important;
-                  }
-
-                  /* Improve spacing between sections */
-                  .card > .card-body > .row {
-                    margin-bottom: 1rem !important;
+                  @media print {
+                    .formio-component {
+                      page-break-inside: avoid;
+                    }
                   }
                 </style>
               </head>
@@ -1210,43 +1177,7 @@ export default function RevolutionSamplePage() {
                   const formioSchema = ${JSON.stringify(formioSchema)};
                   const originalData = ${JSON.stringify(originalData)};
 
-                  function postToParent(action, payload = null) {
-                    var message = payload || {};
-                    message.action = action;
-                    message.formRequestId = '${Math.random().toString(36).substring(7)}';
-                    window.parent.postMessage(JSON.stringify(message), "*");
-                  }
-
                   let theForm;
-                  let isEdited = false;
-
-                  // Handle component type updates
-                  function updateComponentType(node) {
-                    switch(node.type) {
-                      case "insurance":
-                        node.type = "container"
-                        break;
-                    }
-                    const components = node.components || []
-                    components.forEach(component => updateComponentType(component))
-                  }
-
-                  updateComponentType(formioSchema);
-
-                  // Handle form data synchronization
-                  function sendFormData(sync) {
-                    const submittedFormData = theForm.data;
-                    const formData = {
-                      sync: sync,
-                      new_fields: submittedFormData,
-                      original_fields: originalData,
-                      formio_schema: formioSchema
-                    };
-                    postToParent('request_document.form_data', { form_data: formData });
-                  }
-
-                  // Set up form
-                  Formio.icons = 'fontawesome';
                   Formio.createForm(
                     document.getElementById('formio_holder'),
                     formioSchema,
@@ -1257,32 +1188,27 @@ export default function RevolutionSamplePage() {
                   ).then((form) => {
                     theForm = form;
                     form.submission = { data: JSON.parse(JSON.stringify(originalData)) };
-                    form.on('change', (changed) => {
-                      if (isEdited) return;
-                      if (changed.changed && !changed.changed.flags['fromSubmission']) {
-                        isEdited = true;
-                        postToParent('request_document.edited');
-                      }
-                    });
-                  }).catch(error => {
-                    postToParent('request_document.error');
                   });
 
-                  // Handle parent messages
-                  window.addEventListener("message", (event) => {
-                    var message = JSON.parse(event.data);
-                    if (message.action === 'request_document.get_form_data') {
-                      sendFormData(message.sync);
+                  // Listen for download request from parent
+                  window.addEventListener('message', function(event) {
+                    if (event.data && event.data.type === 'download-pdf') {
+                      const element = document.getElementById('formio_holder');
+                      const opt = {
+                        margin: 20,
+                        filename: 'revolution-intake-form.pdf',
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { 
+                          scale: 2,
+                          useCORS: true,
+                          scrollY: 0,
+                          windowWidth: element.scrollWidth
+                        },
+                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                      };
+                      html2pdf().set(opt).from(element).save();
                     }
                   });
-
-                  postToParent('request_document.loaded');
-
-                  // Hide submit button
-                  const submitBtn = document.getElementsByName("data[submit]");
-                  if (submitBtn && submitBtn.length) {
-                    submitBtn[0].style.display = 'none';
-                  }
                 </script>
               </body>
               </html>
