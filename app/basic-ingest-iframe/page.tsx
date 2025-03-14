@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Patient Intake Review | Clinic EMR',
-  description: 'Review completed obesity intake survey',
+  title: 'Basic Ingest Form | Clinic EMR',
+  description: 'Basic obesity intake survey form with iframe integration',
 };
 
-export default function IntakeSurveyReview() {
+export default function BasicIngestIframePage() {
   return (
     <div className="max-w-4xl mx-auto py-8">
       <div className="bg-white shadow rounded-lg">
@@ -13,7 +13,7 @@ export default function IntakeSurveyReview() {
         <div className="px-8 py-6 border-b border-gray-200">
           <div className="flex justify-between items-baseline">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900">Obesity Intake Survey Results</h1>
+              <h1 className="text-2xl font-semibold text-gray-900">Basic Ingest Form</h1>
               <p className="mt-1 text-sm text-gray-700">Submitted on March 15, 2024 at 2:30 PM</p>
             </div>
             <div className="text-right">
