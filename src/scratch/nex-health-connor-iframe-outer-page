@@ -1,0 +1,3730 @@
+<div id="formio_holder"><div ref="component" class="formio-component formio-component-form  formio-component-label-hidden" id="e04efzoi">
+  
+  
+
+
+
+<div novalidate="" ref="webform" class="formio-form"><div ref="component" class="formio-component formio-component-panel formio-component-page1" id="eev7wx">
+  
+  <div class="mb-2 card border">
+  <div ref="header" class="card-header bg-default">
+    <span class="mb-0 card-title">
+      
+      Page 1
+      
+    </span>
+  </div>
+  
+  <div ref="nested-page1" class="card-body">
+    <div ref="component" class="formio-component formio-component-content formio-component-content" id="e0gw4ha">
+  
+  <div ref="html" class="">
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-content formio-component-content1" id="e71tebdi">
+  
+  <div ref="html" class=""><p style="text-align:center;"><span class="text-big"><strong>Revolution New Patient Intake Form</strong></span></p></div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-columns  formio-component-label-hidden" id="esji3mj">
+
+
+<div ref="column-esji3mj" class="col-md-4
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-first_name  required" id="ec3rwub">
+  
+  
+  <label class="col-form-label  field-required">
+  First Name
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[first_name]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-esji3mj" class="col-md-4
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-last_name  required" id="ev5xm5f">
+  
+  
+  <label class="col-form-label  field-required">
+  Last Name
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[last_name]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-esji3mj" class="col-md-4
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-preferred_name" id="e1owegs">
+  
+  
+  <label class="col-form-label">
+  Preferred Name / Nickname
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[preferred_name]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-columns1  formio-component-label-hidden" id="edzcujp">
+  
+  
+
+
+
+
+<div ref="column-edzcujp" class="col-md-4
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-select formio-component-sex  required" id="ey2shjg">
+  
+  
+  <label class="col-form-label  field-required">
+  Sex assigned at birth
+  
+</label>
+
+
+
+
+
+<div class="choices form-group formio-choices" data-type="select-one" dir="ltr" tabindex="-1" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false"><div class="form-control ui fluid selection dropdown" tabindex="0"><select lang="en" class="form-control choices__input" type="text" name="data[sex]" ref="selectContainer" dir="ltr" hidden="" tabindex="-1" data-choice="active"><option value="male">&lt;span&gt;Male&lt;/span&gt;</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__item--selectable" data-item="" data-id="2" data-value="male" data-custom-properties="null" aria-selected="true" data-deletable=""><span>Male</span><button type="button" class="choices__button" aria-label="Remove item: 'male'" data-button="">Remove item</button></div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><input type="text" class="choices__input choices__input--cloned" autocomplete="off" autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list" aria-label="false" placeholder="Type to search"><div class="choices__list" role="listbox"><div id="choices--datasex-3j-item-choice-1" class="choices__item choices__item--choice is-selected choices__item--selectable is-highlighted" role="option" data-choice="" data-id="1" data-value="male" data-select-text="" data-choice-selectable="" aria-selected="true"><span>Male</span></div><div id="choices--datasex-3j-item-choice-2" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="2" data-value="female" data-select-text="" data-choice-selectable=""><span>Female</span></div><div id="choices--datasex-3j-item-choice-3" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="3" data-value="other" data-select-text="" data-choice-selectable=""><span>Other</span></div></div></div></div>
+<input tabindex="-1" ref="autocompleteInput" class="formio-select-autocomplete-input" type="text">
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-other1  formio-component-label-hidden formio-hidden" id="e0nof9">
+  
+</div>
+
+
+</div>
+
+<div ref="column-edzcujp" class="col-md-4
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-4GenderIdentity  required" id="ebq78a4">
+  
+  
+  <label class="col-form-label  field-required">
+  Gender identity
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="ebq78a4-male" class="form-check-label label-position-right">
+      
+      <input id="ebq78a4-male" value="male" lang="en" class="form-check-input" type="radio" name="data[4GenderIdentity][ebq78a4]" ref="input">
+      
+      <span>Male</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ebq78a4-female" class="form-check-label label-position-right">
+      
+      <input id="ebq78a4-female" value="female" lang="en" class="form-check-input" type="radio" name="data[4GenderIdentity][ebq78a4]" ref="input">
+      
+      <span>Female</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ebq78a4-other" class="form-check-label label-position-right">
+      
+      <input id="ebq78a4-other" value="other" lang="en" class="form-check-input" type="radio" name="data[4GenderIdentity][ebq78a4]" ref="input">
+      
+      <span>Other</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-other2  required formio-component-label-hidden formio-hidden" id="e8w2wqu">
+  
+</div>
+
+
+</div>
+
+<div ref="column-edzcujp" class="col-md-4
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-patient_db  required" id="ewymekr">
+  
+  
+  <label class="col-form-label  field-required">
+  DOB
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" placeholder="mm/dd/yyyy" lang="en" class="form-control" type="text" name="data[patient_db]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-select formio-component-race  required" id="eflg9x">
+  
+  
+  <label class="col-form-label  field-required">
+  Race
+  
+</label>
+
+
+
+
+
+<div class="choices form-group formio-choices" data-type="select-one" dir="ltr" tabindex="-1" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false"><div class="form-control ui fluid selection dropdown" tabindex="0"><select lang="en" class="form-control choices__input" type="text" name="data[race]" ref="selectContainer" dir="ltr" hidden="" tabindex="-1" data-choice="active"><option value="white">&lt;span&gt;White&lt;/span&gt;</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__item--selectable" data-item="" data-id="2" data-value="white" data-custom-properties="null" aria-selected="true" data-deletable=""><span>White</span><button type="button" class="choices__button" aria-label="Remove item: 'white'" data-button="">Remove item</button></div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><input type="text" class="choices__input choices__input--cloned" autocomplete="off" autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list" aria-label="false" placeholder="Type to search"><div class="choices__list" role="listbox"><div id="choices--datarace-zp-item-choice-1" class="choices__item choices__item--choice choices__item--selectable is-highlighted" role="option" data-choice="" data-id="1" data-value="americanIndianOrAlaskaNative" data-select-text="" data-choice-selectable="" aria-selected="true"><span>American Indian or Alaska Native</span></div><div id="choices--datarace-zp-item-choice-2" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="2" data-value="asian" data-select-text="" data-choice-selectable=""><span>Asian</span></div><div id="choices--datarace-zp-item-choice-3" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="3" data-value="blackOrAfricanAmerican" data-select-text="" data-choice-selectable=""><span>Black or African American</span></div><div id="choices--datarace-zp-item-choice-4" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="4" data-value="nativeHawaiianOrOtherPacificIslander" data-select-text="" data-choice-selectable=""><span>Native Hawaiian or Other Pacific Islander</span></div><div id="choices--datarace-zp-item-choice-5" class="choices__item choices__item--choice is-selected choices__item--selectable" role="option" data-choice="" data-id="5" data-value="white" data-select-text="" data-choice-selectable=""><span>White</span></div></div></div></div>
+<input tabindex="-1" ref="autocompleteInput" class="formio-select-autocomplete-input" type="text">
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-select formio-component-ethnicity  required" id="e34n0st">
+  
+  
+  <label class="col-form-label  field-required">
+  Ethnicity
+  
+</label>
+
+
+
+
+
+<div class="choices form-group formio-choices" data-type="select-one" dir="ltr" tabindex="-1" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false"><div class="form-control ui fluid selection dropdown" tabindex="0"><select lang="en" class="form-control choices__input" type="text" name="data[ethnicity]" ref="selectContainer" dir="ltr" hidden="" tabindex="-1" data-choice="active"><option value="nonHispanicOrLatino">&lt;span&gt;Non-Hispanic or Latino&lt;/span&gt;</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__item--selectable" data-item="" data-id="2" data-value="nonHispanicOrLatino" data-custom-properties="null" aria-selected="true" data-deletable=""><span>Non-Hispanic or Latino</span><button type="button" class="choices__button" aria-label="Remove item: 'nonHispanicOrLatino'" data-button="">Remove item</button></div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><input type="text" class="choices__input choices__input--cloned" autocomplete="off" autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list" aria-label="false" placeholder="Type to search"><div class="choices__list" role="listbox"><div id="choices--dataethnicity-0q-item-choice-1" class="choices__item choices__item--choice choices__item--selectable is-highlighted" role="option" data-choice="" data-id="1" data-value="hispanicOrLatino" data-select-text="" data-choice-selectable="" aria-selected="true"><span>Hispanic or Latino</span></div><div id="choices--dataethnicity-0q-item-choice-2" class="choices__item choices__item--choice is-selected choices__item--selectable" role="option" data-choice="" data-id="2" data-value="nonHispanicOrLatino" data-select-text="" data-choice-selectable=""><span>Non-Hispanic or Latino</span></div></div></div></div>
+<input tabindex="-1" ref="autocompleteInput" class="formio-select-autocomplete-input" type="text">
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-columns2  formio-component-label-hidden" id="esrc8pi">
+  
+  
+
+
+
+
+<div ref="column-esrc8pi" class="col-md-5
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-address_1  required" id="e9ed5d">
+  
+  
+  <label class="col-form-label  field-required">
+  Street address
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[address_1]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-esrc8pi" class="col-md-3
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-city  required" id="elw6b6">
+  
+  
+  <label class="col-form-label  field-required">
+  City
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[city]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-esrc8pi" class="col-md-2
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-select formio-component-state  required" id="ex2fb6zh">
+  
+  
+  <label class="col-form-label  field-required">
+  State
+  
+</label>
+
+
+
+
+
+<div class="choices form-group formio-choices" data-type="select-one" dir="ltr" tabindex="-1" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false"><div class="form-control ui fluid selection dropdown" tabindex="0"><select placeholder="Please select" lang="en" class="form-control choices__input" type="text" name="data[state]" ref="selectContainer" dir="ltr" hidden="" tabindex="-1" data-choice="active"><option value="CA">&lt;span&gt;CA&lt;/span&gt;</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__item--selectable" data-item="" data-id="6" data-value="CA" data-custom-properties="null" aria-selected="true" data-deletable=""><span>CA</span><button type="button" class="choices__button" aria-label="Remove item: 'CA'" data-button="">Remove item</button></div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><input type="text" class="choices__input choices__input--cloned" autocomplete="off" autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list" aria-label="Please select" placeholder="Type to search"><div class="choices__list" role="listbox"><div id="choices--datastate-69-item-choice-1" class="choices__item choices__item--choice choices__item--selectable is-highlighted" role="option" data-choice="" data-id="1" data-value="AL" data-select-text="" data-choice-selectable="" aria-selected="true"><span>AL</span></div><div id="choices--datastate-69-item-choice-2" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="2" data-value="AK" data-select-text="" data-choice-selectable=""><span>AK</span></div><div id="choices--datastate-69-item-choice-3" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="3" data-value="AZ" data-select-text="" data-choice-selectable=""><span>AZ</span></div><div id="choices--datastate-69-item-choice-4" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="4" data-value="AR" data-select-text="" data-choice-selectable=""><span>AR</span></div><div id="choices--datastate-69-item-choice-5" class="choices__item choices__item--choice is-selected choices__item--selectable" role="option" data-choice="" data-id="5" data-value="CA" data-select-text="" data-choice-selectable=""><span>CA</span></div><div id="choices--datastate-69-item-choice-6" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="6" data-value="CO" data-select-text="" data-choice-selectable=""><span>CO</span></div><div id="choices--datastate-69-item-choice-7" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="7" data-value="CT" data-select-text="" data-choice-selectable=""><span>CT</span></div><div id="choices--datastate-69-item-choice-8" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="8" data-value="dc" data-select-text="" data-choice-selectable=""><span>DC</span></div><div id="choices--datastate-69-item-choice-9" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="9" data-value="DE" data-select-text="" data-choice-selectable=""><span>DE</span></div><div id="choices--datastate-69-item-choice-10" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="10" data-value="FL" data-select-text="" data-choice-selectable=""><span>FL</span></div><div id="choices--datastate-69-item-choice-11" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="11" data-value="GA" data-select-text="" data-choice-selectable=""><span>GA</span></div><div id="choices--datastate-69-item-choice-12" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="12" data-value="HI" data-select-text="" data-choice-selectable=""><span>HI</span></div><div id="choices--datastate-69-item-choice-13" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="13" data-value="ID" data-select-text="" data-choice-selectable=""><span>ID</span></div><div id="choices--datastate-69-item-choice-14" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="14" data-value="IL" data-select-text="" data-choice-selectable=""><span>IL</span></div><div id="choices--datastate-69-item-choice-15" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="15" data-value="IN" data-select-text="" data-choice-selectable=""><span>IN</span></div><div id="choices--datastate-69-item-choice-16" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="16" data-value="IA" data-select-text="" data-choice-selectable=""><span>IA</span></div><div id="choices--datastate-69-item-choice-17" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="17" data-value="KS" data-select-text="" data-choice-selectable=""><span>KS</span></div><div id="choices--datastate-69-item-choice-18" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="18" data-value="KY" data-select-text="" data-choice-selectable=""><span>KY</span></div><div id="choices--datastate-69-item-choice-19" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="19" data-value="LA" data-select-text="" data-choice-selectable=""><span>LA</span></div><div id="choices--datastate-69-item-choice-20" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="20" data-value="ME" data-select-text="" data-choice-selectable=""><span>ME</span></div><div id="choices--datastate-69-item-choice-21" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="21" data-value="MD" data-select-text="" data-choice-selectable=""><span>MD</span></div><div id="choices--datastate-69-item-choice-22" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="22" data-value="MA" data-select-text="" data-choice-selectable=""><span>MA</span></div><div id="choices--datastate-69-item-choice-23" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="23" data-value="MI" data-select-text="" data-choice-selectable=""><span>MI</span></div><div id="choices--datastate-69-item-choice-24" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="24" data-value="MN" data-select-text="" data-choice-selectable=""><span>MN</span></div><div id="choices--datastate-69-item-choice-25" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="25" data-value="MS" data-select-text="" data-choice-selectable=""><span>MS</span></div><div id="choices--datastate-69-item-choice-26" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="26" data-value="MO" data-select-text="" data-choice-selectable=""><span>MO</span></div><div id="choices--datastate-69-item-choice-27" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="27" data-value="MT" data-select-text="" data-choice-selectable=""><span>MT</span></div><div id="choices--datastate-69-item-choice-28" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="28" data-value="NE" data-select-text="" data-choice-selectable=""><span>NE</span></div><div id="choices--datastate-69-item-choice-29" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="29" data-value="NV" data-select-text="" data-choice-selectable=""><span>NV</span></div><div id="choices--datastate-69-item-choice-30" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="30" data-value="NH" data-select-text="" data-choice-selectable=""><span>NH</span></div><div id="choices--datastate-69-item-choice-31" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="31" data-value="NJ" data-select-text="" data-choice-selectable=""><span>NJ</span></div><div id="choices--datastate-69-item-choice-32" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="32" data-value="NM" data-select-text="" data-choice-selectable=""><span>NM</span></div><div id="choices--datastate-69-item-choice-33" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="33" data-value="NY" data-select-text="" data-choice-selectable=""><span>NY</span></div><div id="choices--datastate-69-item-choice-34" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="34" data-value="NC" data-select-text="" data-choice-selectable=""><span>NC</span></div><div id="choices--datastate-69-item-choice-35" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="35" data-value="ND" data-select-text="" data-choice-selectable=""><span>ND</span></div><div id="choices--datastate-69-item-choice-36" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="36" data-value="OH" data-select-text="" data-choice-selectable=""><span>OH</span></div><div id="choices--datastate-69-item-choice-37" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="37" data-value="OK" data-select-text="" data-choice-selectable=""><span>OK</span></div><div id="choices--datastate-69-item-choice-38" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="38" data-value="OR" data-select-text="" data-choice-selectable=""><span>OR</span></div><div id="choices--datastate-69-item-choice-39" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="39" data-value="PA" data-select-text="" data-choice-selectable=""><span>PA</span></div><div id="choices--datastate-69-item-choice-40" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="40" data-value="RI" data-select-text="" data-choice-selectable=""><span>RI</span></div><div id="choices--datastate-69-item-choice-41" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="41" data-value="SC" data-select-text="" data-choice-selectable=""><span>SC</span></div><div id="choices--datastate-69-item-choice-42" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="42" data-value="SD" data-select-text="" data-choice-selectable=""><span>SD</span></div><div id="choices--datastate-69-item-choice-43" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="43" data-value="TN" data-select-text="" data-choice-selectable=""><span>TN</span></div><div id="choices--datastate-69-item-choice-44" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="44" data-value="TX" data-select-text="" data-choice-selectable=""><span>TX</span></div><div id="choices--datastate-69-item-choice-45" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="45" data-value="UT" data-select-text="" data-choice-selectable=""><span>UT</span></div><div id="choices--datastate-69-item-choice-46" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="46" data-value="VT" data-select-text="" data-choice-selectable=""><span>VT</span></div><div id="choices--datastate-69-item-choice-47" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="47" data-value="VA" data-select-text="" data-choice-selectable=""><span>VA</span></div><div id="choices--datastate-69-item-choice-48" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="48" data-value="WA" data-select-text="" data-choice-selectable=""><span>WA</span></div><div id="choices--datastate-69-item-choice-49" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="49" data-value="VI" data-select-text="" data-choice-selectable=""><span>VI</span></div><div id="choices--datastate-69-item-choice-50" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="50" data-value="WV" data-select-text="" data-choice-selectable=""><span>WV</span></div><div id="choices--datastate-69-item-choice-51" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="51" data-value="WI" data-select-text="" data-choice-selectable=""><span>WI</span></div><div id="choices--datastate-69-item-choice-52" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="52" data-value="WY" data-select-text="" data-choice-selectable=""><span>WY</span></div></div></div></div>
+<input tabindex="-1" ref="autocompleteInput" class="formio-select-autocomplete-input" type="text">
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-esrc8pi" class="col-md-2
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-zip_code  required" id="ezi1b">
+  
+  
+  <label class="col-form-label  field-required">
+  Zip Code
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[zip_code]" ref="input" pattern="\d*" placeholder="_____">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-columns3  formio-component-label-hidden" id="en9t48">
+  
+  
+
+
+
+
+<div ref="column-en9t48" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-phoneNumber formio-component-mobile_number  required" id="e4yfyd">
+  
+  
+  <label class="col-form-label  field-required">
+  Phone # (mobile preferred)
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[mobile_number]" ref="input" placeholder="(___) ___-____">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-en9t48" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-email formio-component-email  required" id="e6rzh84">
+  
+  
+  <label class="col-form-label  field-required">
+  Preferred email
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="email" name="data[email]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-insurancePolicyName  required" id="e1i6s2c">
+  
+  
+  <label class="col-form-label  field-required">
+  Insurance policy name
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[insurancePolicyName]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-insurancePolicyMemberId  required" id="efcrogi">
+  
+  
+  <label class="col-form-label  field-required">
+  Insurance policy member ID
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[insurancePolicyMemberId]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-content formio-component-content2" id="epf75kr">
+  
+  <div ref="html" class=""><p>Please attach a photo of the front and back of your primary insurance card(s). Or, you can email the photos to info@revolutionmed.com.&nbsp;</p><p>Skip this section if you plan to use self-pay or out-of-network reimbursement.&nbsp;</p><p>If you have multiple (secondary) insurance plans or prescription benefit cards, please email your additional cards to info@revolutionmed.com.</p></div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-medicalCard2  formio-component-label-hidden" id="euoxto">
+  
+  
+
+
+
+
+<div ref="column-euoxto" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-file formio-component-primary_card_front" id="elah5vi">
+  
+  
+  <label class="col-form-label">
+  Front of Insurance Card
+  
+</label>
+
+
+
+
+
+
+  <div>
+    
+  </div>
+
+
+  
+    <div ref="fileDrop" class="fileSelector">
+      <i class="fa fa-cloud-upload"></i> Drop files to attach,
+        
+          <a ref="toggleCameraMode" href="#"><i class="fa fa-camera"></i> Use Camera,</a>
+        
+        or <a class="browse" ref="fileBrowse" href="#">browse</a>
+    </div>
+  
+
+
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+
+</div>
+
+<div ref="column-euoxto" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-file formio-component-primary_card_back" id="eoqeyil">
+  
+  
+  <label class="col-form-label">
+  Back of Insurance Card
+  
+</label>
+
+
+
+
+
+
+  <div>
+    
+  </div>
+
+
+  
+    <div ref="fileDrop" class="fileSelector">
+      <i class="fa fa-cloud-upload"></i> Drop files to attach,
+        
+          <a ref="toggleCameraMode" href="#"><i class="fa fa-camera"></i> Use Camera,</a>
+        
+        or <a class="browse" ref="fileBrowse" href="#">browse</a>
+    </div>
+  
+
+
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-13IfYouHaveMedicareIsMedicareYourPrimaryOrSecondaryInsurance  required" id="ekt6xxk">
+  
+  
+  <label class="col-form-label  field-required">
+  If you have Medicare, is Medicare your primary or secondary insurance?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ekt6xxk-primary" class="form-check-label label-position-right">
+      
+      <input id="ekt6xxk-primary" value="primary" lang="en" class="form-check-input" type="radio" name="data[13IfYouHaveMedicareIsMedicareYourPrimaryOrSecondaryInsurance][ekt6xxk]" ref="input">
+      
+      <span>Primary</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ekt6xxk-secondary" class="form-check-label label-position-right">
+      
+      <input id="ekt6xxk-secondary" value="secondary" lang="en" class="form-check-input" type="radio" name="data[13IfYouHaveMedicareIsMedicareYourPrimaryOrSecondaryInsurance][ekt6xxk]" ref="input">
+      
+      <span>Secondary</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="ekt6xxk-iDontHaveMedicare" class="form-check-label label-position-right">
+      
+      <input id="ekt6xxk-iDontHaveMedicare" value="iDontHaveMedicare" lang="en" class="form-check-input" type="radio" name="data[13IfYouHaveMedicareIsMedicareYourPrimaryOrSecondaryInsurance][ekt6xxk]" ref="input">
+      
+      <span>I don't have Medicare</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-weAreInNetworkWithBlueCrossPlansAetnaUnitedCignaSentaraMedicareTricareIfYourPlanIsOutOfNetworkPleaseAcknowledgeOurSelfPayRatesOf250IntakeAppointmentsAnd150FollowUpAppointmentsToBeBilledToYourCardOnFileIfYouHaveAnyInsuranceStatusQuestionsPriorToYourIntakeAppointmentPleaseCallTheFrontDeskAt2025968891OrEmailInfoRevolutionmedCom  required" id="e703zky">
+  
+  
+  <label class="col-form-label  field-required">
+  We are in-network with Blue Cross plans (including CareFirst and Anthem), Aetna, United, Cigna, Sentara, Medicare &amp; Tricare. If your plan is out of network, please acknowledge our self-pay rates of $250 (intake appointments) and $150 (follow up appointments), to be billed to your card on file. If you have any insurance questions prior to your intake appointment, please call the front desk at (202) 596-8891, or email info@revolutionmed.com.
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="e703zky-acknowledged" class="form-check-label label-position-right">
+      
+      <input id="e703zky-acknowledged" value="acknowledged" lang="en" class="form-check-input" type="radio" name="data[weAreInNetworkWithBlueCrossPlansAetnaUnitedCignaSentaraMedicareTricareIfYourPlanIsOutOfNetworkPleaseAcknowledgeOurSelfPayRatesOf250IntakeAppointmentsAnd150FollowUpAppointmentsToBeBilledToYourCardOnFileIfYouHaveAnyInsuranceStatusQuestionsPriorToYourIntakeAppointmentPleaseCallTheFrontDeskAt2025968891OrEmailInfoRevolutionmedCom][e703zky]" ref="input">
+      
+      <span>Acknowledged.</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="e703zky-ifMyPlanIsOutOfNetworkPleaseCancelMyAppointmentForNow" class="form-check-label label-position-right">
+      
+      <input id="e703zky-ifMyPlanIsOutOfNetworkPleaseCancelMyAppointmentForNow" value="ifMyPlanIsOutOfNetworkPleaseCancelMyAppointmentForNow" lang="en" class="form-check-input" type="radio" name="data[weAreInNetworkWithBlueCrossPlansAetnaUnitedCignaSentaraMedicareTricareIfYourPlanIsOutOfNetworkPleaseAcknowledgeOurSelfPayRatesOf250IntakeAppointmentsAnd150FollowUpAppointmentsToBeBilledToYourCardOnFileIfYouHaveAnyInsuranceStatusQuestionsPriorToYourIntakeAppointmentPleaseCallTheFrontDeskAt2025968891OrEmailInfoRevolutionmedCom][e703zky]" ref="input">
+      
+      <span>If my plan is out of network, please cancel my appointment for now.</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-15WhatIsYourPreferredPharmacyPleaseIncludeNameAndAddress  required" id="el14va">
+  
+  
+  <label class="col-form-label  field-required">
+  What is your preferred pharmacy? Please include phone # and address.
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[15WhatIsYourPreferredPharmacyPleaseIncludeNameAndAddress]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+  </div>
+  
+</div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-panel formio-component-page2" id="en3sf4">
+  
+  <div class="mb-2 card border">
+  <div ref="header" class="card-header bg-default">
+    <span class="mb-0 card-title">
+      
+      Page 2
+      
+    </span>
+  </div>
+  
+  <div ref="nested-page2" class="card-body">
+    <div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-16DoYouKnowYourHealthInsurersPreferredLab  required" id="eaz7gx">
+  
+  
+  <label class="col-form-label  field-required">
+  Do you know your health insurer's preferred lab?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="eaz7gx-labcorp" class="form-check-label label-position-right">
+      
+      <input id="eaz7gx-labcorp" value="labcorp" lang="en" class="form-check-input" type="radio" name="data[16DoYouKnowYourHealthInsurersPreferredLab][eaz7gx]" ref="input">
+      
+      <span>Labcorp</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="eaz7gx-quest" class="form-check-label label-position-right">
+      
+      <input id="eaz7gx-quest" value="quest" lang="en" class="form-check-input" type="radio" name="data[16DoYouKnowYourHealthInsurersPreferredLab][eaz7gx]" ref="input">
+      
+      <span>Quest</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="eaz7gx-imNotSure" class="form-check-label label-position-right">
+      
+      <input id="eaz7gx-imNotSure" value="imNotSure" lang="en" class="form-check-input" type="radio" name="data[16DoYouKnowYourHealthInsurersPreferredLab][eaz7gx]" ref="input">
+      
+      <span>I'm not sure</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="eaz7gx-other" class="form-check-label label-position-right">
+      
+      <input id="eaz7gx-other" value="other" lang="en" class="form-check-input" type="radio" name="data[16DoYouKnowYourHealthInsurersPreferredLab][eaz7gx]" ref="input">
+      
+      <span>Other</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-other4  required formio-component-label-hidden formio-hidden" id="eyixu8g">
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-columns4  formio-component-label-hidden" id="eqdq0o">
+  
+  
+
+
+
+
+<div ref="column-eqdq0o" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-17PrimaryCarePhysicianPcp  required" id="edirror">
+  
+  
+  <label class="col-form-label  field-required">
+  Primary care physician/PCP
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[17PrimaryCarePhysicianPcp]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-eqdq0o" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-phoneNumber formio-component-phoneNo  required" id="ea4gna">
+  
+  
+  <label class="col-form-label  field-required">
+  PCP Phone No.
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[phoneNo]" ref="input" placeholder="(___) ___-____">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-18PleaseListAllSpecialistsThatYouSeeRegularlyAndTheirFiEldOfMedicine  required" id="e8c3yoy">
+  
+  
+  <label class="col-form-label  field-required">
+  Please list all specialists that you see regularly, and their field of medicine
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[18PleaseListAllSpecialistsThatYouSeeRegularlyAndTheirFiEldOfMedicine]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-19HowDidYouHearAboutRevolutionPleaseLetUsKnowIfYouHadASpecificReferralSoWeCanThankThem  required" id="e0xr729">
+  
+  
+  <label class="col-form-label  field-required">
+  How did you hear about Revolution? Please let us know if you had a specific referral, so we can thank them!
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[19HowDidYouHearAboutRevolutionPleaseLetUsKnowIfYouHadASpecificReferralSoWeCanThankThem]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-20DrugAllergies  required" id="em4wcfk">
+  
+  
+  <label class="col-form-label  field-required">
+  Drug allergies
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="em4wcfk-noKnownDrugAllergies" class="form-check-label label-position-right">
+      
+      <input id="em4wcfk-noKnownDrugAllergies" value="noKnownDrugAllergies" lang="en" class="form-check-input" type="radio" name="data[20DrugAllergies][em4wcfk]" ref="input">
+      
+      <span>No known drug allergies</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="em4wcfk-other" class="form-check-label label-position-right">
+      
+      <input id="em4wcfk-other" value="other" lang="en" class="form-check-input" type="radio" name="data[20DrugAllergies][em4wcfk]" ref="input">
+      
+      <span>Other</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-other5  required formio-component-label-hidden" id="euu3j2j">
+  
+  
+
+
+  <label class="field-required control-label--hidden"></label>
+
+
+<div ref="element">
+          
+
+  
+<input value="penicillin" spellcheck="true" lang="en" class="form-control" type="text" name="data[other5]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+<div ref="component" class="formio-component formio-component-content formio-component-content4" id="e2xeoml">
+  
+  <div ref="html" class=""><p>What conditions have you been diagnosed with in the past?</p></div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-content formio-component-content5" id="e09yvzt">
+  
+  <div ref="html" class=""><p><i>Check all that apply.</i></p></div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-columns5  formio-component-label-hidden" id="ex5thnl">
+  
+  
+
+
+
+
+<div ref="column-ex5thnl" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-selectboxes formio-component-selectBoxes1  formio-component-label-hidden" id="eeyid37">
+  
+  
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-overweightOrObesity" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-overweightOrObesity" value="overweightOrObesity" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Overweight or obesity</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-highBloodPressureOrHypertension" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-highBloodPressureOrHypertension" value="highBloodPressureOrHypertension" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>High blood pressure or hypertension</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-prediabetes" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-prediabetes" value="prediabetes" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Prediabetes</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-diabetes" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-diabetes" value="diabetes" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Diabetes</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-highCholesterol" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-highCholesterol" value="highCholesterol" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>High cholesterol</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-cardiovascularDiseaseEGHeartDiseaseHeartAttackStrokeAnginaBypassStentEtc" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-cardiovascularDiseaseEGHeartDiseaseHeartAttackStrokeAnginaBypassStentEtc" value="cardiovascularDiseaseEGHeartDiseaseHeartAttackStrokeAnginaBypassStentEtc" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Cardiovascular disease (e.g. heart disease, heart attack, stroke, angina, bypass, stent, etc.)</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-cardiacArrhythmias" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-cardiacArrhythmias" value="cardiacArrhythmias" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Cardiac arrhythmias</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-cancer" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-cancer" value="cancer" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Cancer</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-sleepApnea" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-sleepApnea" value="sleepApnea" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Sleep apnea</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-pcos" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-pcos" value="pcos" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>PCOS</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-fattyLiverOrElevatedLiverEnzymes" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-fattyLiverOrElevatedLiverEnzymes" value="fattyLiverOrElevatedLiverEnzymes" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Fatty liver or elevated liver enzymes</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eeyid37-kidneyDisease" class="form-check-label label-position-right">
+      
+      <input id="eeyid37-kidneyDisease" value="kidneyDisease" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes1][]" ref="input">
+      
+      <span>Kidney disease</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-ex5thnl" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-selectboxes formio-component-selectBoxes2  formio-component-label-hidden" id="ejdtke">
+  
+  
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-anxiety" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-anxiety" value="anxiety" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Anxiety</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-depression" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-depression" value="depression" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Depression</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-migraines" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-migraines" value="migraines" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Migraines</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-alcoholism" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-alcoholism" value="alcoholism" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Alcoholism</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-kidneyStones" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-kidneyStones" value="kidneyStones" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Kidney stones</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-gallstones" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-gallstones" value="gallstones" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Gallstones</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-glaucoma" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-glaucoma" value="glaucoma" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Glaucoma</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-seizures" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-seizures" value="seizures" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Seizures</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-pancreatitis" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-pancreatitis" value="pancreatitis" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Pancreatitis</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-noneOfTheAbove" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-noneOfTheAbove" value="noneOfTheAbove" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>None of the above</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ejdtke-other" class="form-check-label label-position-right">
+      
+      <input id="ejdtke-other" value="other" lang="en" class="form-check-input" type="checkbox" name="data[selectBoxes2][]" ref="input">
+      
+      <span>Other</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-other" id="etlcfg5">
+  
+  
+  <label class="col-form-label">
+  Other
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="3" spellcheck="true" placeholder="Please explain" lang="en" class="form-control" type="text" name="data[other]" ref="input" style="resize: none; overflow-y: hidden; height: 86px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-22CurrentMedicationListNameDosageAndFrequencyPleaseIncludeDailyAndAsNeededPrescriptionsAndOverTheCounter  required" id="ey5vvy">
+  
+  
+  <label class="col-form-label  field-required">
+  Current medication list: Name, dosage, and frequency. Please include daily and "as needed" prescriptions, and over the counter
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[22CurrentMedicationListNameDosageAndFrequencyPleaseIncludeDailyAndAsNeededPrescriptionsAndOverTheCounter]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-22CurrentMedicationListNameDosageAndFrequencyPleaseIncludeDailyAndAsNeededPrescriptionsAndOverTheCounter1  required" id="e9afq87">
+  
+  
+  <label class="col-form-label  field-required">
+  Which conditions run in the family? (Heart disease, stroke, diabetes, hypertension, high cholesterol, sleep apnea, cancer, etc)
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[22CurrentMedicationListNameDosageAndFrequencyPleaseIncludeDailyAndAsNeededPrescriptionsAndOverTheCounter1]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+  <div class="form-text text-muted">Please include 1st and 2nd degree relatives, and identify which relative was affected.</div>
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-22CurrentMedicationListNameDosageAndFrequencyPleaseIncludeDailyAndAsNeededPrescriptionsAndOverTheCounter2  required" id="e2zks1">
+  
+  
+  <label class="col-form-label  field-required">
+  Any family history of cardiovascular disease at an early age (heart disease, heartattack, stroke, stent, bypass)? If yes, who?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[22CurrentMedicationListNameDosageAndFrequencyPleaseIncludeDailyAndAsNeededPrescriptionsAndOverTheCounter2]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+  <div class="form-text text-muted">Defined as men earlier than age 55, women earlier than age 65.</div>
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-25AnyFamilyHistoryOfMedullaryThyroidCancerOrMultipleEndocrineNeoplasiaType2Men2ThisIsVeryRareButItIsImportantToKnowForWeightLossPurposes  required" id="ehjjg4v">
+  
+  
+  <label class="col-form-label  field-required">
+  Any family history of medullary thyroid cancer or multiple endocrine neoplasia type 2 (MEN2)? This is very rare! But it is important to know for weight loss purposes.
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ehjjg4v-yes" class="form-check-label label-position-right">
+      
+      <input id="ehjjg4v-yes" value="yes" lang="en" class="form-check-input" type="radio" name="data[25AnyFamilyHistoryOfMedullaryThyroidCancerOrMultipleEndocrineNeoplasiaType2Men2ThisIsVeryRareButItIsImportantToKnowForWeightLossPurposes][ehjjg4v]" ref="input">
+      
+      <span>Yes</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="ehjjg4v-no" class="form-check-label label-position-right">
+      
+      <input id="ehjjg4v-no" value="no" lang="en" class="form-check-input" type="radio" name="data[25AnyFamilyHistoryOfMedullaryThyroidCancerOrMultipleEndocrineNeoplasiaType2Men2ThisIsVeryRareButItIsImportantToKnowForWeightLossPurposes][ehjjg4v]" ref="input">
+      
+      <span>No</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+  </div>
+  
+</div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-panel formio-component-page3" id="e55kg4">
+  
+  <div class="mb-2 card border">
+  <div ref="header" class="card-header bg-default">
+    <span class="mb-0 card-title">
+      
+      Page 3
+      
+    </span>
+  </div>
+  
+  <div ref="nested-page3" class="card-body">
+    <div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-26SmokingStatusTobacco  required" id="eta3smm">
+  
+  
+  <label class="col-form-label  field-required">
+  Smoking status (tobacco)
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="eta3smm-neverSmoker" class="form-check-label label-position-right">
+      
+      <input id="eta3smm-neverSmoker" value="neverSmoker" lang="en" class="form-check-input" type="radio" name="data[26SmokingStatusTobacco][eta3smm]" ref="input">
+      
+      <span>Never smoker</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="eta3smm-currentSmoker" class="form-check-label label-position-right">
+      
+      <input id="eta3smm-currentSmoker" value="currentSmoker" lang="en" class="form-check-input" type="radio" name="data[26SmokingStatusTobacco][eta3smm]" ref="input">
+      
+      <span>Current smoker</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="eta3smm-formerSmokerAndQuit" class="form-check-label label-position-right">
+      
+      <input id="eta3smm-formerSmokerAndQuit" value="formerSmokerAndQuit" lang="en" class="form-check-input" type="radio" name="data[26SmokingStatusTobacco][eta3smm]" ref="input">
+      
+      <span>Former smoker and quit</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-28OfDrinksOfAlcoholPerWeek  required" id="ezhj9lg">
+  
+  
+  <label class="col-form-label  field-required">
+  # of drinks of alcohol per week
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ezhj9lg-none" class="form-check-label label-position-right">
+      
+      <input id="ezhj9lg-none" value="none" lang="en" class="form-check-input" type="radio" name="data[28OfDrinksOfAlcoholPerWeek][ezhj9lg]" ref="input">
+      
+      <span>None</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ezhj9lg-12" class="form-check-label label-position-right">
+      
+      <input id="ezhj9lg-12" value="12" lang="en" class="form-check-input" type="radio" name="data[28OfDrinksOfAlcoholPerWeek][ezhj9lg]" ref="input">
+      
+      <span>1-2</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="ezhj9lg-37" class="form-check-label label-position-right">
+      
+      <input id="ezhj9lg-37" value="37" lang="en" class="form-check-input" type="radio" name="data[28OfDrinksOfAlcoholPerWeek][ezhj9lg]" ref="input">
+      
+      <span>3-7</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ezhj9lg-714" class="form-check-label label-position-right">
+      
+      <input id="ezhj9lg-714" value="714" lang="en" class="form-check-input" type="radio" name="data[28OfDrinksOfAlcoholPerWeek][ezhj9lg]" ref="input">
+      
+      <span>7-14</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ezhj9lg-14" class="form-check-label label-position-right">
+      
+      <input id="ezhj9lg-14" value="14" lang="en" class="form-check-input" type="radio" name="data[28OfDrinksOfAlcoholPerWeek][ezhj9lg]" ref="input">
+      
+      <span>&gt; 14</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="ezhj9lg-other" class="form-check-label label-position-right">
+      
+      <input id="ezhj9lg-other" value="other" lang="en" class="form-check-input" type="radio" name="data[28OfDrinksOfAlcoholPerWeek][ezhj9lg]" ref="input">
+      
+      <span>Other</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-other7  required formio-component-label-hidden formio-hidden" id="etkmdec">
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-29Occupation  required" id="eufk9f">
+  
+  
+  <label class="col-form-label  field-required">
+  Occupation
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[29Occupation]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-30SurgeriesOutsideOfDental  required" id="e91tdg">
+  
+  
+  <label class="col-form-label  field-required">
+  Prior surgeries
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[30SurgeriesOutsideOfDental]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-columns6  formio-component-label-hidden" id="en32ufo">
+  
+  
+
+
+
+
+<div ref="column-en32ufo" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-31WhatIsYourCurrentWeight  required" id="ehpw8oa">
+  
+  
+  <label class="col-form-label  field-required">
+  What is your current weight?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[31WhatIsYourCurrentWeight]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-en32ufo" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-32WhatIsYourHeight  required" id="e4se6kn">
+  
+  
+  <label class="col-form-label  field-required">
+  What is your height?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[32WhatIsYourHeight]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-33WhatIsTheMostYouHaveEverWeighedInYourAdultLife  required" id="eud8vmu">
+  
+  
+  <label class="col-form-label  field-required">
+  What is the most you have ever weighed in your adult life?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[33WhatIsTheMostYouHaveEverWeighedInYourAdultLife]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-34WhatIsTheLeastYouHaveWeighedInYourAdultLife  required" id="e0vmkcb">
+  
+  
+  <label class="col-form-label  field-required">
+  What is the least you have weighed in your adult life?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[34WhatIsTheLeastYouHaveWeighedInYourAdultLife]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textfield formio-component-35WhatIsYourGoalWeight  required" id="ehs1pzh">
+  
+  
+  <label class="col-form-label  field-required">
+  What is your goal weight?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<input value="" spellcheck="true" lang="en" class="form-control" type="text" name="data[35WhatIsYourGoalWeight]" ref="input">
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-36DoYouHaveAnyOtherGoalsBesidesLosingWeight  required" id="e4g0kw">
+  
+  
+  <label class="col-form-label  field-required">
+  Do you have any other goals besides losing weight?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[36DoYouHaveAnyOtherGoalsBesidesLosingWeight]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-36DoYouHaveAnyOtherGoalsBesidesLosingWeight1  required" id="erm3wwf">
+  
+  
+  <label class="col-form-label  field-required">
+  Which diets have been effective for you in the past, and which diets were not effective? How much weight did you lose and how long did you keep it off?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[36DoYouHaveAnyOtherGoalsBesidesLosingWeight1]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-36DoYouHaveAnyOtherGoalsBesidesLosingWeight2  required" id="e38jiv">
+  
+  
+  <label class="col-form-label  field-required">
+  What do you feel are barriers to losing weight?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[36DoYouHaveAnyOtherGoalsBesidesLosingWeight2]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+  </div>
+  
+</div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-panel formio-component-page4" id="eihp3qa">
+  
+  <div class="mb-2 card border">
+  <div ref="header" class="card-header bg-default">
+    <span class="mb-0 card-title">
+      
+      Page 4
+      
+    </span>
+  </div>
+  
+  <div ref="nested-page4" class="card-body">
+    <div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-39HowDoYouFeelAboutCooking  required" id="e9c348q">
+  
+  
+  <label class="col-form-label  field-required">
+  How do you feel about cooking?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="e9c348q-iLoveToCook" class="form-check-label label-position-right">
+      
+      <input id="e9c348q-iLoveToCook" value="iLoveToCook" lang="en" class="form-check-input" type="radio" name="data[39HowDoYouFeelAboutCooking][e9c348q]" ref="input">
+      
+      <span>I love to cook!</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="e9c348q-iLikeCooking" class="form-check-label label-position-right">
+      
+      <input id="e9c348q-iLikeCooking" value="iLikeCooking" lang="en" class="form-check-input" type="radio" name="data[39HowDoYouFeelAboutCooking][e9c348q]" ref="input">
+      
+      <span>I like cooking</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="e9c348q-iDontLikeCookingButDontMindDoingItOccasionally" class="form-check-label label-position-right">
+      
+      <input id="e9c348q-iDontLikeCookingButDontMindDoingItOccasionally" value="iDontLikeCookingButDontMindDoingItOccasionally" lang="en" class="form-check-input" type="radio" name="data[39HowDoYouFeelAboutCooking][e9c348q]" ref="input">
+      
+      <span>I don't like cooking, but don't mind doing it occasionally</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="e9c348q-iHateCookingAndPleaseDontAskMeTo" class="form-check-label label-position-right">
+      
+      <input id="e9c348q-iHateCookingAndPleaseDontAskMeTo" value="iHateCookingAndPleaseDontAskMeTo" lang="en" class="form-check-input" type="radio" name="data[39HowDoYouFeelAboutCooking][e9c348q]" ref="input">
+      
+      <span>I hate cooking and please don't ask me to!</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="e9c348q-myPartnerDoesMostOfTheCooking" class="form-check-label label-position-right">
+      
+      <input id="e9c348q-myPartnerDoesMostOfTheCooking" value="myPartnerDoesMostOfTheCooking" lang="en" class="form-check-input" type="radio" name="data[39HowDoYouFeelAboutCooking][e9c348q]" ref="input">
+      
+      <span>My partner does most of the cooking</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-40HowManyTimesPerWeekDoYouOrYourPartnerGenerallyCook  required" id="enakrr">
+  
+  
+  <label class="col-form-label  field-required">
+  How many times per week do you (or your partner) generally cook?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="enakrr-notAtAll" class="form-check-label label-position-right">
+      
+      <input id="enakrr-notAtAll" value="notAtAll" lang="en" class="form-check-input" type="radio" name="data[40HowManyTimesPerWeekDoYouOrYourPartnerGenerallyCook][enakrr]" ref="input">
+      
+      <span>Not at all</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="enakrr-1" class="form-check-label label-position-right">
+      
+      <input id="enakrr-1" value="1" lang="en" class="form-check-input" type="radio" name="data[40HowManyTimesPerWeekDoYouOrYourPartnerGenerallyCook][enakrr]" ref="input">
+      
+      <span>1</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="enakrr-23" class="form-check-label label-position-right">
+      
+      <input id="enakrr-23" value="23" lang="en" class="form-check-input" type="radio" name="data[40HowManyTimesPerWeekDoYouOrYourPartnerGenerallyCook][enakrr]" ref="input">
+      
+      <span>2-3</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="enakrr-45" class="form-check-label label-position-right">
+      
+      <input id="enakrr-45" value="45" lang="en" class="form-check-input" type="radio" name="data[40HowManyTimesPerWeekDoYouOrYourPartnerGenerallyCook][enakrr]" ref="input">
+      
+      <span>4-5</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="enakrr-67" class="form-check-label label-position-right">
+      
+      <input id="enakrr-67" value="67" lang="en" class="form-check-input" type="radio" name="data[40HowManyTimesPerWeekDoYouOrYourPartnerGenerallyCook][enakrr]" ref="input">
+      
+      <span>6-7</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-41WhenCookingDoYouGenerallyThriveWhenFlExibleAndHavingManyRecipesToChooseFromOrWouldYouPreferAStructuredMealPlan  required" id="efgj901">
+  
+  
+  <label class="col-form-label  field-required">
+  When cooking, do you generally thrive when fl exible and having many recipes to choose from, or would you prefer a structured meal plan?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check">
+    <label for="efgj901-flexibleILikeToFindMyOwnRecipesAndPlanMySupermarketTripsAccordingly" class="form-check-label label-position-right">
+      
+      <input id="efgj901-flexibleILikeToFindMyOwnRecipesAndPlanMySupermarketTripsAccordingly" value="flexibleILikeToFindMyOwnRecipesAndPlanMySupermarketTripsAccordingly" lang="en" class="form-check-input" type="radio" name="data[41WhenCookingDoYouGenerallyThriveWhenFlExibleAndHavingManyRecipesToChooseFromOrWouldYouPreferAStructuredMealPlan][efgj901]" ref="input">
+      
+      <span>Flexible! I like to find my own recipes and plan my supermarket trips accordingly</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="efgj901-structurePleaseJustTellMeExactlyWhatToDoAndBuy" class="form-check-label label-position-right">
+      
+      <input id="efgj901-structurePleaseJustTellMeExactlyWhatToDoAndBuy" value="structurePleaseJustTellMeExactlyWhatToDoAndBuy" lang="en" class="form-check-input" type="radio" name="data[41WhenCookingDoYouGenerallyThriveWhenFlExibleAndHavingManyRecipesToChooseFromOrWouldYouPreferAStructuredMealPlan][efgj901]" ref="input">
+      
+      <span>Structure! Please just tell me exactly what to do and buy</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-42IfYouLiveWithAPartnerOrSpouseAndStartADietWouldYourPartnerAlsoDietWithYou  required" id="enkbudr">
+  
+  
+  <label class="col-form-label  field-required">
+  If you live with a partner or spouse and start a diet, would your partner also diet with you?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check">
+    <label for="enkbudr-yesWeWouldLikelyDietTogetherAndMostlyCookEatTheSameFoods" class="form-check-label label-position-right">
+      
+      <input id="enkbudr-yesWeWouldLikelyDietTogetherAndMostlyCookEatTheSameFoods" value="yesWeWouldLikelyDietTogetherAndMostlyCookEatTheSameFoods" lang="en" class="form-check-input" type="radio" name="data[42IfYouLiveWithAPartnerOrSpouseAndStartADietWouldYourPartnerAlsoDietWithYou][enkbudr]" ref="input">
+      
+      <span>Yes, we would likely diet together and mostly cook/eat the same foods</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="enkbudr-noMyPartnerIsntInterestedInDietingImOnMyOwnHere" class="form-check-label label-position-right">
+      
+      <input id="enkbudr-noMyPartnerIsntInterestedInDietingImOnMyOwnHere" value="noMyPartnerIsntInterestedInDietingImOnMyOwnHere" lang="en" class="form-check-input" type="radio" name="data[42IfYouLiveWithAPartnerOrSpouseAndStartADietWouldYourPartnerAlsoDietWithYou][enkbudr]" ref="input">
+      
+      <span>No, my partner isn't interested in dieting. I'm on my own here!</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="enkbudr-iDoNotLiveWithAPartner" class="form-check-label label-position-right">
+      
+      <input id="enkbudr-iDoNotLiveWithAPartner" value="iDoNotLiveWithAPartner" lang="en" class="form-check-input" type="radio" name="data[42IfYouLiveWithAPartnerOrSpouseAndStartADietWouldYourPartnerAlsoDietWithYou][enkbudr]" ref="input">
+      
+      <span>I do not live with a partner</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-43HowIsYourAppetiteFirstThingInTheMorning  required" id="eq20vwp">
+  
+  
+  <label class="col-form-label  field-required">
+  How is your appetite first thing in the morning?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="eq20vwp-imStarvingIfIDontEatBreakfastOrASnackIllFeelSluggish" class="form-check-label label-position-right">
+      
+      <input id="eq20vwp-imStarvingIfIDontEatBreakfastOrASnackIllFeelSluggish" value="imStarvingIfIDontEatBreakfastOrASnackIllFeelSluggish" lang="en" class="form-check-input" type="radio" name="data[43HowIsYourAppetiteFirstThingInTheMorning][eq20vwp]" ref="input">
+      
+      <span>I'm starving! If I don't eat breakfast or a snack I'll feel sluggish</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eq20vwp-somethingInTheMiddle" class="form-check-label label-position-right">
+      
+      <input id="eq20vwp-somethingInTheMiddle" value="somethingInTheMiddle" lang="en" class="form-check-input" type="radio" name="data[43HowIsYourAppetiteFirstThingInTheMorning][eq20vwp]" ref="input">
+      
+      <span>Something in the middle</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eq20vwp-prettyLowIllUsuallySkipBreakfastOrJustHaveACoffeeOrTeaAndFeelFiNeUntilLunch" class="form-check-label label-position-right">
+      
+      <input id="eq20vwp-prettyLowIllUsuallySkipBreakfastOrJustHaveACoffeeOrTeaAndFeelFiNeUntilLunch" value="prettyLowIllUsuallySkipBreakfastOrJustHaveACoffeeOrTeaAndFeelFiNeUntilLunch" lang="en" class="form-check-input" type="radio" name="data[43HowIsYourAppetiteFirstThingInTheMorning][eq20vwp]" ref="input">
+      
+      <span>Pretty low, I'll usually skip breakfast or just have a coffee or tea, and feel fi ne until lunch</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-44HowDoYouFeelAboutMeat  required" id="exwdw8h">
+  
+  
+  <label class="col-form-label  field-required">
+  How do you feel about meat?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="exwdw8h-iLoveMeat" class="form-check-label label-position-right">
+      
+      <input id="exwdw8h-iLoveMeat" value="iLoveMeat" lang="en" class="form-check-input" type="radio" name="data[44HowDoYouFeelAboutMeat][exwdw8h]" ref="input">
+      
+      <span>I love meat!</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="exwdw8h-iLikeMeatButWouldBeOkayEatingALittleLess" class="form-check-label label-position-right">
+      
+      <input id="exwdw8h-iLikeMeatButWouldBeOkayEatingALittleLess" value="iLikeMeatButWouldBeOkayEatingALittleLess" lang="en" class="form-check-input" type="radio" name="data[44HowDoYouFeelAboutMeat][exwdw8h]" ref="input">
+      
+      <span>I like meat, but would be okay eating a little less</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="exwdw8h-iDontLikeMeatAndAmAlreadyMostlyAVegetarianOrVegan" class="form-check-label label-position-right">
+      
+      <input id="exwdw8h-iDontLikeMeatAndAmAlreadyMostlyAVegetarianOrVegan" value="iDontLikeMeatAndAmAlreadyMostlyAVegetarianOrVegan" lang="en" class="form-check-input" type="radio" name="data[44HowDoYouFeelAboutMeat][exwdw8h]" ref="input">
+      
+      <span>I don't like meat, and am already mostly a vegetarian or vegan</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-45HowDoYouFeelAboutGrainsAndStarchyCarbsBreadPastaRicePotatoesEtc  required" id="etean2h">
+  
+  
+  <label class="col-form-label  field-required">
+  How do you feel about grains and starchy carbs (bread, pasta, rice, potatoes, etc)
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="etean2h-iLoveThem" class="form-check-label label-position-right">
+      
+      <input id="etean2h-iLoveThem" value="iLoveThem" lang="en" class="form-check-input" type="radio" name="data[45HowDoYouFeelAboutGrainsAndStarchyCarbsBreadPastaRicePotatoesEtc][etean2h]" ref="input">
+      
+      <span>I love them!</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="etean2h-iLikeThemButWouldBeOkayEatingALittleLess" class="form-check-label label-position-right">
+      
+      <input id="etean2h-iLikeThemButWouldBeOkayEatingALittleLess" value="iLikeThemButWouldBeOkayEatingALittleLess" lang="en" class="form-check-input" type="radio" name="data[45HowDoYouFeelAboutGrainsAndStarchyCarbsBreadPastaRicePotatoesEtc][etean2h]" ref="input">
+      
+      <span>I like them, but would be okay eating a little less</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="etean2h-iAlreadyEatLowCarb" class="form-check-label label-position-right">
+      
+      <input id="etean2h-iAlreadyEatLowCarb" value="iAlreadyEatLowCarb" lang="en" class="form-check-input" type="radio" name="data[45HowDoYouFeelAboutGrainsAndStarchyCarbsBreadPastaRicePotatoesEtc][etean2h]" ref="input">
+      
+      <span>I already eat low carb</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-45HowDoYouFeelAboutGrainsAndStarchyCarbsBreadPastaRicePotatoesEtc1  required" id="ez4n1q9">
+  
+  
+  <label class="col-form-label  field-required">
+  What is your relationship with sweets (chocolate, ice cream, candy, baked goods, etc.)?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="ez4n1q9-iLoveThem" class="form-check-label label-position-right">
+      
+      <input id="ez4n1q9-iLoveThem" value="iLoveThem" lang="en" class="form-check-input" type="radio" name="data[45HowDoYouFeelAboutGrainsAndStarchyCarbsBreadPastaRicePotatoesEtc1][ez4n1q9]" ref="input">
+      
+      <span>I love them!</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ez4n1q9-iLikeSweetsButWouldBeOkayEatingALittleLess" class="form-check-label label-position-right">
+      
+      <input id="ez4n1q9-iLikeSweetsButWouldBeOkayEatingALittleLess" value="iLikeSweetsButWouldBeOkayEatingALittleLess" lang="en" class="form-check-input" type="radio" name="data[45HowDoYouFeelAboutGrainsAndStarchyCarbsBreadPastaRicePotatoesEtc1][ez4n1q9]" ref="input">
+      
+      <span>I like sweets, but would be okay eating a little less</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ez4n1q9-iAlreadyDontEatALotOfSweets" class="form-check-label label-position-right">
+      
+      <input id="ez4n1q9-iAlreadyDontEatALotOfSweets" value="iAlreadyDontEatALotOfSweets" lang="en" class="form-check-input" type="radio" name="data[45HowDoYouFeelAboutGrainsAndStarchyCarbsBreadPastaRicePotatoesEtc1][ez4n1q9]" ref="input">
+      
+      <span>I already don't eat a lot of sweets</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-content formio-component-content6" id="e51ymp">
+  
+  <div ref="html" class=""><p>What are the most typical things you eat day-to-day?</p></div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-columns7  formio-component-label-hidden" id="ebyg6o">
+  
+  
+
+
+
+
+<div ref="column-ebyg6o" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-breakfast1  required" id="ew0zts8">
+  
+  
+  <label class="col-form-label  field-required">
+  Breakfast
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="3" spellcheck="true" lang="en" class="form-control" type="text" name="data[breakfast1]" ref="input"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-lunch1  required" id="ey82bnr">
+  
+  
+  <label class="col-form-label  field-required">
+  Lunch
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="3" spellcheck="true" lang="en" class="form-control" type="text" name="data[lunch1]" ref="input"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+<div ref="column-ebyg6o" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-dinner1  required" id="enrk1r9">
+  
+  
+  <label class="col-form-label  field-required">
+  Dinner
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="3" spellcheck="true" lang="en" class="form-control" type="text" name="data[dinner1]" ref="input"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-drinks  required" id="ewtc3v">
+  
+  
+  <label class="col-form-label  field-required">
+  Snacks
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="3" spellcheck="true" lang="en" class="form-control" type="text" name="data[drinks]" ref="input"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater  required" id="ecr25u">
+  
+  
+  <label class="col-form-label  field-required">
+  What drinks do you consume on a regular basis besides water?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater1  required" id="elplo2q">
+  
+  
+  <label class="col-form-label  field-required">
+  What are some of your favorite comfort foods that you feel like would be difficult to give up?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater1]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+  </div>
+  
+</div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-panel formio-component-page5" id="e7nl612">
+  
+  <div class="mb-2 card border">
+  <div ref="header" class="card-header bg-default">
+    <span class="mb-0 card-title">
+      
+      Page 5
+      
+    </span>
+  </div>
+  
+  <div ref="nested-page5" class="card-body">
+    <div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-50HowManyHoursOfSleepDoYouGetOnAverage  required" id="e7whym">
+  
+  
+  <label class="col-form-label  field-required">
+  How many hours of sleep do you get on average?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="e7whym-4OrLess" class="form-check-label label-position-right">
+      
+      <input id="e7whym-4OrLess" value="4OrLess" lang="en" class="form-check-input" type="radio" name="data[50HowManyHoursOfSleepDoYouGetOnAverage][e7whym]" ref="input">
+      
+      <span>4 or less</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="e7whym-56" class="form-check-label label-position-right">
+      
+      <input id="e7whym-56" value="56" lang="en" class="form-check-input" type="radio" name="data[50HowManyHoursOfSleepDoYouGetOnAverage][e7whym]" ref="input">
+      
+      <span>5 - 6</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="e7whym-67" class="form-check-label label-position-right">
+      
+      <input id="e7whym-67" value="67" lang="en" class="form-check-input" type="radio" name="data[50HowManyHoursOfSleepDoYouGetOnAverage][e7whym]" ref="input">
+      
+      <span>6 - 7</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="e7whym-78" class="form-check-label label-position-right">
+      
+      <input id="e7whym-78" value="78" lang="en" class="form-check-input" type="radio" name="data[50HowManyHoursOfSleepDoYouGetOnAverage][e7whym]" ref="input">
+      
+      <span>7 - 8</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="e7whym-8" class="form-check-label label-position-right">
+      
+      <input id="e7whym-8" value="8" lang="en" class="form-check-input" type="radio" name="data[50HowManyHoursOfSleepDoYouGetOnAverage][e7whym]" ref="input">
+      
+      <span>8 +</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-51HowDoYouFeelAboutExercise  required" id="eq0ypxr">
+  
+  
+  <label class="col-form-label  field-required">
+  How do you feel about exercise?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="eq0ypxr-iLoveToExercise" class="form-check-label label-position-right">
+      
+      <input id="eq0ypxr-iLoveToExercise" value="iLoveToExercise" lang="en" class="form-check-input" type="radio" name="data[51HowDoYouFeelAboutExercise][eq0ypxr]" ref="input">
+      
+      <span>I love to exercise</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="eq0ypxr-iLikeToExercise" class="form-check-label label-position-right">
+      
+      <input id="eq0ypxr-iLikeToExercise" value="iLikeToExercise" lang="en" class="form-check-input" type="radio" name="data[51HowDoYouFeelAboutExercise][eq0ypxr]" ref="input">
+      
+      <span>I like to exercise</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="eq0ypxr-iDontLikeToExercise" class="form-check-label label-position-right">
+      
+      <input id="eq0ypxr-iDontLikeToExercise" value="iDontLikeToExercise" lang="en" class="form-check-input" type="radio" name="data[51HowDoYouFeelAboutExercise][eq0ypxr]" ref="input">
+      
+      <span>I don't like to exercise</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="eq0ypxr-iHateExercise" class="form-check-label label-position-right">
+      
+      <input id="eq0ypxr-iHateExercise" value="iHateExercise" lang="en" class="form-check-input" type="radio" name="data[51HowDoYouFeelAboutExercise][eq0ypxr]" ref="input">
+      
+      <span>I hate exercise!</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-52HowManyMinutesPerWeekDoYouCurrentlyExercise  required" id="emyf7qv">
+  
+  
+  <label class="col-form-label  field-required">
+  How many minutes per week do you currently exercise?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="emyf7qv-30" class="form-check-label label-position-right">
+      
+      <input id="emyf7qv-30" value="30" lang="en" class="form-check-input" type="radio" name="data[52HowManyMinutesPerWeekDoYouCurrentlyExercise][emyf7qv]" ref="input">
+      
+      <span>&lt; 30</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="emyf7qv-3060" class="form-check-label label-position-right">
+      
+      <input id="emyf7qv-3060" value="3060" lang="en" class="form-check-input" type="radio" name="data[52HowManyMinutesPerWeekDoYouCurrentlyExercise][emyf7qv]" ref="input">
+      
+      <span>30 - 60</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="emyf7qv-6090" class="form-check-label label-position-right">
+      
+      <input id="emyf7qv-6090" value="6090" lang="en" class="form-check-input" type="radio" name="data[52HowManyMinutesPerWeekDoYouCurrentlyExercise][emyf7qv]" ref="input">
+      
+      <span>60 - 90</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="emyf7qv-90120" class="form-check-label label-position-right">
+      
+      <input id="emyf7qv-90120" value="90120" lang="en" class="form-check-input" type="radio" name="data[52HowManyMinutesPerWeekDoYouCurrentlyExercise][emyf7qv]" ref="input">
+      
+      <span>90 - 120</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="emyf7qv-150" class="form-check-label label-position-right">
+      
+      <input id="emyf7qv-150" value="150" lang="en" class="form-check-input" type="radio" name="data[52HowManyMinutesPerWeekDoYouCurrentlyExercise][emyf7qv]" ref="input">
+      
+      <span>&gt; 150</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater2  required" id="e5cf62">
+  
+  
+  <label class="col-form-label  field-required">
+  What do you currently do for exercise? What types of exercise do you love?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater2]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater3  required" id="eof33s">
+  
+  
+  <label class="col-form-label  field-required">
+  Anything you absolutely don't like doing for exercise due to lack of enjoyment, or physical constraints?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater3]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-55WhatAreYourThoughtsOnWeightLossMedications  required" id="eyw03ck">
+  
+  
+  <label class="col-form-label  field-required">
+  What are your thoughts on weight loss medications?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="eyw03ck-imInterestedToLearnMoreAndPotentiallyStartAMedicationRightAway" class="form-check-label label-position-right">
+      
+      <input id="eyw03ck-imInterestedToLearnMoreAndPotentiallyStartAMedicationRightAway" value="imInterestedToLearnMoreAndPotentiallyStartAMedicationRightAway" lang="en" class="form-check-input" type="radio" name="data[55WhatAreYourThoughtsOnWeightLossMedications][eyw03ck]" ref="input">
+      
+      <span>I'm interested to learn more, and potentially start a medication right away</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eyw03ck-imInterestedToLearnMoreButWouldLikeToTryLifestyleChangesAloneFirst" class="form-check-label label-position-right">
+      
+      <input id="eyw03ck-imInterestedToLearnMoreButWouldLikeToTryLifestyleChangesAloneFirst" value="imInterestedToLearnMoreButWouldLikeToTryLifestyleChangesAloneFirst" lang="en" class="form-check-input" type="radio" name="data[55WhatAreYourThoughtsOnWeightLossMedications][eyw03ck]" ref="input">
+      
+      <span>I'm interested to learn more, but would like to try lifestyle changes alone first</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eyw03ck-imNotInterestedInAMedicationAtThisTime" class="form-check-label label-position-right">
+      
+      <input id="eyw03ck-imNotInterestedInAMedicationAtThisTime" value="imNotInterestedInAMedicationAtThisTime" lang="en" class="form-check-input" type="radio" name="data[55WhatAreYourThoughtsOnWeightLossMedications][eyw03ck]" ref="input">
+      
+      <span>I'm not interested in a medication at this time</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="eyw03ck-iDontThinkIWouldEverBeInterestedInWeightLossMedications" class="form-check-label label-position-right">
+      
+      <input id="eyw03ck-iDontThinkIWouldEverBeInterestedInWeightLossMedications" value="iDontThinkIWouldEverBeInterestedInWeightLossMedications" lang="en" class="form-check-input" type="radio" name="data[55WhatAreYourThoughtsOnWeightLossMedications][eyw03ck]" ref="input">
+      
+      <span>I don't think I would ever be interested in weight loss medications</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater4" id="eji5bn">
+  
+  
+  <label class="col-form-label">
+  If you've already tried a weight loss medication in the past, please let us know which one(s) you tried. When did you take them, and how much weight did you lose? Were there any side effects?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater4]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-ifYouAreInterestedInMedicationsIsThereAParticularMedicationYouWouldLikeToLearnMoreAbout" id="emnvrum">
+  
+  
+  <label class="col-form-label">
+  If you are interested in medications, is there a particular medication you would like to learn more about?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="3" spellcheck="true" lang="en" class="form-control" type="text" name="data[ifYouAreInterestedInMedicationsIsThereAParticularMedicationYouWouldLikeToLearnMoreAbout]" ref="input" style="resize: none; overflow-y: hidden; height: 86px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-57WhatAreYourThoughtsOnBariatricWeightLossProcedures  required" id="ek44dz">
+  
+  
+  <label class="col-form-label  field-required">
+  What are your thoughts on bariatric / weight loss surgery?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ek44dz-iveAlreadyHadABariatricProcedure" class="form-check-label label-position-right">
+      
+      <input id="ek44dz-iveAlreadyHadABariatricProcedure" value="iveAlreadyHadABariatricProcedure" lang="en" class="form-check-input" type="radio" name="data[57WhatAreYourThoughtsOnBariatricWeightLossProcedures][ek44dz]" ref="input">
+      
+      <span>I've already had a bariatric procedure</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="ek44dz-iHaveActivelyConsideredAProcedureInThePastButDidntComeAroundToPullTheTriggerYet" class="form-check-label label-position-right">
+      
+      <input id="ek44dz-iHaveActivelyConsideredAProcedureInThePastButDidntComeAroundToPullTheTriggerYet" value="iHaveActivelyConsideredAProcedureInThePastButDidntComeAroundToPullTheTriggerYet" lang="en" class="form-check-input" type="radio" name="data[57WhatAreYourThoughtsOnBariatricWeightLossProcedures][ek44dz]" ref="input">
+      
+      <span>I have actively considered a procedure in the past, but didn't come around to pull the trigger yet</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ek44dz-iveThoughtAboutItInThePastButJustCasually" class="form-check-label label-position-right">
+      
+      <input id="ek44dz-iveThoughtAboutItInThePastButJustCasually" value="iveThoughtAboutItInThePastButJustCasually" lang="en" class="form-check-input" type="radio" name="data[57WhatAreYourThoughtsOnBariatricWeightLossProcedures][ek44dz]" ref="input">
+      
+      <span>I've thought about it in the past, but just casually</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check">
+    <label for="ek44dz-iveNeverThoughtAboutIt" class="form-check-label label-position-right">
+      
+      <input id="ek44dz-iveNeverThoughtAboutIt" value="iveNeverThoughtAboutIt" lang="en" class="form-check-input" type="radio" name="data[57WhatAreYourThoughtsOnBariatricWeightLossProcedures][ek44dz]" ref="input">
+      
+      <span>I've never thought about it</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-textarea formio-component-48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater5" id="er6y56">
+  
+  
+  <label class="col-form-label">
+  Anything else we should know about you, or thoughts, prior to starting a weight loss program that isn't included above?
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+  
+<textarea rows="2" spellcheck="true" lang="en" class="form-control" type="text" name="data[48WhatDrinksDoYouConsumeOnARegularBasisBesidesWater5]" ref="input" style="resize: none; overflow-y: hidden; height: 62px;"></textarea>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-59DoWeHaveYourPermissionToPullYourPriorLabResultsFromLabCorpOrQuestIfAvailable  required" id="exwmtzp">
+  
+  
+  <label class="col-form-label  field-required">
+  Do we have your permission to pull your prior lab results from LabCorp or Quest, if available?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="exwmtzp-yes" class="form-check-label label-position-right">
+      
+      <input id="exwmtzp-yes" value="yes" lang="en" class="form-check-input" type="radio" name="data[59DoWeHaveYourPermissionToPullYourPriorLabResultsFromLabCorpOrQuestIfAvailable][exwmtzp]" ref="input">
+      
+      <span>Yes</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="exwmtzp-no" class="form-check-label label-position-right">
+      
+      <input id="exwmtzp-no" value="no" lang="en" class="form-check-input" type="radio" name="data[59DoWeHaveYourPermissionToPullYourPriorLabResultsFromLabCorpOrQuestIfAvailable][exwmtzp]" ref="input">
+      
+      <span>No</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-content formio-component-content7" id="e0p61n">
+  
+  <div ref="html" class=""><p>If you have a digital copy of your most recent routine bloodwork results, please upload those here. If you need to upload more than 1 document, please email the attachments to info@revolutionmed.com</p></div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="row formio-component formio-component-columns formio-component-medicalCard4  formio-component-label-hidden" id="enf82g">
+  
+  
+
+
+
+
+<div ref="column-enf82g" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  <div ref="component" class="form-group has-feedback formio-component formio-component-file formio-component-primary_card_front2" id="e86mr5c">
+  
+  
+  <label class="col-form-label">
+  Files submitted
+  
+</label>
+
+
+
+
+
+
+  <div>
+    
+  </div>
+
+
+  
+    <div ref="fileDrop" class="fileSelector">
+      <i class="fa fa-cloud-upload"></i> Drop files to attach,
+        
+          <a ref="toggleCameraMode" href="#"><i class="fa fa-camera"></i> Use Camera,</a>
+        
+        or <a class="browse" ref="fileBrowse" href="#">browse</a>
+    </div>
+  
+
+
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+
+</div>
+
+<div ref="column-enf82g" class="col-md-6
+    col-md-offset-0
+    col-md-push-0
+    col-md-pull-0">
+  
+
+</div>
+
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-59DoWeHaveYourPermissionToPullYourPriorLabResultsFromLabCorpOrQuestIfAvailable1  required" id="epiw17">
+  
+  
+  <label class="col-form-label  field-required">
+  Do we have your permission to check your insurance to see which weight loss medications may be covered for you?
+  
+</label>
+
+
+
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check-inline radio-selected">
+    <label for="epiw17-yes" class="form-check-label label-position-right">
+      
+      <input id="epiw17-yes" value="yes" lang="en" class="form-check-input" type="radio" name="data[59DoWeHaveYourPermissionToPullYourPriorLabResultsFromLabCorpOrQuestIfAvailable1][epiw17]" ref="input">
+      
+      <span>Yes</span>
+      
+    </label>
+  </div>
+  
+  <div ref="wrapper" class="form-check-inline">
+    <label for="epiw17-no" class="form-check-label label-position-right">
+      
+      <input id="epiw17-no" value="no" lang="en" class="form-check-input" type="radio" name="data[59DoWeHaveYourPermissionToPullYourPriorLabResultsFromLabCorpOrQuestIfAvailable1][epiw17]" ref="input">
+      
+      <span>No</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-content formio-component-content8" id="ehgjm3i">
+  
+  <div ref="html" class=""><p>Our patient consent forms are listed below for your records. These forms will also be available in the Athena patient portal.</p><p><strong>**Please right-click the links to open them in a new tab, to not lose your place in the form**</strong></p></div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="formio-component formio-component-content formio-component-content9" id="eb5b3r">
+  
+  <div ref="html" class=""><p><a href="https://drive.google.com/file/d/1bHAlBghsXFwfXnSNvywVLLLVwUCrZaSM/view?usp=drive_link"><strong>Patient consent form</strong></a><br><a href="https://drive.google.com/file/d/1l4N_SLYoX7x8u9Qdgq0t7Dp_BYBNhGnt/view?usp=sharing"><strong>Membership terms of service</strong></a><br><a href="https://drive.google.com/file/d/1UFWPpa2I59C_AQ4vGhbbKaPmdi5esiOC/view?usp=sharing"><strong>HIPAA privacy notice</strong></a><br><a href="https://drive.google.com/file/d/1DwYVryeA-_qZhP3rwmW7A1_BX7jcpf_u/view?usp=sharing"><strong>Notice of privacy practices</strong></a><br><a href="https://drive.google.com/file/d/1BMmKKOoiwk-3quG4W_Y1kpgXvwDP9nFy/view?usp=sharing"><strong>Group visit consent form</strong></a><br><a href="https://drive.google.com/file/d/1aX6LZ-FY4W5o9jQ5GaDCqm8tge7UjR9x/view?usp=drive_link"><strong>No show / late cancellation fee</strong></a><br><a href="https://drive.google.com/file/d/1lPntENLGRWLSUJNW-vjl3khTVjmBNUL2/view?usp=drive_link"><strong>Fitness Coaching Liability Waiver</strong></a></p></div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-radio formio-component-radio1  required formio-component-label-hidden" id="eypdxmi">
+  
+  
+
+
+  <label class="field-required control-label--hidden"></label>
+
+
+<div class="form-radio radio">
+  
+  <div ref="wrapper" class="form-check radio-selected">
+    <label for="eypdxmi-iHaveReviewedTheFormsAndDocumentsAndConsent" class="form-check-label label-position-right">
+      
+      <input id="eypdxmi-iHaveReviewedTheFormsAndDocumentsAndConsent" value="iHaveReviewedTheFormsAndDocumentsAndConsent" lang="en" class="form-check-input" type="radio" name="data[radio1][eypdxmi]" ref="input">
+      
+      <span>I have reviewed the forms and documents, and consent</span>
+      
+    </label>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+<div ref="component" class="form-group has-feedback formio-component formio-component-signature formio-component-signature  signature-pad" id="eqtvux8">
+  
+  
+  <label class="col-form-label">
+  Signature
+  
+</label>
+
+
+
+
+
+<div ref="element">
+          
+
+
+
+
+
+
+
+
+<div ref="padBody" tabindex="0" style="width: 100%; height: 150px; padding: 0px; margin: 0px; max-width: 100%;" class="signature-pad-body">
+  <a ref="refresh" class="btn btn-sm btn-light signature-pad-refresh">
+    <i class="fa fa-refresh"></i>
+  </a>
+  <canvas ref="canvas" height="150" class="signature-pad-canvas" style="touch-action: none; display: inherit;" width="758"></canvas>
+  
+</div>
+
+  <div class="signature-pad-footer">
+    Sign above
+  </div>
+
+
+        </div>
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+
+  </div>
+  
+</div>
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+
+</div>
+
+
+
+
+
+  <div class="formio-errors invalid-feedback" ref="messageContainer"></div>
+  
+</div>
+</div>
