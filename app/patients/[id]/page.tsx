@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { mockPatients, Patient, Allergy, Problem, Medication, Surgery, ClinicalNote, WeightEntry, Exercise, Insurance, SubstanceHistory } from '@/app/lib/mockPatientData';
 import { useParams } from 'next/navigation';
+import InsuranceSearch from '@/app/components/InsuranceSearch';
+import { InsurancePlan } from '@/app/lib/insuranceData';
 
 const formatPhoneNumber = (value: string) => {
   // Remove all non-digit characters
@@ -144,6 +146,29 @@ export default function PatientChart() {
     dateIdentified: new Date().toISOString().split('T')[0]
   });
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
+  const [insuranceFlow, setInsuranceFlow] = useState('initial'); // 'initial' | 'upload' | 'search'
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [uploadStep, setUploadStep] = useState<'initial' | 'upload' | 'uploading' | 'complete'>('initial');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedPlanType, setSelectedPlanType] = useState<'standard' | 'case'>('standard');
+  const [selectedPlan, setSelectedPlan] = useState<InsurancePlan | null>(null);
+  const [memberId, setMemberId] = useState('');
+  const [policyDetails, setPolicyDetails] = useState({
+    memberId: '',
+    groupNumber: '',
+    effectiveDate: '',
+    expirationDate: '',
+    copay: '',
+    deductible: '',
+    preAuthNotes: '',
+    subscriberName: '',
+    subscriberRelation: '',
+    subscriberDOB: '',
+    isEligibilityChecking: false,
+    isEligibilityChecked: false
+  });
+  const searchRef = useRef<{ handleSearch: () => void }>(null);
 
   const commonSurgeries = [
     { name: 'Appendectomy', category: 'General' },
@@ -546,6 +571,57 @@ export default function PatientChart() {
     console.log('Demographics saved:', patient.demographics);
     setShowSaveSuccess(true);
     setTimeout(() => setShowSaveSuccess(false), 3000); // Hide after 3 seconds
+  };
+
+  const handleAddNew = () => {
+    setShowUploadDialog(true);
+  };
+
+  const handleSkipUpload = () => {
+    setInsuranceFlow('search');
+    setShowUploadDialog(false);
+  };
+
+  const handleUploadImage = () => {
+    setUploadStep('upload');
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+      setUploadStep('uploading');
+      // Simulate upload progress
+      setTimeout(() => {
+        setUploadStep('complete');
+      }, 1500);
+    }
+  };
+
+  const handleUploadComplete = () => {
+    setShowUploadDialog(false);
+    setInsuranceFlow('search');
+    setUploadStep('initial');
+    setSelectedFile(null);
+  };
+
+  const handlePlanSelect = (plan: InsurancePlan) => {
+    setSelectedPlan(plan);
+    setPolicyDetails(prev => ({
+      ...prev,
+      memberId: memberId // Auto-populate with the entered Member ID
+    }));
+  };
+
+  const handleEligibilityCheck = () => {
+    setPolicyDetails(prev => ({ ...prev, isEligibilityChecking: true }));
+    // Simulate eligibility check
+    setTimeout(() => {
+      setPolicyDetails(prev => ({
+        ...prev,
+        isEligibilityChecking: false,
+        isEligibilityChecked: true
+      }));
+    }, 1500);
   };
 
   const renderFormContent = () => {
@@ -1131,1261 +1207,405 @@ export default function PatientChart() {
         );
 
       case 'Insurance':
-        const insuranceProviders = [
-          'Aetna',
-          'Anthem Blue Cross',
-          'Blue Cross Blue Shield',
-          'Cigna',
-          'UnitedHealthcare',
-          'Humana',
-          'Kaiser Permanente',
-          'Medicare',
-          'Medicaid',
-          'Oxford',
-          'Molina Healthcare',
-          'Centene',
-          'Health Net',
-          'WellCare',
-          'Ambetter',
-          'TRICARE',
-          'Veterans Affairs (VA)'
-        ];
-
         return (
-          <div className="space-y-6">
-            {showSuccessMessage && (
-              <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md">
-                Insurance information updated successfully
-              </div>
-            )}
-
-            {/* Current Insurance Display */}
-            <div className="space-y-6">
-              {/* Primary Insurance */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Primary Insurance</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Provider</label>
-                    <div className="text-gray-900">{patient.insurance.primary?.provider}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Member ID</label>
-                    <div className="text-gray-900">{patient.insurance.primary?.memberId}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Group Number</label>
-                    <div className="text-gray-900">{patient.insurance.primary?.groupNumber}</div>
-                  </div>
-                  {patient.insurance.primary?.preAuthNotes && (
-                    <div className="col-span-2">
-                      <label className="block text-sm font-medium text-gray-900">Pre-Authorization Notes</label>
-                      <div className="text-gray-900">{patient.insurance.primary?.preAuthNotes}</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Secondary Insurance */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Secondary Insurance</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Provider</label>
-                    <div className="text-gray-900">{patient.insurance.secondary?.provider || 'None'}</div>
-                  </div>
-                  {patient.insurance.secondary?.provider && (
+          <>
+            {showUploadDialog && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-8 rounded-lg shadow-xl max-w-lg w-full mx-4">
+                  {uploadStep === 'initial' && (
                     <>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-900">Member ID</label>
-                        <div className="text-gray-900">{patient.insurance.secondary.memberId}</div>
+                      <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xl font-semibold text-gray-900">Add insurance by uploading card image?</h3>
+                        <button 
+                          onClick={() => setShowUploadDialog(false)}
+                          className="text-gray-400 hover:text-gray-500"
+                        >
+                          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-900">Group Number</label>
-                        <div className="text-gray-900">{patient.insurance.secondary.groupNumber}</div>
-                      </div>
-                      {patient.insurance.secondary.preAuthNotes && (
-                        <div className="col-span-2">
-                          <label className="block text-sm font-medium text-gray-900">Pre-Authorization Notes</label>
-                          <div className="text-gray-900">{patient.insurance.secondary.preAuthNotes}</div>
+                      
+                      <p className="text-base text-gray-600 mb-8">
+                        The system will use the image to automatically look for the policy. Any image will be saved when you finish adding the insurance details.
+                      </p>
+
+                      <div className="space-y-6">
+                        <div className="border-2 border-gray-200 border-dashed rounded-lg p-8 flex flex-col items-center justify-center bg-gray-50">
+                          <div className="w-40 h-24 bg-white rounded-lg shadow-sm mb-6 flex items-center justify-center">
+                            <svg className="w-16 h-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                          </div>
+                          <div className="w-full h-16 bg-white rounded-lg shadow-sm flex items-center justify-center">
+                            <svg className="w-8 h-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
                         </div>
-                      )}
+
+                        <div className="flex justify-end space-x-4">
+                          <button
+                            onClick={handleSkipUpload}
+                            className="px-6 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900"
+                          >
+                            No, Skip This Step
+                          </button>
+                          <button
+                            onClick={handleUploadImage}
+                            className="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          >
+                            Yes, Upload Image
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {uploadStep === 'upload' && (
+                    <>
+                      <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xl font-semibold text-gray-900">Upload Insurance Card Image</h3>
+                        <button 
+                          onClick={() => setShowUploadDialog(false)}
+                          className="text-gray-400 hover:text-gray-500"
+                        >
+                          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+
+                      <div className="space-y-6">
+                        <div 
+                          className="border-2 border-gray-200 border-dashed rounded-lg p-12 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 bg-gray-50 transition-colors"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                          <p className="text-base text-gray-600 mb-1">Click to upload or drag and drop</p>
+                          <p className="text-sm text-gray-500">PNG, JPG up to 10MB</p>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={handleFileSelect}
+                          />
+                        </div>
+
+                        <div className="flex justify-end">
+                          <button
+                            onClick={handleSkipUpload}
+                            className="px-6 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900"
+                          >
+                            Skip
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {uploadStep === 'uploading' && (
+                    <>
+                      <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xl font-semibold text-gray-900">Uploading Image</h3>
+                      </div>
+                      <div className="space-y-6 py-4">
+                        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="h-full bg-blue-600 rounded-full transition-all duration-500 ease-out animate-progress" style={{ width: '60%' }}></div>
+                        </div>
+                        <p className="text-base text-gray-600 text-center">Uploading {selectedFile?.name}...</p>
+                      </div>
+                    </>
+                  )}
+
+                  {uploadStep === 'complete' && (
+                    <>
+                      <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xl font-semibold text-gray-900">Upload Complete</h3>
+                      </div>
+                      <div className="space-y-6 py-4">
+                        <div className="flex items-center justify-center">
+                          <div className="rounded-full bg-green-100 p-3">
+                            <svg className="w-16 h-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        </div>
+                        <p className="text-center text-lg text-gray-900 font-medium">Image uploaded successfully!</p>
+                        <div className="flex justify-center pt-2">
+                          <button
+                            onClick={handleUploadComplete}
+                            className="px-8 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          >
+                            Continue
+                          </button>
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Update Insurance Form */}
-            <div className="bg-white p-6 rounded-lg shadow text-gray-900">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Update Insurance Information</h3>
-              
-              <div className="mb-6">
-                <div className="flex space-x-4">
-                  <button
-                    type="button"
-                    onClick={() => setInsuranceType('primary')}
-                    className={`px-4 py-2 rounded-md ${
-                      insuranceType === 'primary'
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    Primary Insurance
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setInsuranceType('secondary')}
-                    className={`px-4 py-2 rounded-md ${
-                      insuranceType === 'secondary'
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    Secondary Insurance
-                  </button>
-                </div>
-              </div>
-
-              <form onSubmit={handleInsuranceSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">Insurance Provider</label>
-                    <select
-                      value={newInsurance.provider}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, provider: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      required
-                    >
-                      <option value="">Select provider</option>
-                      {insuranceProviders.map((provider) => (
-                        <option key={provider} value={provider}>
-                          {provider}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Member ID</label>
-                    <input
-                      type="text"
-                      value={newInsurance.memberId}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, memberId: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Enter member ID"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Group Number</label>
-                    <input
-                      type="text"
-                      value={newInsurance.groupNumber}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, groupNumber: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Enter group number"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Plan Type</label>
-                    <select
-                      value={newInsurance.planType}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, planType: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      required
-                    >
-                      <option value="">Select plan type</option>
-                      <option value="HMO">HMO</option>
-                      <option value="PPO">PPO</option>
-                      <option value="EPO">EPO</option>
-                      <option value="POS">POS</option>
-                      <option value="HDHP">HDHP</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Effective Date</label>
-                    <input
-                      type="date"
-                      value={newInsurance.effectiveDate}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, effectiveDate: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Expiration Date</label>
-                    <input
-                      type="date"
-                      value={newInsurance.expirationDate}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, expirationDate: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Copay</label>
-                    <div className="mt-1 relative rounded-md shadow-sm">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500 sm:text-sm">$</span>
-                      </div>
-                      <input
-                        type="text"
-                        value={newInsurance.copay}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, copay: e.target.value })}
-                        className="pl-7 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="0.00"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Deductible</label>
-                    <div className="mt-1 relative rounded-md shadow-sm">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500 sm:text-sm">$</span>
-                      </div>
-                      <input
-                        type="text"
-                        value={newInsurance.deductible}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, deductible: e.target.value })}
-                        className="pl-7 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="0.00"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">Subscriber Information</label>
-                    <div className="grid grid-cols-3 gap-4 mt-1">
-                      <input
-                        type="text"
-                        value={newInsurance.subscriberName}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, subscriberName: e.target.value })}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="Subscriber Name"
-                      />
-                      <select
-                        value={newInsurance.subscriberRelation}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, subscriberRelation: e.target.value })}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      >
-                        <option value="">Relation to Patient</option>
-                        <option value="self">Self</option>
-                        <option value="spouse">Spouse</option>
-                        <option value="parent">Parent</option>
-                        <option value="other">Other</option>
-                      </select>
-                      <input
-                        type="date"
-                        value={newInsurance.subscriberDOB}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, subscriberDOB: e.target.value })}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="Subscriber DOB"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">Pre-Authorization Notes</label>
-                    <textarea
-                      value={newInsurance.preAuthNotes}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, preAuthNotes: e.target.value })}
-                      rows={3}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Enter any pre-authorization notes or requirements"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setNewInsurance({
-                      provider: '',
-                      memberId: '',
-                      groupNumber: '',
-                      planType: '',
-                      effectiveDate: '',
-                      expirationDate: '',
-                      copay: '',
-                      deductible: '',
-                      preAuthNotes: '',
-                      subscriberName: '',
-                      subscriberRelation: '',
-                      subscriberDOB: ''
-                    })}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Clear Form
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Update {insuranceType === 'primary' ? 'Primary' : 'Secondary'} Insurance
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        );
-
-      case 'Clinical Notes':
-        return (
-          <div className="space-y-6 text-gray-900">
-            {/* Add New Note Form */}
-            <div className="bg-white text-gray-900 p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Clinical Note</h3>
-              <form onSubmit={handleAddNote} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Date
-                  </label>
-                  <input
-                    type="date"
-                    value={newNote.date}
-                    onChange={(e) => setNewNote({ ...newNote, date: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Clinical Note
-                  </label>
-                  <textarea
-                    value={newNote.note}
-                    onChange={(e) => setNewNote({ ...newNote, note: e.target.value })}
-                    rows={6}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Enter clinical note..."
-                    required
-                  />
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Add Note
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Existing Notes */}
-            <div className="space-y-4">
-              {patient.clinicalNotes.map((note, index) => (
-                <div key={index} className="p-4 bg-gray-50 rounded-md">
-                  <div className="font-medium text-gray-900">
-                    {new Date(note.date).toLocaleDateString()}
-                  </div>
-                  <div className="mt-2 text-gray-900 whitespace-pre-wrap">
-                    {note.note}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'Substance History':
-        return (
-          <form onSubmit={handleUpdateSubstanceHistory} className="max-w-3xl space-y-6">
-            <div className="bg-white p-6 rounded-md border border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Alcohol Use</h3>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="alcoholCurrent"
-                    name="alcoholCurrent"
-                    defaultChecked={patient?.substanceHistory.alcohol.current}
-                    className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="alcoholCurrent" className="ml-2 text-sm text-gray-700">
-                    Current alcohol use
-                  </label>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Frequency</label>
-                    <select
-                      name="alcoholFrequency"
-                      defaultValue={patient?.substanceHistory.alcohol.frequency}
-                      className="mt-1 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                    >
-                      <option value="">Select frequency</option>
-                      <option value="daily">Daily</option>
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                      <option value="occasionally">Occasionally</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Type</label>
-                    <input
-                      type="text"
-                      name="alcoholType"
-                      defaultValue={patient?.substanceHistory.alcohol.type}
-                      className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      placeholder="e.g., Beer, Wine, Spirits"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Amount</label>
-                    <input
-                      type="text"
-                      name="alcoholAmount"
-                      defaultValue={patient?.substanceHistory.alcohol.amount}
-                      className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      placeholder="e.g., 2-3 drinks per occasion"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Years of Use</label>
-                    <input
-                      type="text"
-                      name="alcoholYearsOfUse"
-                      defaultValue={patient?.substanceHistory.alcohol.yearsOfUse}
-                      className="mt-1 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Last Use</label>
-                  <input
-                    type="date"
-                    name="alcoholLastUse"
-                    defaultValue={patient?.substanceHistory.alcohol.lastUse}
-                    className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-md border border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Tobacco Use</h3>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="tobaccoCurrent"
-                    name="tobaccoCurrent"
-                    defaultChecked={patient?.substanceHistory.tobacco.current}
-                    className="h-4 w-4 text-gray-900 focus:ring-gray-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="tobaccoCurrent" className="ml-2 text-sm text-gray-700">
-                    Current tobacco use
-                  </label>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Type</label>
-                  <input
-                    type="text"
-                    name="tobaccoType"
-                    defaultValue={patient?.substanceHistory.tobacco.type}
-                    className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                    placeholder="e.g., Cigarettes, Vaping, etc."
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-md border border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Caffeine Intake</h3>
+            {insuranceFlow === 'search' ? (
               <div className="space-y-6">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Coffee</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm text-gray-700">Cups per day</label>
-                      <input
-                        type="text"
-                        name="coffeeCupsPerDay"
-                        defaultValue={patient?.substanceHistory.caffeine.coffee.cupsPerDay}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      />
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                  {selectedPlan ? (
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-medium text-gray-900">Policy Details</h3>
+                        <button
+                          onClick={() => setSelectedPlan(null)}
+                          className="text-sm text-blue-600 hover:text-blue-800"
+                        >
+                          Change Plan
+                        </button>
+                      </div>
+
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <h4 className="font-medium text-gray-900">{selectedPlan.name}</h4>
+                        {selectedPlan.address && (
+                          <p className="text-sm text-gray-600 mt-1">{selectedPlan.address}</p>
+                        )}
+                      </div>
+
+                      <form className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Member ID <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={policyDetails.memberId}
+                            onChange={(e) => setPolicyDetails(prev => ({ ...prev, memberId: e.target.value }))}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                              Group Number
+                            </label>
+                            <input
+                              type="text"
+                              value={policyDetails.groupNumber}
+                              onChange={(e) => setPolicyDetails(prev => ({ ...prev, groupNumber: e.target.value }))}
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                              Effective Date
+                            </label>
+                            <input
+                              type="date"
+                              value={policyDetails.effectiveDate}
+                              onChange={(e) => setPolicyDetails(prev => ({ ...prev, effectiveDate: e.target.value }))}
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                              Subscriber Name
+                            </label>
+                            <input
+                              type="text"
+                              value={policyDetails.subscriberName}
+                              onChange={(e) => setPolicyDetails(prev => ({ ...prev, subscriberName: e.target.value }))}
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                              Subscriber Relation
+                            </label>
+                            <select
+                              value={policyDetails.subscriberRelation}
+                              onChange={(e) => setPolicyDetails(prev => ({ ...prev, subscriberRelation: e.target.value }))}
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            >
+                              <option value="">Select relation</option>
+                              <option value="self">Self</option>
+                              <option value="spouse">Spouse</option>
+                              <option value="child">Child</option>
+                              <option value="other">Other</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Pre-Authorization Notes
+                          </label>
+                          <textarea
+                            value={policyDetails.preAuthNotes}
+                            onChange={(e) => setPolicyDetails(prev => ({ ...prev, preAuthNotes: e.target.value }))}
+                            rows={3}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+
+                        <div className="pt-4">
+                          <button
+                            type="button"
+                            onClick={handleEligibilityCheck}
+                            disabled={!policyDetails.memberId || policyDetails.isEligibilityChecking}
+                            className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                          >
+                            {policyDetails.isEligibilityChecking ? (
+                              <>
+                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Checking Eligibility...
+                              </>
+                            ) : policyDetails.isEligibilityChecked ? (
+                              <>
+                                <svg className="w-5 h-5 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Eligibility Confirmed
+                              </>
+                            ) : (
+                              'Add and Check Eligibility'
+                            )}
+                          </button>
+                        </div>
+                      </form>
                     </div>
-                    <div>
-                      <label className="block text-sm text-gray-700">Type</label>
-                      <select
-                        name="coffeeType"
-                        defaultValue={patient?.substanceHistory.caffeine.coffee.type}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      >
-                        <option value="">Select type</option>
-                        <option value="regular">Regular</option>
-                        <option value="decaf">Decaf</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
+                  ) : (
+                    <>
+                      <div className="mb-6">
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-medium text-gray-700">Search:</span>
+                          <button 
+                            onClick={() => setSelectedPlanType('standard')}
+                            className={`text-sm ${
+                              selectedPlanType === 'standard' 
+                                ? 'text-blue-700 font-semibold' 
+                                : 'text-blue-600 hover:text-blue-800'
+                            } font-medium`}
+                          >
+                            Standard policies
+                          </button>
+                          <span className="text-gray-300">|</span>
+                          <button 
+                            onClick={() => setSelectedPlanType('case')}
+                            className={`text-sm ${
+                              selectedPlanType === 'case' 
+                                ? 'text-blue-700 font-semibold' 
+                                : 'text-blue-600 hover:text-blue-800'
+                            } font-medium`}
+                          >
+                            Case policies
+                          </button>
+                        </div>
+                      </div>
 
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Soda</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm text-gray-700">Ounces per day</label>
-                      <input
-                        type="text"
-                        name="sodaOuncesPerDay"
-                        defaultValue={patient?.substanceHistory.caffeine.soda.ouncesPerDay}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-700">Type</label>
-                      <select
-                        name="sodaType"
-                        defaultValue={patient?.substanceHistory.caffeine.soda.type}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      >
-                        <option value="">Select type</option>
-                        <option value="regular">Regular</option>
-                        <option value="diet">Diet</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
+                      <div className="grid grid-cols-[2fr,1fr] gap-4 mb-6">
+                        <div>
+                          <InsuranceSearch
+                            ref={searchRef}
+                            onSelect={handlePlanSelect}
+                            selectedPlanType={selectedPlanType}
+                          />
+                          <div className="mt-2 flex items-center">
+                            <span className="text-sm text-gray-600 font-medium">General Tip:</span>
+                            <span className="text-sm text-gray-600 ml-1">Add more names for better search results</span>
+                            <button className="ml-1 text-blue-600 hover:text-blue-800">
+                              <span className="text-sm">ⓘ</span>
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <input
+                            type="text"
+                            value={memberId}
+                            onChange={(e) => setMemberId(e.target.value)}
+                            placeholder="Member ID"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-md text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          />
+                        </div>
+                      </div>
 
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Energy Drinks</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-gray-900 text-sm text-gray-700">Frequency</label>
-                      <select
-                        name="energyDrinksFrequency"
-                        defaultValue={patient?.substanceHistory.caffeine.energyDrinks.frequency}
-                        className="mt-1 text-gray-900 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      >
-                        <option value="">Select frequency</option>
-                        <option value="never">Never</option>
-                        <option value="occasionally">Occasionally</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="daily">Daily</option>
-                        <option value="multiple_daily">Multiple times per day</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-gray-900 text-sm text-gray-700">Type</label>
-                      <input
-                        type="text"
-                        name="energyDrinksType"
-                        defaultValue={patient?.substanceHistory.caffeine.energyDrinks.type}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                        placeholder="e.g., Red Bull, Monster, etc."
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                      <div className="mb-6">
+                        <div className="text-sm text-gray-600">
+                          <span className="font-medium">For BCBS plans:</span>
+                          <span className="ml-1">Please select the BCBS plan that matches the state on the patient's insurance card.</span>
+                        </div>
+                      </div>
 
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              >
-                Save Substance History
-              </button>
-            </div>
-          </form>
-        );
-
-      case 'Work History':
-        return (
-          <div className="space-y-6">
-            <div className="bg-gray-50 p-4 rounded-md">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Employment Status</label>
-                  <div className="text-gray-900">{patient.workHistory.currentlyEmployed ? 'Currently Employed' : 'Not Employed'}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Occupation</label>
-                  <div className="text-gray-900">{patient.workHistory.occupation}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Employer</label>
-                  <div className="text-gray-900">{patient.workHistory.employer}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Schedule</label>
-                  <div className="text-gray-900 capitalize">{patient.workHistory.schedule}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Physical Demands</label>
-                  <div className="text-gray-900 capitalize">{patient.workHistory.physicalDemands}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Work Environment</label>
-                  <div className="text-gray-900">{patient.workHistory.workEnvironment}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Meals at Work</label>
-                  <div className="text-gray-900">{patient.workHistory.mealsAtWork}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Exercise Opportunities</label>
-                  <div className="text-gray-900">{patient.workHistory.exerciseOpportunities}</div>
-                </div>
-                {patient.workHistory.additionalNotes && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Additional Notes</label>
-                    <div className="text-gray-900">{patient.workHistory.additionalNotes}</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'Weight History':
-        return (
-          <div className="space-y-6 text-gray-900">
-            {/* Add New Weight Entry Form */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Weight Measurement</h3>
-              <form onSubmit={handleAddWeight} className="space-y-4">
-                <div>
-                  <label htmlFor="weight" className="block text-sm font-medium text-gray-700">
-                    Weight (lbs)
-                  </label>
-                  <input
-                    type="number"
-                    id="weight"
-                    value={newWeight.weight}
-                    onChange={(e) => setNewWeight({ ...newWeight, weight: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                    step="0.1"
-                    min="0"
-                  />
-                </div>
-
-                <div className="text-gray-900">
-                  <label htmlFor="weight-date" className="block text-sm font-medium text-gray-700">
-                    Date
-                  </label>
-                  <input
-                    type="date"
-                    id="weight-date"
-                    value={newWeight.date}
-                    onChange={(e) => setNewWeight({ ...newWeight, date: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-
-                <div className="text-gray-900">
-                  <label htmlFor="weight-context" className="block text-sm font-medium text-gray-700">
-                    Context
-                  </label>
-                  <select
-                    id="weight-context"
-                    value={newWeight.context}
-                    onChange={(e) => setNewWeight({ ...newWeight, context: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  >
-                    <option value="routine">Routine Check-up</option>
-                    <option value="sick">Sick Visit</option>
-                    <option value="self-reported">Self Reported</option>
-                    <option value="pre-surgery">Pre-surgery</option>
-                    <option value="post-surgery">Post-surgery</option>
-                  </select>
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Add Weight Entry
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Existing Weight History */}
-            <div className="space-y-4 text-gray-900">
-              {patient.weightHistory.map(entry => (
-                <div key={entry.id} className="p-4 bg-gray-50 rounded-md">
-                  <div className="font-medium text-gray-900">
-                    {entry.weight} lbs
-                    <span className="text-sm ml-2 capitalize text-gray-900">({entry.context})</span>
-                  </div>
-                  <div className="text-sm text-gray-900">
-                    Date: {new Date(entry.date).toLocaleDateString()}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'Exercise History':
-        return (
-          <div className="space-y-6 text-gray-900">
-            {/* Add New Exercise Form */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Exercise Activity</h3>
-              <form onSubmit={handleAddExercise} className="space-y-4">
-                <div>
-                  <label htmlFor="exercise-activity" className="block text-sm font-medium text-gray-700">
-                    Activity Name
-                  </label>
-                  <input
-                    type="text"
-                    id="exercise-activity"
-                    value={newExercise.activity}
-                    onChange={(e) => setNewExercise({ ...newExercise, activity: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="e.g., Walking, Swimming, Yoga"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="exercise-type" className="block text-sm font-medium text-gray-700">
-                    Type
-                  </label>
-                  <select
-                    id="exercise-type"
-                    value={newExercise.type}
-                    onChange={(e) => setNewExercise({ ...newExercise, type: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  >
-                    <option value="cardio">Cardio</option>
-                    <option value="strength">Strength Training</option>
-                    <option value="flexibility">Flexibility</option>
-                    <option value="balance">Balance</option>
-                    <option value="sports">Sports</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="exercise-frequency" className="block text-sm font-medium text-gray-700">
-                    Frequency
-                  </label>
-                  <select
-                    id="exercise-frequency"
-                    value={newExercise.frequency}
-                    onChange={(e) => setNewExercise({ ...newExercise, frequency: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  >
-                    <option value="">Select frequency</option>
-                    <option value="daily">Daily</option>
-                    <option value="2-3 times per week">2-3 times per week</option>
-                    <option value="4-5 times per week">4-5 times per week</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="occasionally">Occasionally</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="exercise-duration" className="block text-sm font-medium text-gray-700">
-                    Duration (minutes)
-                  </label>
-                  <input
-                    type="number"
-                    id="exercise-duration"
-                    value={newExercise.duration}
-                    onChange={(e) => setNewExercise({ ...newExercise, duration: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                    min="0"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="exercise-intensity" className="block text-sm font-medium text-gray-700">
-                    Intensity
-                  </label>
-                  <select
-                    id="exercise-intensity"
-                    value={newExercise.intensity}
-                    onChange={(e) => setNewExercise({ ...newExercise, intensity: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  >
-                    <option value="light">Light</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="vigorous">Vigorous</option>
-                    <option value="high-intensity">High Intensity</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="exercise-limitations" className="block text-sm font-medium text-gray-700">
-                    Limitations or Notes
-                  </label>
-                  <textarea
-                    id="exercise-limitations"
-                    value={newExercise.limitations}
-                    onChange={(e) => setNewExercise({ ...newExercise, limitations: e.target.value })}
-                    rows={3}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Enter any limitations, modifications, or additional notes..."
-                  />
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Add Exercise
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Existing Exercise History */}
-            <div className="space-y-4">
-              {patient.exerciseHistory.map(exercise => (
-                <div key={exercise.id} className="p-4 bg-gray-50 rounded-md">
-                  <div className="font-medium text-gray-900">{exercise.activity}</div>
-                  <div className="text-sm text-gray-900">Type: {exercise.type}</div>
-                  <div className="text-sm text-gray-900">
-                    Frequency: {exercise.frequency} | Duration: {exercise.duration} minutes
-                  </div>
-                  <div className="text-sm text-gray-900">Intensity: {exercise.intensity}</div>
-                  {exercise.limitations && (
-                    <div className="text-sm text-gray-900 mt-1">
-                      Limitations: {exercise.limitations}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'Sleep History':
-        return (
-          <div className="space-y-6">
-            {/* Update Sleep History Form */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Update Sleep Information</h3>
-              <form onSubmit={handleUpdateSleep} className="space-y-6">
-                {/* Sleep Pattern */}
-                <div className="space-y-4">
-                  <h4 className="font-medium text-gray-900">Sleep Pattern</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="sleep-hours" className="block text-sm font-medium text-gray-700">
-                        Average Hours of Sleep
-                      </label>
-                      <input
-                        type="number"
-                        id="sleep-hours"
-                        value={newSleep.averageHours}
-                        onChange={(e) => setNewSleep({ ...newSleep, averageHours: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                        min="0"
-                        max="24"
-                        step="0.5"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="sleep-quality" className="block text-sm font-medium text-gray-700">
-                        Sleep Quality
-                      </label>
-                      <select
-                        id="sleep-quality"
-                        value={newSleep.sleepQuality}
-                        onChange={(e) => setNewSleep({ ...newSleep, sleepQuality: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                      >
-                        <option value="poor">Poor</option>
-                        <option value="fair">Fair</option>
-                        <option value="good">Good</option>
-                        <option value="excellent">Excellent</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="bedtime" className="block text-sm font-medium text-gray-700">
-                        Typical Bedtime
-                      </label>
-                      <input
-                        type="time"
-                        id="bedtime"
-                        value={newSleep.bedtime}
-                        onChange={(e) => setNewSleep({ ...newSleep, bedtime: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="waketime" className="block text-sm font-medium text-gray-700">
-                        Typical Wake Time
-                      </label>
-                      <input
-                        type="time"
-                        id="waketime"
-                        value={newSleep.wakeTime}
-                        onChange={(e) => setNewSleep({ ...newSleep, wakeTime: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sleep Issues */}
-                <div className="space-y-4">
-                  <h4 className="font-medium text-gray-900">Sleep Issues</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="snoring"
-                        checked={newSleep.snoring}
-                        onChange={(e) => setNewSleep({ ...newSleep, snoring: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="snoring" className="ml-2 block text-sm text-gray-900">
-                        Snoring
-                      </label>
-                    </div>
-
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="sleep-apnea"
-                        checked={newSleep.sleepApnea}
-                        onChange={(e) => setNewSleep({ ...newSleep, sleepApnea: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="sleep-apnea" className="ml-2 block text-sm text-gray-900">
-                        Sleep Apnea
-                      </label>
-                    </div>
-
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="insomnia"
-                        checked={newSleep.insomnia}
-                        onChange={(e) => setNewSleep({ ...newSleep, insomnia: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="insomnia" className="ml-2 block text-sm text-gray-900">
-                        Insomnia
-                      </label>
-                    </div>
-
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="restless-legs"
-                        checked={newSleep.restlessLegs}
-                        onChange={(e) => setNewSleep({ ...newSleep, restlessLegs: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="restless-legs" className="ml-2 block text-sm text-gray-900">
-                        Restless Legs
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Additional Information */}
-                <div className="space-y-4">
-                  <h4 className="font-medium text-gray-900">Additional Information</h4>
-                  <div>
-                    <label htmlFor="daytime-sleepiness" className="block text-sm font-medium text-gray-700">
-                      Daytime Sleepiness
-                    </label>
-                    <select
-                      id="daytime-sleepiness"
-                      value={newSleep.daytimeSleepiness}
-                      onChange={(e) => setNewSleep({ ...newSleep, daytimeSleepiness: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      required
-                    >
-                      <option value="">Select level</option>
-                      <option value="none">None</option>
-                      <option value="mild">Mild</option>
-                      <option value="moderate">Moderate</option>
-                      <option value="severe">Severe</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="caffeine-timing" className="block text-sm font-medium text-gray-700">
-                      Caffeine Timing
-                    </label>
-                    <input
-                      type="text"
-                      id="caffeine-timing"
-                      value={newSleep.caffeineTiming}
-                      onChange={(e) => setNewSleep({ ...newSleep, caffeineTiming: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="e.g., Last cup at 2 PM"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="screen-time" className="block text-sm font-medium text-gray-700">
-                      Screen Time Before Bed
-                    </label>
-                    <input
-                      type="text"
-                      id="screen-time"
-                      value={newSleep.screenTime}
-                      onChange={(e) => setNewSleep({ ...newSleep, screenTime: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="e.g., 1 hour of TV before bed"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="sleep-environment" className="block text-sm font-medium text-gray-700">
-                      Sleep Environment
-                    </label>
-                    <input
-                      type="text"
-                      id="sleep-environment"
-                      value={newSleep.sleepEnvironment}
-                      onChange={(e) => setNewSleep({ ...newSleep, sleepEnvironment: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="e.g., Dark room with white noise machine"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="sleep-notes" className="block text-sm font-medium text-gray-700">
-                      Additional Notes
-                    </label>
-                    <textarea
-                      id="sleep-notes"
-                      value={newSleep.additionalNotes}
-                      onChange={(e) => setNewSleep({ ...newSleep, additionalNotes: e.target.value })}
-                      rows={3}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Enter any additional notes about sleep patterns or issues..."
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Update Sleep Information
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Display Current Sleep History */}
-            <div className="space-y-6">
-              {/* Sleep Pattern */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Sleep Pattern</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Average Hours</label>
-                    <div className="text-gray-900">{patient.sleepHistory.averageHours} hours</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Sleep Quality</label>
-                    <div className="text-gray-900 capitalize">{patient.sleepHistory.sleepQuality}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Bedtime</label>
-                    <div className="text-gray-900">{patient.sleepHistory.bedtime}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Wake Time</label>
-                    <div className="text-gray-900">{patient.sleepHistory.wakeTime}</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Sleep Issues */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Sleep Issues</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center">
-                    <div className={`w-4 h-4 rounded-full mr-2 ${patient.sleepHistory.snoring ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                    <span className="text-gray-900">Snoring</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className={`w-4 h-4 rounded-full mr-2 ${patient.sleepHistory.sleepApnea ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                    <span className="text-gray-900">Sleep Apnea</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className={`w-4 h-4 rounded-full mr-2 ${patient.sleepHistory.insomnia ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                    <span className="text-gray-900">Insomnia</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className={`w-4 h-4 rounded-full mr-2 ${patient.sleepHistory.restlessLegs ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                    <span className="text-gray-900">Restless Legs</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Additional Information */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Additional Information</h4>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Daytime Sleepiness</label>
-                    <div className="text-gray-900">{patient.sleepHistory.daytimeSleepiness}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Caffeine Timing</label>
-                    <div className="text-gray-900">{patient.sleepHistory.caffeineTiming}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Screen Time</label>
-                    <div className="text-gray-900">{patient.sleepHistory.screenTime}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Sleep Environment</label>
-                    <div className="text-gray-900">{patient.sleepHistory.sleepEnvironment}</div>
-                  </div>
-                  {patient.sleepHistory.additionalNotes && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-900">Additional Notes</label>
-                      <div className="text-gray-900">{patient.sleepHistory.additionalNotes}</div>
-                    </div>
+                      <div className="flex justify-between items-center">
+                        <button 
+                          onClick={() => searchRef.current?.handleSearch()}
+                          className="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium"
+                        >
+                          Search
+                        </button>
+                        <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                          Give us feedback
+                        </button>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
-            </div>
-          </div>
-        );
-
-      case 'Food Preferences':
-        return (
-          <div className="space-y-6">
-            {/* Dietary Restrictions */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Dietary Restrictions</h4>
-              <div className="space-y-2">
-                {patient.foodPreferences.dietaryRestrictions.map((restriction, index) => (
-                  <div key={index} className="inline-block mr-2 mb-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
-                    {restriction}
+            ) : (
+              <div className="space-y-6">
+                <div className="border-b border-gray-200 pb-4">
+                  <h2 className="text-xl font-semibold text-gray-900">Insurances</h2>
+                  <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+                    <button className="text-blue-600 hover:text-blue-800 font-medium">View cancelled insurances</button>
+                    <span className="text-gray-300">|</span>
+                    <button className="text-blue-600 hover:text-blue-800 font-medium">Add case policy</button>
+                    <span className="text-gray-300">|</span>
+                    <button className="text-blue-600 hover:text-blue-800 font-medium">Add payment plan</button>
+                    <span className="text-gray-300">|</span>
+                    <button className="text-blue-600 hover:text-blue-800 font-medium">Add prepayment plan</button>
+                    <span className="text-gray-300">|</span>
+                    <button className="text-blue-600 hover:text-blue-800 font-medium">Change policy order</button>
+                    <span className="text-gray-300">|</span>
+                    <button className="text-blue-600 hover:text-blue-800 font-medium">Add reference policy</button>
+                    <span className="text-gray-300">|</span>
+                    <button className="text-blue-600 hover:text-blue-800 font-medium">Save a new Card on File</button>
                   </div>
-                ))}
-                {patient.foodPreferences.customRestrictions && (
-                  <div className="text-gray-900 mt-2">
-                    <span className="font-medium">Additional Restrictions: </span>
-                    {patient.foodPreferences.customRestrictions}
+                </div>
+
+                <div className="space-y-8">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-medium text-gray-900">Primary</h3>
+                      <button
+                        onClick={handleAddNew}
+                        className="text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        add new
+                      </button>
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
 
-            {/* Meal Schedule */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Meal Schedule</h4>
-              <div className="grid grid-cols-2 gap-4">
-                {Object.entries(patient.foodPreferences.mealTiming).map(([meal, time]) => (
-                  <div key={meal}>
-                    <label className="block text-sm font-medium text-gray-900 capitalize">{meal}</label>
-                    <div className="text-gray-900">{time}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Food Preferences */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Food Preferences & Allergies</h4>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Likes</label>
-                  <div className="text-gray-900">{patient.foodPreferences.foodPreferences.likes}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Dislikes</label>
-                  <div className="text-gray-900">{patient.foodPreferences.foodPreferences.dislikes}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Allergies</label>
-                  <div className="text-gray-900">{patient.foodPreferences.foodPreferences.allergies || 'None reported'}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Eating Habits */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Eating Habits</h4>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Eating Speed</label>
-                  <div className="text-gray-900 capitalize">{patient.foodPreferences.eatingHabits.speed}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Typical Locations</label>
-                  <div className="text-gray-900">{patient.foodPreferences.eatingHabits.location.join(', ')}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Emotional Eating</label>
-                  <div className="text-gray-900">{patient.foodPreferences.emotionalEating}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Information */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Additional Information</h4>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Water Intake</label>
-                  <div className="text-gray-900">{patient.foodPreferences.waterIntake}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Cultural Preferences</label>
-                  <div className="text-gray-900">{patient.foodPreferences.culturalPreferences}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Cooking & Meal Prep</label>
-                  <div className="text-gray-900">
-                    {patient.foodPreferences.cookingAbility}
-                    {patient.foodPreferences.mealPrep && (
-                      <div className="mt-1">Meal Prep: {patient.foodPreferences.mealPrep}</div>
-                    )}
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-medium text-gray-900">Prescription</h3>
+                      <div className="space-x-6">
+                        <button className="text-blue-600 hover:text-blue-800 font-medium">check now</button>
+                        <button className="text-blue-600 hover:text-blue-800 font-medium">Add card image</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        );
-
-      default:
-        return (
-          <div className="text-gray-900">
-            Select a section from the sidebar to view details
-          </div>
+            )}
+          </>
         );
     }
   };
@@ -2459,4 +1679,4 @@ export default function PatientChart() {
       </div>
     </div>
   );
-} 
+}
