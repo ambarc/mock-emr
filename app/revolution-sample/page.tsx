@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Patient Intake Review 2 | Clinic EMR',
-  description: 'Review completed obesity intake survey - Version 2',
+  title: 'Revolution Sample Form | Clinic EMR',
+  description: 'Sample obesity intake survey form for Revolution Medicine',
 };
 
 // Complete form schema from original form
@@ -991,7 +991,7 @@ const originalData = {
   referral_source: "Online search"
 };
 
-export default function IntakeSurveyReview2() {
+export default function RevolutionSamplePage() {
   return (
     <div className="max-w-6xl mx-auto py-8">
       <div className="bg-white shadow-sm rounded-lg overflow-hidden">
@@ -999,7 +999,7 @@ export default function IntakeSurveyReview2() {
         <div className="px-8 py-6 bg-gradient-to-r from-blue-600 to-blue-700">
           <div className="flex justify-between items-baseline">
             <div>
-              <h1 className="text-2xl font-semibold text-white">Obesity Intake Survey Results</h1>
+              <h1 className="text-2xl font-semibold text-white">Revolution Sample Form</h1>
               <p className="mt-2 text-blue-100 text-sm">Submitted on March 15, 2024 at 2:30 PM</p>
             </div>
             <div className="text-right bg-white/5 backdrop-blur-sm rounded-lg p-4">

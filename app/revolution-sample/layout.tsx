@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Patient Intake Review 2 | Clinic EMR',
-  description: 'Review completed obesity intake survey - Version 2',
+  title: 'Revolution Sample Form | Clinic EMR',
+  description: 'Sample obesity intake survey form for Revolution Medicine',
 };
 
-export default function IntakeSurveyLayout({
+export default function RevolutionSampleLayout({
   children,
 }: {
   children: React.ReactNode;
