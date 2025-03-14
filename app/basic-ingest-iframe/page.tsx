@@ -1,19 +1,29 @@
-import { Metadata } from 'next';
+"use client"
 
-export const metadata: Metadata = {
-  title: 'Basic Ingest Form | Clinic EMR',
-  description: 'Basic obesity intake survey form with iframe integration',
-};
+import { usePDF } from 'react-to-pdf';
 
 export default function BasicIngestIframePage() {
+  const { toPDF, targetRef } = usePDF({
+    filename: 'patient-intake-form.pdf',
+    page: { margin: 20 }
+  });
+
   return (
     <div className="max-w-4xl mx-auto py-8">
-      <div className="bg-white shadow rounded-lg">
+      <div className="bg-white shadow rounded-lg" ref={targetRef}>
         {/* Header */}
         <div className="px-8 py-6 border-b border-gray-200">
           <div className="flex justify-between items-baseline">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900">Basic Ingest Form</h1>
+              <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-semibold text-gray-900">Basic Ingest Form</h1>
+                <button
+                  onClick={() => toPDF()}
+                  className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Download PDF
+                </button>
+              </div>
               <p className="mt-1 text-sm text-gray-700">Submitted on March 15, 2024 at 2:30 PM</p>
             </div>
             <div className="text-right">
