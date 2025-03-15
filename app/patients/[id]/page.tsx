@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { mockPatients, Patient, Allergy, Problem, Medication, Surgery, ClinicalNote, WeightEntry, Exercise, Insurance, SubstanceHistory } from '@/app/lib/mockPatientData';
+import { mockPatients, Patient } from '@/app/lib/mockPatientData';
 import { useParams } from 'next/navigation';
+import InsuranceSearch from '@/app/components/InsuranceSearch';
+import { InsurancePlan } from '@/app/lib/insuranceData';
 
 const formatPhoneNumber = (value: string) => {
   // Remove all non-digit characters
@@ -53,16 +55,11 @@ export default function PatientChart() {
     subscriberRelation: '',
     subscriberDOB: ''
   });
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [newMedication, setNewMedication] = useState({
     name: '',
     dosage: '',
     frequency: '',
     instructions: ''
-  });
-  const [newNote, setNewNote] = useState({
-    note: '',
-    date: new Date().toISOString().split('T')[0]
   });
   const [newSurgery, setNewSurgery] = useState({
     name: '',
@@ -144,6 +141,82 @@ export default function PatientChart() {
     dateIdentified: new Date().toISOString().split('T')[0]
   });
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
+  const [insuranceFlow, setInsuranceFlow] = useState<'initial' | 'upload' | 'search'>('initial');
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [uploadStep, setUploadStep] = useState<'initial' | 'upload' | 'uploading' | 'complete'>('initial');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedPlanType, setSelectedPlanType] = useState<'standard' | 'case'>('standard');
+  const [selectedPlan, setSelectedPlan] = useState<InsurancePlan | null>(null);
+  const [policyDetails, setPolicyDetails] = useState({
+    memberId: '',
+    groupNumber: '',
+    effectiveDate: '',
+    expirationDate: '',
+    copay: '',
+    deductible: '',
+    preAuthNotes: '',
+    subscriberName: '',
+    subscriberRelation: '',
+    subscriberDOB: '',
+    isEligibilityChecking: false,
+    isEligibilityChecked: false
+  });
+  const searchRef = useRef<{ handleSearch: () => void }>(null);
+  const [newWorkHistory, setNewWorkHistory] = useState({
+    currentlyEmployed: true,
+    occupation: '',
+    employer: '',
+    schedule: '',
+    physicalDemands: '',
+    workEnvironment: '',
+    stressLevel: '',
+    mealsAtWork: '',
+    exerciseOpportunities: '',
+    additionalNotes: ''
+  });
+  const [newFoodPreferences, setNewFoodPreferences] = useState({
+    dietaryRestrictions: [] as string[],
+    customRestrictions: '',
+    mealTiming: {
+      breakfast: '',
+      lunch: '',
+      dinner: '',
+      snacks: '',
+    },
+    foodPreferences: {
+      likes: '',
+      dislikes: '',
+      allergies: '',
+    },
+    eatingHabits: {
+      location: [] as string[],
+      company: [] as string[],
+      speed: '',
+      portions: '',
+    },
+    emotionalEating: '',
+    waterIntake: '',
+    supplementsVitamins: '',
+    culturalPreferences: '',
+    cookingAbility: '',
+    groceryShopping: '',
+    mealPrep: '',
+    additionalNotes: '',
+  });
+
+  const dietaryOptions = [
+    'Vegetarian',
+    'Vegan',
+    'Gluten-Free',
+    'Dairy-Free',
+    'Kosher',
+    'Halal',
+    'Low-Carb',
+    'Low-Fat',
+    'Mediterranean',
+    'Keto',
+  ];
 
   const commonSurgeries = [
     { name: 'Appendectomy', category: 'General' },
@@ -256,8 +329,8 @@ export default function PatientChart() {
     setPatient(updatedPatient);
     
     // Show success message
-    setShowSuccessMessage(true);
-    setTimeout(() => setShowSuccessMessage(false), 3000);
+    setShowSaveSuccess(true);
+    setTimeout(() => setShowSaveSuccess(false), 3000);
 
     // Reset form
     setNewInsurance({
@@ -277,34 +350,6 @@ export default function PatientChart() {
 
     // Log the update (this would typically be an API call)
     console.log('Updated patient insurance:', updatedPatient.insurance);
-  };
-
-  const handleAddNote = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Create updated patient data with new note
-    const updatedPatient = {
-      ...patient,
-      clinicalNotes: [
-        {
-          date: newNote.date,
-          note: newNote.note
-        },
-        ...patient.clinicalNotes
-      ]
-    };
-
-    // Update local patient data
-    setPatient(updatedPatient);
-    
-    // Reset form
-    setNewNote({
-      note: '',
-      date: new Date().toISOString().split('T')[0]
-    });
-
-    // Log the update (this would typically be an API call)
-    console.log('Added new clinical note:', updatedPatient.clinicalNotes[0]);
   };
 
   const handleAddProblem = (e: React.FormEvent) => {
@@ -455,44 +500,83 @@ export default function PatientChart() {
 
   const handleUpdateSubstanceHistory = (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
     
-    const substanceHistory: SubstanceHistory = {
+    // Create updated patient data with new substance history
+    const updatedPatient = {
+      ...patient,
+      substanceHistory: {
+        alcohol: {
+          current: newSubstanceHistory.alcohol.current,
+          frequency: newSubstanceHistory.alcohol.frequency,
+          type: newSubstanceHistory.alcohol.type,
+          amount: newSubstanceHistory.alcohol.amount,
+          yearsOfUse: newSubstanceHistory.alcohol.yearsOfUse,
+          lastUse: newSubstanceHistory.alcohol.lastUse,
+        },
+        tobacco: {
+          current: newSubstanceHistory.tobacco.current,
+          type: newSubstanceHistory.tobacco.type,
+          packsPerDay: newSubstanceHistory.tobacco.packsPerDay,
+          yearsOfUse: newSubstanceHistory.tobacco.yearsOfUse,
+          quitDate: newSubstanceHistory.tobacco.quitDate,
+        },
+        caffeine: {
+          coffee: {
+            cupsPerDay: newSubstanceHistory.caffeine.coffee.cupsPerDay,
+            type: newSubstanceHistory.caffeine.coffee.type,
+          },
+          soda: {
+            ouncesPerDay: newSubstanceHistory.caffeine.soda.ouncesPerDay,
+            type: newSubstanceHistory.caffeine.soda.type,
+          },
+          energyDrinks: {
+            frequency: newSubstanceHistory.caffeine.energyDrinks.frequency,
+            type: newSubstanceHistory.caffeine.energyDrinks.type,
+          },
+        },
+        otherSubstances: newSubstanceHistory.otherSubstances
+      }
+    };
+
+    // Update local patient data
+    setPatient(updatedPatient);
+    
+    // Reset form
+    setNewSubstanceHistory({
       alcohol: {
-        current: formData.get('alcoholCurrent') === 'true',
-        frequency: formData.get('alcoholFrequency') as string,
-        type: formData.get('alcoholType') as string,
-        amount: formData.get('alcoholAmount') as string,
-        yearsOfUse: formData.get('alcoholYearsOfUse') as string,
-        lastUse: formData.get('alcoholLastUse') as string,
+        current: false,
+        frequency: '',
+        type: '',
+        amount: '',
+        yearsOfUse: '',
+        lastUse: '',
       },
       tobacco: {
-        current: formData.get('tobaccoCurrent') === 'true',
-        type: formData.get('tobaccoType') as string,
+        current: false,
+        type: '',
+        packsPerDay: '',
+        yearsOfUse: '',
+        quitDate: '',
       },
       caffeine: {
         coffee: {
-          cupsPerDay: formData.get('coffeeCupsPerDay') as string,
-          type: formData.get('coffeeType') as string,
+          cupsPerDay: '',
+          type: '', // regular, decaf
         },
         soda: {
-          ouncesPerDay: formData.get('sodaOuncesPerDay') as string,
-          type: formData.get('sodaType') as string,
+          ouncesPerDay: '',
+          type: '', // regular, diet
         },
         energyDrinks: {
-          frequency: formData.get('energyDrinksFrequency') as string,
-          type: formData.get('energyDrinksType') as string,
+          frequency: '',
+          type: '',
         },
       },
-    };
-
-    setPatient(prev => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        substanceHistory
-      };
+      otherSubstances: '',
     });
+
+    // Log the update (this would typically be an API call)
+    console.log('Updated substance history:', updatedPatient.substanceHistory);
   };
 
   const handleAddAllergy = (e: React.FormEvent) => {
@@ -527,25 +611,151 @@ export default function PatientChart() {
     setPatient(updatedPatient);
   };
 
-  const handleInsuranceChange = (type: 'primary' | 'secondary', field: keyof Insurance, value: string) => {
-    setPatient(prev => ({
-      ...prev,
-      insurance: {
-        ...prev.insurance,
-        [type]: type === 'secondary' && !prev.insurance.secondary 
-          ? { provider: '', memberId: '', groupNumber: '', preAuthNotes: '', [field]: value }
-          : {
-              ...(type === 'primary' ? prev.insurance.primary : prev.insurance.secondary),
-              [field]: value
-            }
-      }
-    }));
-  };
-
   const handleSaveDemographics = () => {
     console.log('Demographics saved:', patient.demographics);
     setShowSaveSuccess(true);
     setTimeout(() => setShowSaveSuccess(false), 3000); // Hide after 3 seconds
+  };
+
+  const handleAddNew = () => {
+    setShowUploadDialog(true);
+  };
+
+  const handleSkipUpload = () => {
+    setInsuranceFlow('search');
+    setShowUploadDialog(false);
+  };
+
+  const handleUploadImage = () => {
+    setUploadStep('upload');
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+      setUploadStep('uploading');
+      // Simulate upload progress
+      setTimeout(() => {
+        setUploadStep('complete');
+      }, 1500);
+    }
+  };
+
+  const handleUploadComplete = () => {
+    setShowUploadDialog(false);
+    setInsuranceFlow('search');
+    setUploadStep('initial');
+    setSelectedFile(null);
+  };
+
+  const handlePlanSelect = (plan: InsurancePlan) => {
+    setSelectedPlan(plan);
+    setPolicyDetails(prev => ({
+      ...prev,
+      memberId: prev.memberId // Use existing memberId from policyDetails
+    }));
+  };
+
+  const handleEligibilityCheck = () => {
+    setPolicyDetails(prev => ({ ...prev, isEligibilityChecking: true }));
+    // Simulate eligibility check
+    setTimeout(() => {
+      setPolicyDetails(prev => ({
+        ...prev,
+        isEligibilityChecking: false,
+        isEligibilityChecked: true
+      }));
+    }, 1500);
+  };
+
+  const handleUpdateWorkHistory = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Create updated patient data with new work history
+    const updatedPatient = {
+      ...patient,
+      workHistory: {
+        currentlyEmployed: newWorkHistory.currentlyEmployed,
+        occupation: newWorkHistory.occupation,
+        employer: newWorkHistory.employer,
+        schedule: newWorkHistory.schedule,
+        physicalDemands: newWorkHistory.physicalDemands,
+        workEnvironment: newWorkHistory.workEnvironment,
+        stressLevel: newWorkHistory.stressLevel,
+        mealsAtWork: newWorkHistory.mealsAtWork,
+        exerciseOpportunities: newWorkHistory.exerciseOpportunities,
+        additionalNotes: newWorkHistory.additionalNotes
+      }
+    };
+
+    // Update local patient data
+    setPatient(updatedPatient);
+    
+    // Reset form
+    setNewWorkHistory({
+      currentlyEmployed: true,
+      occupation: '',
+      employer: '',
+      schedule: '',
+      physicalDemands: '',
+      workEnvironment: '',
+      stressLevel: '',
+      mealsAtWork: '',
+      exerciseOpportunities: '',
+      additionalNotes: ''
+    });
+
+    // Log the update (this would typically be an API call)
+    console.log('Updated work history:', updatedPatient.workHistory);
+  };
+
+  const handleUpdateFoodPreferences = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Create updated patient data with new food preferences
+    const updatedPatient = {
+      ...patient,
+      foodPreferences: {
+        ...newFoodPreferences
+      }
+    };
+
+    // Update local patient data
+    setPatient(updatedPatient);
+    
+    // Reset form
+    setNewFoodPreferences({
+      dietaryRestrictions: [],
+      customRestrictions: '',
+      mealTiming: {
+        breakfast: '',
+        lunch: '',
+        dinner: '',
+        snacks: '',
+      },
+      foodPreferences: {
+        likes: '',
+        dislikes: '',
+        allergies: '',
+      },
+      eatingHabits: {
+        location: [],
+        company: [],
+        speed: '',
+        portions: '',
+      },
+      emotionalEating: '',
+      waterIntake: '',
+      supplementsVitamins: '',
+      culturalPreferences: '',
+      cookingAbility: '',
+      groceryShopping: '',
+      mealPrep: '',
+      additionalNotes: '',
+    });
+
+    // Log the update (this would typically be an API call)
+    console.log('Updated food preferences:', updatedPatient.foodPreferences);
   };
 
   const renderFormContent = () => {
@@ -1130,631 +1340,6 @@ export default function PatientChart() {
           </div>
         );
 
-      case 'Insurance':
-        const insuranceProviders = [
-          'Aetna',
-          'Anthem Blue Cross',
-          'Blue Cross Blue Shield',
-          'Cigna',
-          'UnitedHealthcare',
-          'Humana',
-          'Kaiser Permanente',
-          'Medicare',
-          'Medicaid',
-          'Oxford',
-          'Molina Healthcare',
-          'Centene',
-          'Health Net',
-          'WellCare',
-          'Ambetter',
-          'TRICARE',
-          'Veterans Affairs (VA)'
-        ];
-
-        return (
-          <div className="space-y-6">
-            {showSuccessMessage && (
-              <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md">
-                Insurance information updated successfully
-              </div>
-            )}
-
-            {/* Current Insurance Display */}
-            <div className="space-y-6">
-              {/* Primary Insurance */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Primary Insurance</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Provider</label>
-                    <div className="text-gray-900">{patient.insurance.primary?.provider}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Member ID</label>
-                    <div className="text-gray-900">{patient.insurance.primary?.memberId}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Group Number</label>
-                    <div className="text-gray-900">{patient.insurance.primary?.groupNumber}</div>
-                  </div>
-                  {patient.insurance.primary?.preAuthNotes && (
-                    <div className="col-span-2">
-                      <label className="block text-sm font-medium text-gray-900">Pre-Authorization Notes</label>
-                      <div className="text-gray-900">{patient.insurance.primary?.preAuthNotes}</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Secondary Insurance */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Secondary Insurance</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Provider</label>
-                    <div className="text-gray-900">{patient.insurance.secondary?.provider || 'None'}</div>
-                  </div>
-                  {patient.insurance.secondary?.provider && (
-                    <>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-900">Member ID</label>
-                        <div className="text-gray-900">{patient.insurance.secondary.memberId}</div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-900">Group Number</label>
-                        <div className="text-gray-900">{patient.insurance.secondary.groupNumber}</div>
-                      </div>
-                      {patient.insurance.secondary.preAuthNotes && (
-                        <div className="col-span-2">
-                          <label className="block text-sm font-medium text-gray-900">Pre-Authorization Notes</label>
-                          <div className="text-gray-900">{patient.insurance.secondary.preAuthNotes}</div>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Update Insurance Form */}
-            <div className="bg-white p-6 rounded-lg shadow text-gray-900">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Update Insurance Information</h3>
-              
-              <div className="mb-6">
-                <div className="flex space-x-4">
-                  <button
-                    type="button"
-                    onClick={() => setInsuranceType('primary')}
-                    className={`px-4 py-2 rounded-md ${
-                      insuranceType === 'primary'
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    Primary Insurance
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setInsuranceType('secondary')}
-                    className={`px-4 py-2 rounded-md ${
-                      insuranceType === 'secondary'
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    Secondary Insurance
-                  </button>
-                </div>
-              </div>
-
-              <form onSubmit={handleInsuranceSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">Insurance Provider</label>
-                    <select
-                      value={newInsurance.provider}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, provider: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      required
-                    >
-                      <option value="">Select provider</option>
-                      {insuranceProviders.map((provider) => (
-                        <option key={provider} value={provider}>
-                          {provider}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Member ID</label>
-                    <input
-                      type="text"
-                      value={newInsurance.memberId}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, memberId: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Enter member ID"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Group Number</label>
-                    <input
-                      type="text"
-                      value={newInsurance.groupNumber}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, groupNumber: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Enter group number"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Plan Type</label>
-                    <select
-                      value={newInsurance.planType}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, planType: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      required
-                    >
-                      <option value="">Select plan type</option>
-                      <option value="HMO">HMO</option>
-                      <option value="PPO">PPO</option>
-                      <option value="EPO">EPO</option>
-                      <option value="POS">POS</option>
-                      <option value="HDHP">HDHP</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Effective Date</label>
-                    <input
-                      type="date"
-                      value={newInsurance.effectiveDate}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, effectiveDate: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Expiration Date</label>
-                    <input
-                      type="date"
-                      value={newInsurance.expirationDate}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, expirationDate: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Copay</label>
-                    <div className="mt-1 relative rounded-md shadow-sm">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500 sm:text-sm">$</span>
-                      </div>
-                      <input
-                        type="text"
-                        value={newInsurance.copay}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, copay: e.target.value })}
-                        className="pl-7 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="0.00"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Deductible</label>
-                    <div className="mt-1 relative rounded-md shadow-sm">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500 sm:text-sm">$</span>
-                      </div>
-                      <input
-                        type="text"
-                        value={newInsurance.deductible}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, deductible: e.target.value })}
-                        className="pl-7 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="0.00"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">Subscriber Information</label>
-                    <div className="grid grid-cols-3 gap-4 mt-1">
-                      <input
-                        type="text"
-                        value={newInsurance.subscriberName}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, subscriberName: e.target.value })}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="Subscriber Name"
-                      />
-                      <select
-                        value={newInsurance.subscriberRelation}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, subscriberRelation: e.target.value })}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      >
-                        <option value="">Relation to Patient</option>
-                        <option value="self">Self</option>
-                        <option value="spouse">Spouse</option>
-                        <option value="parent">Parent</option>
-                        <option value="other">Other</option>
-                      </select>
-                      <input
-                        type="date"
-                        value={newInsurance.subscriberDOB}
-                        onChange={(e) => setNewInsurance({ ...newInsurance, subscriberDOB: e.target.value })}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="Subscriber DOB"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">Pre-Authorization Notes</label>
-                    <textarea
-                      value={newInsurance.preAuthNotes}
-                      onChange={(e) => setNewInsurance({ ...newInsurance, preAuthNotes: e.target.value })}
-                      rows={3}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Enter any pre-authorization notes or requirements"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setNewInsurance({
-                      provider: '',
-                      memberId: '',
-                      groupNumber: '',
-                      planType: '',
-                      effectiveDate: '',
-                      expirationDate: '',
-                      copay: '',
-                      deductible: '',
-                      preAuthNotes: '',
-                      subscriberName: '',
-                      subscriberRelation: '',
-                      subscriberDOB: ''
-                    })}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Clear Form
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Update {insuranceType === 'primary' ? 'Primary' : 'Secondary'} Insurance
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        );
-
-      case 'Clinical Notes':
-        return (
-          <div className="space-y-6 text-gray-900">
-            {/* Add New Note Form */}
-            <div className="bg-white text-gray-900 p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Clinical Note</h3>
-              <form onSubmit={handleAddNote} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Date
-                  </label>
-                  <input
-                    type="date"
-                    value={newNote.date}
-                    onChange={(e) => setNewNote({ ...newNote, date: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Clinical Note
-                  </label>
-                  <textarea
-                    value={newNote.note}
-                    onChange={(e) => setNewNote({ ...newNote, note: e.target.value })}
-                    rows={6}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Enter clinical note..."
-                    required
-                  />
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Add Note
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Existing Notes */}
-            <div className="space-y-4">
-              {patient.clinicalNotes.map((note, index) => (
-                <div key={index} className="p-4 bg-gray-50 rounded-md">
-                  <div className="font-medium text-gray-900">
-                    {new Date(note.date).toLocaleDateString()}
-                  </div>
-                  <div className="mt-2 text-gray-900 whitespace-pre-wrap">
-                    {note.note}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'Substance History':
-        return (
-          <form onSubmit={handleUpdateSubstanceHistory} className="max-w-3xl space-y-6">
-            <div className="bg-white p-6 rounded-md border border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Alcohol Use</h3>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="alcoholCurrent"
-                    name="alcoholCurrent"
-                    defaultChecked={patient?.substanceHistory.alcohol.current}
-                    className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="alcoholCurrent" className="ml-2 text-sm text-gray-700">
-                    Current alcohol use
-                  </label>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Frequency</label>
-                    <select
-                      name="alcoholFrequency"
-                      defaultValue={patient?.substanceHistory.alcohol.frequency}
-                      className="mt-1 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                    >
-                      <option value="">Select frequency</option>
-                      <option value="daily">Daily</option>
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                      <option value="occasionally">Occasionally</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Type</label>
-                    <input
-                      type="text"
-                      name="alcoholType"
-                      defaultValue={patient?.substanceHistory.alcohol.type}
-                      className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      placeholder="e.g., Beer, Wine, Spirits"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Amount</label>
-                    <input
-                      type="text"
-                      name="alcoholAmount"
-                      defaultValue={patient?.substanceHistory.alcohol.amount}
-                      className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      placeholder="e.g., 2-3 drinks per occasion"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Years of Use</label>
-                    <input
-                      type="text"
-                      name="alcoholYearsOfUse"
-                      defaultValue={patient?.substanceHistory.alcohol.yearsOfUse}
-                      className="mt-1 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Last Use</label>
-                  <input
-                    type="date"
-                    name="alcoholLastUse"
-                    defaultValue={patient?.substanceHistory.alcohol.lastUse}
-                    className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-md border border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Tobacco Use</h3>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="tobaccoCurrent"
-                    name="tobaccoCurrent"
-                    defaultChecked={patient?.substanceHistory.tobacco.current}
-                    className="h-4 w-4 text-gray-900 focus:ring-gray-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="tobaccoCurrent" className="ml-2 text-sm text-gray-700">
-                    Current tobacco use
-                  </label>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Type</label>
-                  <input
-                    type="text"
-                    name="tobaccoType"
-                    defaultValue={patient?.substanceHistory.tobacco.type}
-                    className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                    placeholder="e.g., Cigarettes, Vaping, etc."
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-md border border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Caffeine Intake</h3>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Coffee</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm text-gray-700">Cups per day</label>
-                      <input
-                        type="text"
-                        name="coffeeCupsPerDay"
-                        defaultValue={patient?.substanceHistory.caffeine.coffee.cupsPerDay}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-700">Type</label>
-                      <select
-                        name="coffeeType"
-                        defaultValue={patient?.substanceHistory.caffeine.coffee.type}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      >
-                        <option value="">Select type</option>
-                        <option value="regular">Regular</option>
-                        <option value="decaf">Decaf</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Soda</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm text-gray-700">Ounces per day</label>
-                      <input
-                        type="text"
-                        name="sodaOuncesPerDay"
-                        defaultValue={patient?.substanceHistory.caffeine.soda.ouncesPerDay}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-700">Type</label>
-                      <select
-                        name="sodaType"
-                        defaultValue={patient?.substanceHistory.caffeine.soda.type}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      >
-                        <option value="">Select type</option>
-                        <option value="regular">Regular</option>
-                        <option value="diet">Diet</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Energy Drinks</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-gray-900 text-sm text-gray-700">Frequency</label>
-                      <select
-                        name="energyDrinksFrequency"
-                        defaultValue={patient?.substanceHistory.caffeine.energyDrinks.frequency}
-                        className="mt-1 text-gray-900 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                      >
-                        <option value="">Select frequency</option>
-                        <option value="never">Never</option>
-                        <option value="occasionally">Occasionally</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="daily">Daily</option>
-                        <option value="multiple_daily">Multiple times per day</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-gray-900 text-sm text-gray-700">Type</label>
-                      <input
-                        type="text"
-                        name="energyDrinksType"
-                        defaultValue={patient?.substanceHistory.caffeine.energyDrinks.type}
-                        className="mt-1 text-gray-900 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                        placeholder="e.g., Red Bull, Monster, etc."
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              >
-                Save Substance History
-              </button>
-            </div>
-          </form>
-        );
-
-      case 'Work History':
-        return (
-          <div className="space-y-6">
-            <div className="bg-gray-50 p-4 rounded-md">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Employment Status</label>
-                  <div className="text-gray-900">{patient.workHistory.currentlyEmployed ? 'Currently Employed' : 'Not Employed'}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Occupation</label>
-                  <div className="text-gray-900">{patient.workHistory.occupation}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Employer</label>
-                  <div className="text-gray-900">{patient.workHistory.employer}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Schedule</label>
-                  <div className="text-gray-900 capitalize">{patient.workHistory.schedule}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Physical Demands</label>
-                  <div className="text-gray-900 capitalize">{patient.workHistory.physicalDemands}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Work Environment</label>
-                  <div className="text-gray-900">{patient.workHistory.workEnvironment}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Meals at Work</label>
-                  <div className="text-gray-900">{patient.workHistory.mealsAtWork}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Exercise Opportunities</label>
-                  <div className="text-gray-900">{patient.workHistory.exerciseOpportunities}</div>
-                </div>
-                {patient.workHistory.additionalNotes && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Additional Notes</label>
-                    <div className="text-gray-900">{patient.workHistory.additionalNotes}</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        );
-
       case 'Weight History':
         return (
           <div className="space-y-6 text-gray-900">
@@ -1822,7 +1407,7 @@ export default function PatientChart() {
               </form>
             </div>
 
-            {/* Existing Weight History */}
+            {/* Weight History List */}
             <div className="space-y-4 text-gray-900">
               {patient.weightHistory.map(entry => (
                 <div key={entry.id} className="p-4 bg-gray-50 rounded-md">
@@ -1835,556 +1420,1319 @@ export default function PatientChart() {
                   </div>
                 </div>
               ))}
+              {patient.weightHistory.length === 0 && (
+                <div className="text-center py-4 text-gray-600">
+                  No weight history recorded
+                </div>
+              )}
             </div>
           </div>
         );
 
       case 'Exercise History':
         return (
-          <div className="space-y-6 text-gray-900">
-            {/* Add New Exercise Form */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Exercise Activity</h3>
-              <form onSubmit={handleAddExercise} className="space-y-4">
+          <div className="bg-white p-6 rounded-md border border-gray-200 mb-6">
+            <h3 className="text-lg font-medium mb-4">Exercise History</h3>
+            <form onSubmit={handleAddExercise} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="exercise-activity" className="block text-sm font-medium text-gray-700">
-                    Activity Name
-                  </label>
-                  <input
-                    type="text"
-                    id="exercise-activity"
-                    value={newExercise.activity}
-                    onChange={(e) => setNewExercise({ ...newExercise, activity: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="e.g., Walking, Swimming, Yoga"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="exercise-type" className="block text-sm font-medium text-gray-700">
-                    Type
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Activity Type
                   </label>
                   <select
-                    id="exercise-type"
                     value={newExercise.type}
                     onChange={(e) => setNewExercise({ ...newExercise, type: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                   >
                     <option value="cardio">Cardio</option>
                     <option value="strength">Strength Training</option>
                     <option value="flexibility">Flexibility</option>
-                    <option value="balance">Balance</option>
                     <option value="sports">Sports</option>
+                    <option value="other">Other</option>
                   </select>
                 </div>
-
                 <div>
-                  <label htmlFor="exercise-frequency" className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Activity Name
+                  </label>
+                  <input
+                    type="text"
+                    value={newExercise.activity}
+                    onChange={(e) => setNewExercise({ ...newExercise, activity: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    placeholder="e.g., Walking, Swimming"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Frequency
                   </label>
                   <select
-                    id="exercise-frequency"
                     value={newExercise.frequency}
                     onChange={(e) => setNewExercise({ ...newExercise, frequency: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                   >
                     <option value="">Select frequency</option>
                     <option value="daily">Daily</option>
-                    <option value="2-3 times per week">2-3 times per week</option>
-                    <option value="4-5 times per week">4-5 times per week</option>
+                    <option value="2-3_times_week">2-3 times per week</option>
+                    <option value="4-5_times_week">4-5 times per week</option>
                     <option value="weekly">Weekly</option>
                     <option value="occasionally">Occasionally</option>
                   </select>
                 </div>
-
                 <div>
-                  <label htmlFor="exercise-duration" className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Duration (minutes)
                   </label>
                   <input
                     type="number"
-                    id="exercise-duration"
                     value={newExercise.duration}
                     onChange={(e) => setNewExercise({ ...newExercise, duration: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                    min="0"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    placeholder="Enter duration"
                   />
                 </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Intensity
+                </label>
+                <select
+                  value={newExercise.intensity}
+                  onChange={(e) => setNewExercise({ ...newExercise, intensity: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                >
+                  <option value="light">Light - Easy to breathe and carry a conversation</option>
+                  <option value="moderate">Moderate - Slightly harder to breathe but can talk</option>
+                  <option value="vigorous">Vigorous - Heavy breathing, difficult to talk</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Limitations or Notes
+                </label>
+                <textarea
+                  value={newExercise.limitations}
+                  onChange={(e) => setNewExercise({ ...newExercise, limitations: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Any physical limitations or additional notes..."
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
+              >
+                Add Exercise
+              </button>
+            </form>
 
-                <div>
-                  <label htmlFor="exercise-intensity" className="block text-sm font-medium text-gray-700">
-                    Intensity
-                  </label>
-                  <select
-                    id="exercise-intensity"
-                    value={newExercise.intensity}
-                    onChange={(e) => setNewExercise({ ...newExercise, intensity: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
+            <div className="mt-6">
+              <h4 className="text-md font-medium mb-3">Current Exercise Activities</h4>
+              <div className="space-y-3">
+                {patient.exerciseHistory.map((exercise) => (
+                  <div
+                    key={exercise.id}
+                    className="p-4 bg-gray-50 rounded-md"
                   >
-                    <option value="light">Light</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="vigorous">Vigorous</option>
-                    <option value="high-intensity">High Intensity</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="exercise-limitations" className="block text-sm font-medium text-gray-700">
-                    Limitations or Notes
-                  </label>
-                  <textarea
-                    id="exercise-limitations"
-                    value={newExercise.limitations}
-                    onChange={(e) => setNewExercise({ ...newExercise, limitations: e.target.value })}
-                    rows={3}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Enter any limitations, modifications, or additional notes..."
-                  />
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Add Exercise
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Existing Exercise History */}
-            <div className="space-y-4">
-              {patient.exerciseHistory.map(exercise => (
-                <div key={exercise.id} className="p-4 bg-gray-50 rounded-md">
-                  <div className="font-medium text-gray-900">{exercise.activity}</div>
-                  <div className="text-sm text-gray-900">Type: {exercise.type}</div>
-                  <div className="text-sm text-gray-900">
-                    Frequency: {exercise.frequency} | Duration: {exercise.duration} minutes
-                  </div>
-                  <div className="text-sm text-gray-900">Intensity: {exercise.intensity}</div>
-                  {exercise.limitations && (
-                    <div className="text-sm text-gray-900 mt-1">
-                      Limitations: {exercise.limitations}
+                    <div className="flex justify-between">
+                      <div>
+                        <div className="font-medium">{exercise.activity}</div>
+                        <div className="text-sm text-gray-500">
+                          Type: {exercise.type} | Frequency: {exercise.frequency}
+                          {exercise.duration && ` | Duration: ${exercise.duration} minutes`}
+                        </div>
+                        {exercise.intensity && (
+                          <div className="text-sm text-gray-500">
+                            Intensity: {exercise.intensity}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )}
-                </div>
-              ))}
+                  </div>
+                ))}
+                {patient.exerciseHistory.length === 0 && (
+                  <div className="text-gray-500 text-center py-4">
+                    No exercise activities recorded
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         );
 
       case 'Sleep History':
         return (
-          <div className="space-y-6">
-            {/* Update Sleep History Form */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Update Sleep Information</h3>
-              <form onSubmit={handleUpdateSleep} className="space-y-6">
-                {/* Sleep Pattern */}
-                <div className="space-y-4">
-                  <h4 className="font-medium text-gray-900">Sleep Pattern</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="sleep-hours" className="block text-sm font-medium text-gray-700">
-                        Average Hours of Sleep
-                      </label>
-                      <input
-                        type="number"
-                        id="sleep-hours"
-                        value={newSleep.averageHours}
-                        onChange={(e) => setNewSleep({ ...newSleep, averageHours: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                        min="0"
-                        max="24"
-                        step="0.5"
-                      />
-                    </div>
+          <div className="bg-white p-6 rounded-md border border-gray-200 mb-6">
+            <h3 className="text-lg font-medium mb-4">Sleep History</h3>
+            <form onSubmit={handleUpdateSleep} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Average Hours of Sleep
+                  </label>
+                  <input
+                    type="number"
+                    value={newSleep.averageHours}
+                    onChange={(e) => setNewSleep({ ...newSleep, averageHours: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    placeholder="Hours per night"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sleep Quality
+                  </label>
+                  <select
+                    value={newSleep.sleepQuality}
+                    onChange={(e) => setNewSleep({ ...newSleep, sleepQuality: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  >
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="fair">Fair</option>
+                    <option value="poor">Poor</option>
+                    <option value="very_poor">Very Poor</option>
+                  </select>
+                </div>
+              </div>
 
-                    <div>
-                      <label htmlFor="sleep-quality" className="block text-sm font-medium text-gray-700">
-                        Sleep Quality
-                      </label>
-                      <select
-                        id="sleep-quality"
-                        value={newSleep.sleepQuality}
-                        onChange={(e) => setNewSleep({ ...newSleep, sleepQuality: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                      >
-                        <option value="poor">Poor</option>
-                        <option value="fair">Fair</option>
-                        <option value="good">Good</option>
-                        <option value="excellent">Excellent</option>
-                      </select>
-                    </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Typical Bedtime
+                  </label>
+                  <input
+                    type="time"
+                    value={newSleep.bedtime}
+                    onChange={(e) => setNewSleep({ ...newSleep, bedtime: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Typical Wake Time
+                  </label>
+                  <input
+                    type="time"
+                    value={newSleep.wakeTime}
+                    onChange={(e) => setNewSleep({ ...newSleep, wakeTime: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  />
+                </div>
+              </div>
 
-                    <div>
-                      <label htmlFor="bedtime" className="block text-sm font-medium text-gray-700">
-                        Typical Bedtime
-                      </label>
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">
+                  Sleep Issues
+                </label>
+                <div className="space-y-2">
+                  {[
+                    { id: 'snoring' as const, label: 'Snoring' },
+                    { id: 'sleepApnea' as const, label: 'Sleep Apnea' },
+                    { id: 'insomnia' as const, label: 'Insomnia' },
+                    { id: 'restlessLegs' as const, label: 'Restless Legs' },
+                  ].map(issue => (
+                    <div key={issue.id} className="flex items-center">
                       <input
-                        type="time"
-                        id="bedtime"
-                        value={newSleep.bedtime}
-                        onChange={(e) => setNewSleep({ ...newSleep, bedtime: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
+                        type="checkbox"
+                        id={issue.id}
+                        checked={newSleep[issue.id]}
+                        onChange={(e) => setNewSleep({ ...newSleep, [issue.id]: e.target.checked })}
+                        className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
                       />
+                      <label htmlFor={issue.id} className="ml-2 block text-sm text-gray-700">
+                        {issue.label}
+                      </label>
                     </div>
+                  ))}
+                </div>
+              </div>
 
-                    <div>
-                      <label htmlFor="waketime" className="block text-sm font-medium text-gray-700">
-                        Typical Wake Time
-                      </label>
-                      <input
-                        type="time"
-                        id="waketime"
-                        value={newSleep.wakeTime}
-                        onChange={(e) => setNewSleep({ ...newSleep, wakeTime: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                  </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Additional Notes
+                </label>
+                <textarea
+                  value={newSleep.additionalNotes}
+                  onChange={(e) => setNewSleep({ ...newSleep, additionalNotes: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={3}
+                  placeholder="Any other information about sleep patterns..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
+              >
+                Save Sleep History
+              </button>
+            </form>
+          </div>
+        );
+
+      case 'Substance History':
+        return (
+          <div className="bg-white p-6 rounded-md border border-gray-200 mb-6">
+            <h3 className="text-lg font-medium mb-4">Substance History</h3>
+            <form onSubmit={handleUpdateSubstanceHistory} className="space-y-6">
+              {/* Alcohol Section */}
+              <div className="space-y-4">
+                <h4 className="text-md font-medium">Alcohol Use</h4>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="currentAlcohol"
+                    checked={newSubstanceHistory.alcohol.current}
+                    onChange={(e) => setNewSubstanceHistory({
+                      ...newSubstanceHistory,
+                      alcohol: { ...newSubstanceHistory.alcohol, current: e.target.checked }
+                    })}
+                    className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="currentAlcohol" className="ml-2 block text-sm text-gray-700">
+                    Current alcohol use
+                  </label>
                 </div>
 
-                {/* Sleep Issues */}
-                <div className="space-y-4">
-                  <h4 className="font-medium text-gray-900">Sleep Issues</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="snoring"
-                        checked={newSleep.snoring}
-                        onChange={(e) => setNewSleep({ ...newSleep, snoring: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="snoring" className="ml-2 block text-sm text-gray-900">
-                        Snoring
-                      </label>
-                    </div>
-
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="sleep-apnea"
-                        checked={newSleep.sleepApnea}
-                        onChange={(e) => setNewSleep({ ...newSleep, sleepApnea: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="sleep-apnea" className="ml-2 block text-sm text-gray-900">
-                        Sleep Apnea
-                      </label>
-                    </div>
-
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="insomnia"
-                        checked={newSleep.insomnia}
-                        onChange={(e) => setNewSleep({ ...newSleep, insomnia: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="insomnia" className="ml-2 block text-sm text-gray-900">
-                        Insomnia
-                      </label>
-                    </div>
-
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="restless-legs"
-                        checked={newSleep.restlessLegs}
-                        onChange={(e) => setNewSleep({ ...newSleep, restlessLegs: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="restless-legs" className="ml-2 block text-sm text-gray-900">
-                        Restless Legs
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Additional Information */}
-                <div className="space-y-4">
-                  <h4 className="font-medium text-gray-900">Additional Information</h4>
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="daytime-sleepiness" className="block text-sm font-medium text-gray-700">
-                      Daytime Sleepiness
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Frequency
                     </label>
                     <select
-                      id="daytime-sleepiness"
-                      value={newSleep.daytimeSleepiness}
-                      onChange={(e) => setNewSleep({ ...newSleep, daytimeSleepiness: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      required
+                      value={newSubstanceHistory.alcohol.frequency}
+                      onChange={(e) => setNewSubstanceHistory({
+                        ...newSubstanceHistory,
+                        alcohol: { ...newSubstanceHistory.alcohol, frequency: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                     >
-                      <option value="">Select level</option>
-                      <option value="none">None</option>
-                      <option value="mild">Mild</option>
-                      <option value="moderate">Moderate</option>
-                      <option value="severe">Severe</option>
+                      <option value="">Select frequency</option>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="occasionally">Occasionally</option>
                     </select>
                   </div>
-
                   <div>
-                    <label htmlFor="caffeine-timing" className="block text-sm font-medium text-gray-700">
-                      Caffeine Timing
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Type
                     </label>
                     <input
                       type="text"
-                      id="caffeine-timing"
-                      value={newSleep.caffeineTiming}
-                      onChange={(e) => setNewSleep({ ...newSleep, caffeineTiming: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="e.g., Last cup at 2 PM"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="screen-time" className="block text-sm font-medium text-gray-700">
-                      Screen Time Before Bed
-                    </label>
-                    <input
-                      type="text"
-                      id="screen-time"
-                      value={newSleep.screenTime}
-                      onChange={(e) => setNewSleep({ ...newSleep, screenTime: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="e.g., 1 hour of TV before bed"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="sleep-environment" className="block text-sm font-medium text-gray-700">
-                      Sleep Environment
-                    </label>
-                    <input
-                      type="text"
-                      id="sleep-environment"
-                      value={newSleep.sleepEnvironment}
-                      onChange={(e) => setNewSleep({ ...newSleep, sleepEnvironment: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="e.g., Dark room with white noise machine"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="sleep-notes" className="block text-sm font-medium text-gray-700">
-                      Additional Notes
-                    </label>
-                    <textarea
-                      id="sleep-notes"
-                      value={newSleep.additionalNotes}
-                      onChange={(e) => setNewSleep({ ...newSleep, additionalNotes: e.target.value })}
-                      rows={3}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Enter any additional notes about sleep patterns or issues..."
+                      value={newSubstanceHistory.alcohol.type}
+                      onChange={(e) => setNewSubstanceHistory({
+                        ...newSubstanceHistory,
+                        alcohol: { ...newSubstanceHistory.alcohol, type: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                      placeholder="e.g., Beer, Wine, Spirits"
                     />
                   </div>
                 </div>
+              </div>
 
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              {/* Tobacco Section */}
+              <div className="space-y-4">
+                <h4 className="text-md font-medium">Tobacco Use</h4>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="currentTobacco"
+                    checked={newSubstanceHistory.tobacco.current}
+                    onChange={(e) => setNewSubstanceHistory({
+                      ...newSubstanceHistory,
+                      tobacco: { ...newSubstanceHistory.tobacco, current: e.target.checked }
+                    })}
+                    className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="currentTobacco" className="ml-2 block text-sm text-gray-700">
+                    Current tobacco use
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Type
+                    </label>
+                    <input
+                      type="text"
+                      value={newSubstanceHistory.tobacco.type}
+                      onChange={(e) => setNewSubstanceHistory({
+                        ...newSubstanceHistory,
+                        tobacco: { ...newSubstanceHistory.tobacco, type: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                      placeholder="e.g., Cigarettes, Vaping"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Packs Per Day
+                    </label>
+                    <input
+                      type="text"
+                      value={newSubstanceHistory.tobacco.packsPerDay}
+                      onChange={(e) => setNewSubstanceHistory({
+                        ...newSubstanceHistory,
+                        tobacco: { ...newSubstanceHistory.tobacco, packsPerDay: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                      placeholder="Number of packs"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Caffeine Section */}
+              <div className="space-y-4">
+                <h4 className="text-md font-medium">Caffeine Intake</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Coffee (cups per day)
+                    </label>
+                    <input
+                      type="text"
+                      value={newSubstanceHistory.caffeine.coffee.cupsPerDay}
+                      onChange={(e) => setNewSubstanceHistory({
+                        ...newSubstanceHistory,
+                        caffeine: {
+                          ...newSubstanceHistory.caffeine,
+                          coffee: { ...newSubstanceHistory.caffeine.coffee, cupsPerDay: e.target.value }
+                        }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                      placeholder="Number of cups"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Coffee Type
+                    </label>
+                    <select
+                      value={newSubstanceHistory.caffeine.coffee.type}
+                      onChange={(e) => setNewSubstanceHistory({
+                        ...newSubstanceHistory,
+                        caffeine: {
+                          ...newSubstanceHistory.caffeine,
+                          coffee: { ...newSubstanceHistory.caffeine.coffee, type: e.target.value }
+                        }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    >
+                      <option value="">Select type</option>
+                      <option value="regular">Regular</option>
+                      <option value="decaf">Decaf</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Soda (oz per day)
+                    </label>
+                    <input
+                      type="text"
+                      value={newSubstanceHistory.caffeine.soda.ouncesPerDay}
+                      onChange={(e) => setNewSubstanceHistory({
+                        ...newSubstanceHistory,
+                        caffeine: {
+                          ...newSubstanceHistory.caffeine,
+                          soda: { ...newSubstanceHistory.caffeine.soda, ouncesPerDay: e.target.value }
+                        }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                      placeholder="Ounces per day"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Soda Type
+                    </label>
+                    <select
+                      value={newSubstanceHistory.caffeine.soda.type}
+                      onChange={(e) => setNewSubstanceHistory({
+                        ...newSubstanceHistory,
+                        caffeine: {
+                          ...newSubstanceHistory.caffeine,
+                          soda: { ...newSubstanceHistory.caffeine.soda, type: e.target.value }
+                        }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    >
+                      <option value="">Select type</option>
+                      <option value="regular">Regular</option>
+                      <option value="diet">Diet</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Energy Drinks
+                  </label>
+                  <select
+                    value={newSubstanceHistory.caffeine.energyDrinks.frequency}
+                    onChange={(e) => setNewSubstanceHistory({
+                      ...newSubstanceHistory,
+                      caffeine: {
+                        ...newSubstanceHistory.caffeine,
+                        energyDrinks: { ...newSubstanceHistory.caffeine.energyDrinks, frequency: e.target.value }
+                      }
+                    })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                   >
-                    Update Sleep Information
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Display Current Sleep History */}
-            <div className="space-y-6">
-              {/* Sleep Pattern */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Sleep Pattern</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Average Hours</label>
-                    <div className="text-gray-900">{patient.sleepHistory.averageHours} hours</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Sleep Quality</label>
-                    <div className="text-gray-900 capitalize">{patient.sleepHistory.sleepQuality}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Bedtime</label>
-                    <div className="text-gray-900">{patient.sleepHistory.bedtime}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Wake Time</label>
-                    <div className="text-gray-900">{patient.sleepHistory.wakeTime}</div>
-                  </div>
+                    <option value="">Select frequency</option>
+                    <option value="never">Never</option>
+                    <option value="occasionally">Occasionally</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="daily">Daily</option>
+                    <option value="multiple_daily">Multiple times per day</option>
+                  </select>
                 </div>
               </div>
 
-              {/* Sleep Issues */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Sleep Issues</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center">
-                    <div className={`w-4 h-4 rounded-full mr-2 ${patient.sleepHistory.snoring ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                    <span className="text-gray-900">Snoring</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className={`w-4 h-4 rounded-full mr-2 ${patient.sleepHistory.sleepApnea ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                    <span className="text-gray-900">Sleep Apnea</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className={`w-4 h-4 rounded-full mr-2 ${patient.sleepHistory.insomnia ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                    <span className="text-gray-900">Insomnia</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className={`w-4 h-4 rounded-full mr-2 ${patient.sleepHistory.restlessLegs ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                    <span className="text-gray-900">Restless Legs</span>
-                  </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Other Substances
+                </label>
+                <textarea
+                  value={newSubstanceHistory.otherSubstances}
+                  onChange={(e) => setNewSubstanceHistory({
+                    ...newSubstanceHistory,
+                    otherSubstances: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={3}
+                  placeholder="Any other substance use history..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
+              >
+                Save Substance History
+              </button>
+            </form>
+          </div>
+        );
+
+      case 'Work History':
+        return (
+          <div className="bg-white p-6 rounded-md border border-gray-200 mb-6">
+            <h3 className="text-lg font-medium mb-4">Work History</h3>
+            <form onSubmit={handleUpdateWorkHistory} className="space-y-6">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="currentlyEmployed"
+                  checked={newWorkHistory.currentlyEmployed}
+                  onChange={(e) => setNewWorkHistory({
+                    ...newWorkHistory,
+                    currentlyEmployed: e.target.checked
+                  })}
+                  className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
+                />
+                <label htmlFor="currentlyEmployed" className="ml-2 block text-sm text-gray-700">
+                  Currently Employed
+                </label>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Occupation
+                  </label>
+                  <input
+                    type="text"
+                    value={newWorkHistory.occupation}
+                    onChange={(e) => setNewWorkHistory({
+                      ...newWorkHistory,
+                      occupation: e.target.value
+                    })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Employer
+                  </label>
+                  <input
+                    type="text"
+                    value={newWorkHistory.employer}
+                    onChange={(e) => setNewWorkHistory({
+                      ...newWorkHistory,
+                      employer: e.target.value
+                    })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  />
                 </div>
               </div>
 
-              {/* Additional Information */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-900 mb-4">Additional Information</h4>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Daytime Sleepiness</label>
-                    <div className="text-gray-900">{patient.sleepHistory.daytimeSleepiness}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Caffeine Timing</label>
-                    <div className="text-gray-900">{patient.sleepHistory.caffeineTiming}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Screen Time</label>
-                    <div className="text-gray-900">{patient.sleepHistory.screenTime}</div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900">Sleep Environment</label>
-                    <div className="text-gray-900">{patient.sleepHistory.sleepEnvironment}</div>
-                  </div>
-                  {patient.sleepHistory.additionalNotes && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-900">Additional Notes</label>
-                      <div className="text-gray-900">{patient.sleepHistory.additionalNotes}</div>
-                    </div>
-                  )}
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Work Schedule
+                </label>
+                <select
+                  value={newWorkHistory.schedule}
+                  onChange={(e) => setNewWorkHistory({
+                    ...newWorkHistory,
+                    schedule: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                >
+                  <option value="">Select schedule type</option>
+                  <option value="day">Day shift</option>
+                  <option value="evening">Evening shift</option>
+                  <option value="night">Night shift</option>
+                  <option value="rotating">Rotating shifts</option>
+                  <option value="irregular">Irregular schedule</option>
+                </select>
               </div>
-            </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Physical Demands
+                </label>
+                <select
+                  value={newWorkHistory.physicalDemands}
+                  onChange={(e) => setNewWorkHistory({
+                    ...newWorkHistory,
+                    physicalDemands: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                >
+                  <option value="">Select physical demand level</option>
+                  <option value="sedentary">Sedentary - Mostly sitting</option>
+                  <option value="light">Light - Some walking/standing</option>
+                  <option value="moderate">Moderate - Regular physical activity</option>
+                  <option value="heavy">Heavy - Constant physical demands</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Work Environment
+                </label>
+                <textarea
+                  value={newWorkHistory.workEnvironment}
+                  onChange={(e) => setNewWorkHistory({
+                    ...newWorkHistory,
+                    workEnvironment: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Describe the work environment..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Stress Level
+                </label>
+                <select
+                  value={newWorkHistory.stressLevel}
+                  onChange={(e) => setNewWorkHistory({
+                    ...newWorkHistory,
+                    stressLevel: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                >
+                  <option value="">Select stress level</option>
+                  <option value="low">Low - Minimal stress</option>
+                  <option value="moderate">Moderate - Regular stress</option>
+                  <option value="high">High - Frequent stress</option>
+                  <option value="severe">Severe - Constant stress</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Meals at Work
+                </label>
+                <textarea
+                  value={newWorkHistory.mealsAtWork}
+                  onChange={(e) => setNewWorkHistory({
+                    ...newWorkHistory,
+                    mealsAtWork: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Describe typical meal patterns during work hours..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Exercise Opportunities
+                </label>
+                <textarea
+                  value={newWorkHistory.exerciseOpportunities}
+                  onChange={(e) => setNewWorkHistory({
+                    ...newWorkHistory,
+                    exerciseOpportunities: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Describe any opportunities for physical activity during work..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Additional Notes
+                </label>
+                <textarea
+                  value={newWorkHistory.additionalNotes}
+                  onChange={(e) => setNewWorkHistory({
+                    ...newWorkHistory,
+                    additionalNotes: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={3}
+                  placeholder="Any additional notes about work environment or circumstances..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
+              >
+                Save Work History
+              </button>
+            </form>
           </div>
         );
 
       case 'Food Preferences':
         return (
-          <div className="space-y-6">
-            {/* Dietary Restrictions */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Dietary Restrictions</h4>
-              <div className="space-y-2">
-                {patient.foodPreferences.dietaryRestrictions.map((restriction, index) => (
-                  <div key={index} className="inline-block mr-2 mb-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
-                    {restriction}
-                  </div>
-                ))}
-                {patient.foodPreferences.customRestrictions && (
-                  <div className="text-gray-900 mt-2">
-                    <span className="font-medium">Additional Restrictions: </span>
-                    {patient.foodPreferences.customRestrictions}
-                  </div>
-                )}
+          <div className="bg-white p-6 rounded-md border border-gray-200 mb-6">
+            <h3 className="text-lg font-medium mb-4">Food Preferences</h3>
+            <form onSubmit={handleUpdateFoodPreferences} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Dietary Restrictions
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {dietaryOptions.map(option => (
+                    <div key={option} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id={option}
+                        checked={newFoodPreferences.dietaryRestrictions.includes(option)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setNewFoodPreferences({
+                              ...newFoodPreferences,
+                              dietaryRestrictions: [...newFoodPreferences.dietaryRestrictions, option]
+                            });
+                          } else {
+                            setNewFoodPreferences({
+                              ...newFoodPreferences,
+                              dietaryRestrictions: newFoodPreferences.dietaryRestrictions.filter(r => r !== option)
+                            });
+                          }
+                        }}
+                        className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
+                      />
+                      <label htmlFor={option} className="ml-2 block text-sm text-gray-700">
+                        {option}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Meal Schedule */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Meal Schedule</h4>
-              <div className="grid grid-cols-2 gap-4">
-                {Object.entries(patient.foodPreferences.mealTiming).map(([meal, time]) => (
-                  <div key={meal}>
-                    <label className="block text-sm font-medium text-gray-900 capitalize">{meal}</label>
-                    <div className="text-gray-900">{time}</div>
-                  </div>
-                ))}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Custom Dietary Restrictions
+                </label>
+                <textarea
+                  value={newFoodPreferences.customRestrictions}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    customRestrictions: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Enter any additional dietary restrictions..."
+                />
               </div>
-            </div>
 
-            {/* Food Preferences */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Food Preferences & Allergies</h4>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Likes</label>
-                  <div className="text-gray-900">{patient.foodPreferences.foodPreferences.likes}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Dislikes</label>
-                  <div className="text-gray-900">{patient.foodPreferences.foodPreferences.dislikes}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Allergies</label>
-                  <div className="text-gray-900">{patient.foodPreferences.foodPreferences.allergies || 'None reported'}</div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Typical Meal Times
+                </label>
+                <div className="grid grid-cols-2 gap-4">
+                  {['breakfast', 'lunch', 'dinner', 'snacks'].map(meal => (
+                    <div key={meal}>
+                      <label className="block text-sm text-gray-700 capitalize mb-1">
+                        {meal}
+                      </label>
+                      <input
+                        type="text"
+                        value={newFoodPreferences.mealTiming[meal as keyof typeof newFoodPreferences.mealTiming]}
+                        onChange={(e) => setNewFoodPreferences({
+                          ...newFoodPreferences,
+                          mealTiming: {
+                            ...newFoodPreferences.mealTiming,
+                            [meal]: e.target.value
+                          }
+                        })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                        placeholder="Time and frequency..."
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            {/* Eating Habits */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Eating Habits</h4>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Eating Speed</label>
-                  <div className="text-gray-900 capitalize">{patient.foodPreferences.eatingHabits.speed}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Typical Locations</label>
-                  <div className="text-gray-900">{patient.foodPreferences.eatingHabits.location.join(', ')}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Emotional Eating</label>
-                  <div className="text-gray-900">{patient.foodPreferences.emotionalEating}</div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Food Preferences
+                </label>
+                <div className="space-y-3">
+                  {[
+                    { id: 'likes', label: 'Favorite Foods' },
+                    { id: 'dislikes', label: 'Disliked Foods' },
+                    { id: 'allergies', label: 'Food Allergies' },
+                  ].map(item => (
+                    <div key={item.id}>
+                      <label className="block text-sm text-gray-700 mb-1">
+                        {item.label}
+                      </label>
+                      <textarea
+                        value={newFoodPreferences.foodPreferences[item.id as keyof typeof newFoodPreferences.foodPreferences]}
+                        onChange={(e) => setNewFoodPreferences({
+                          ...newFoodPreferences,
+                          foodPreferences: {
+                            ...newFoodPreferences.foodPreferences,
+                            [item.id]: e.target.value
+                          }
+                        })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                        rows={2}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            {/* Additional Information */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-4">Additional Information</h4>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Water Intake</label>
-                  <div className="text-gray-900">{patient.foodPreferences.waterIntake}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Cultural Preferences</label>
-                  <div className="text-gray-900">{patient.foodPreferences.culturalPreferences}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900">Cooking & Meal Prep</label>
-                  <div className="text-gray-900">
-                    {patient.foodPreferences.cookingAbility}
-                    {patient.foodPreferences.mealPrep && (
-                      <div className="mt-1">Meal Prep: {patient.foodPreferences.mealPrep}</div>
-                    )}
-                  </div>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Emotional Eating
+                </label>
+                <textarea
+                  value={newFoodPreferences.emotionalEating}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    emotionalEating: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Describe any emotional eating patterns..."
+                />
               </div>
-            </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Water Intake
+                </label>
+                <input
+                  type="text"
+                  value={newFoodPreferences.waterIntake}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    waterIntake: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  placeholder="Daily water consumption..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Supplements/Vitamins
+                </label>
+                <textarea
+                  value={newFoodPreferences.supplementsVitamins}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    supplementsVitamins: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="List any supplements or vitamins taken..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Cultural Food Preferences
+                </label>
+                <textarea
+                  value={newFoodPreferences.culturalPreferences}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    culturalPreferences: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Describe any cultural food preferences..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Cooking Ability
+                </label>
+                <select
+                  value={newFoodPreferences.cookingAbility}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    cookingAbility: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                >
+                  <option value="">Select cooking ability</option>
+                  <option value="none">No cooking experience</option>
+                  <option value="beginner">Beginner - Basic cooking skills</option>
+                  <option value="intermediate">Intermediate - Can follow recipes</option>
+                  <option value="advanced">Advanced - Experienced cook</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Grocery Shopping
+                </label>
+                <textarea
+                  value={newFoodPreferences.groceryShopping}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    groceryShopping: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Describe grocery shopping habits..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Meal Preparation
+                </label>
+                <textarea
+                  value={newFoodPreferences.mealPrep}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    mealPrep: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={2}
+                  placeholder="Describe meal preparation habits..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Additional Notes
+                </label>
+                <textarea
+                  value={newFoodPreferences.additionalNotes}
+                  onChange={(e) => setNewFoodPreferences({
+                    ...newFoodPreferences,
+                    additionalNotes: e.target.value
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={3}
+                  placeholder="Any additional notes about food preferences..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
+              >
+                Save Food Preferences
+              </button>
+            </form>
           </div>
         );
 
-      default:
+      case 'Insurance':
         return (
-          <div className="text-gray-900">
-            Select a section from the sidebar to view details
+          <div className="space-y-6">
+            {/* Insurance Type Selection */}
+            <div className="flex space-x-4 mb-6">
+              <button
+                onClick={() => setInsuranceType('primary')}
+                className={`px-4 py-2 rounded-md ${
+                  insuranceType === 'primary'
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-white text-gray-700 border border-gray-300'
+                }`}
+              >
+                Primary Insurance
+              </button>
+              <button
+                onClick={() => setInsuranceType('secondary')}
+                className={`px-4 py-2 rounded-md ${
+                  insuranceType === 'secondary'
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-white text-gray-700 border border-gray-300'
+                }`}
+              >
+                Secondary Insurance
+              </button>
+            </div>
+
+            {insuranceFlow === 'initial' ? (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium text-gray-900">Add Insurance Information</h3>
+                  <div className="flex space-x-4">
+                    <button
+                      onClick={handleAddNew}
+                      className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800"
+                    >
+                      Add New Insurance
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : insuranceFlow === 'search' ? (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium text-gray-900">Search Insurance Plans</h3>
+                  <div className="flex items-center space-x-4">
+                    <button
+                      onClick={() => setSelectedPlanType('standard')}
+                      className={`px-4 py-2 rounded-md ${
+                        selectedPlanType === 'standard'
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-white text-gray-700 border border-gray-300'
+                      }`}
+                    >
+                      Standard Plans
+                    </button>
+                    <button
+                      onClick={() => setSelectedPlanType('case')}
+                      className={`px-4 py-2 rounded-md ${
+                        selectedPlanType === 'case'
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-white text-gray-700 border border-gray-300'
+                      }`}
+                    >
+                      Case Plans
+                    </button>
+                  </div>
+                </div>
+
+                <InsuranceSearch
+                  ref={searchRef}
+                  onSelect={handlePlanSelect}
+                  selectedPlanType={selectedPlanType}
+                />
+
+                {selectedPlan && (
+                  <div className="mt-8 space-y-6">
+                    <div className="bg-gray-50 rounded-lg p-6">
+                      <h3 className="text-lg font-medium text-gray-900 mb-4">Policy Details</h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Member ID
+                          </label>
+                          <input
+                            type="text"
+                            value={policyDetails.memberId}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, memberId: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Group Number
+                          </label>
+                          <input
+                            type="text"
+                            value={policyDetails.groupNumber}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, groupNumber: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Effective Date
+                          </label>
+                          <input
+                            type="date"
+                            value={policyDetails.effectiveDate}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, effectiveDate: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Expiration Date
+                          </label>
+                          <input
+                            type="date"
+                            value={policyDetails.expirationDate}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, expirationDate: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Copay
+                          </label>
+                          <input
+                            type="text"
+                            value={policyDetails.copay}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, copay: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Deductible
+                          </label>
+                          <input
+                            type="text"
+                            value={policyDetails.deductible}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, deductible: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Pre-authorization Notes
+                        </label>
+                        <textarea
+                          value={policyDetails.preAuthNotes}
+                          onChange={(e) => setPolicyDetails({ ...policyDetails, preAuthNotes: e.target.value })}
+                          rows={3}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        />
+                      </div>
+
+                      <div className="mt-6 grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Subscriber Name
+                          </label>
+                          <input
+                            type="text"
+                            value={policyDetails.subscriberName}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, subscriberName: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Subscriber Relation
+                          </label>
+                          <select
+                            value={policyDetails.subscriberRelation}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, subscriberRelation: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          >
+                            <option value="">Select relation</option>
+                            <option value="self">Self</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="child">Child</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Subscriber DOB
+                          </label>
+                          <input
+                            type="date"
+                            value={policyDetails.subscriberDOB}
+                            onChange={(e) => setPolicyDetails({ ...policyDetails, subscriberDOB: e.target.value })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-6 flex justify-between items-center">
+                        <button
+                          onClick={handleEligibilityCheck}
+                          disabled={policyDetails.isEligibilityChecking}
+                          className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:bg-gray-400"
+                        >
+                          {policyDetails.isEligibilityChecking ? 'Checking...' : 'Check Eligibility'}
+                        </button>
+                        <button
+                          onClick={handleInsuranceSubmit}
+                          className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800"
+                        >
+                          Save Insurance Information
+                        </button>
+                      </div>
+
+                      {policyDetails.isEligibilityChecked && (
+                        <div className="mt-4 p-4 bg-green-50 text-green-800 rounded-md">
+                          Patient is eligible for coverage under this plan.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : null}
+
+            {/* Upload Dialog */}
+            {showUploadDialog && (
+              <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+                  {uploadStep === 'initial' && (
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium text-gray-900">Add Insurance Card</h3>
+                      <p className="text-gray-600">
+                        Upload images of the front and back of your insurance card or skip to search manually.
+                      </p>
+                      <div className="flex justify-end space-x-4">
+                        <button
+                          onClick={handleSkipUpload}
+                          className="px-4 py-2 text-gray-700 hover:text-gray-900"
+                        >
+                          Skip
+                        </button>
+                        <button
+                          onClick={handleUploadImage}
+                          className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800"
+                        >
+                          Upload Images
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {uploadStep === 'upload' && (
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium text-gray-900">Upload Insurance Card</h3>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileSelect}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      {selectedFile ? (
+                        <div className="text-sm text-gray-600 mb-2">
+                          Selected file: {selectedFile.name}
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-md text-gray-700 hover:border-gray-400"
+                        >
+                          Click to select files
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  {uploadStep === 'uploading' && (
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium text-gray-900">Uploading...</h3>
+                      <div className="h-2 bg-gray-200 rounded">
+                        <div className="h-2 bg-gray-900 rounded w-1/2"></div>
+                      </div>
+                    </div>
+                  )}
+
+                  {uploadStep === 'complete' && (
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium text-gray-900">Upload Complete</h3>
+                      <p className="text-gray-600">
+                        Insurance card images have been uploaded successfully.
+                      </p>
+                      <div className="flex justify-end">
+                        <button
+                          onClick={handleUploadComplete}
+                          className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800"
+                        >
+                          Continue
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Display current insurance information */}
+            {patient.insurance && (
+              <div className="mt-6 space-y-6">
+                {patient.insurance.primary && (
+                  <div className="bg-gray-50 p-4 rounded-md">
+                    <h4 className="text-lg font-medium text-gray-900 mb-4">Primary Insurance</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Provider</p>
+                        <p className="mt-1">{patient.insurance.primary.provider}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Member ID</p>
+                        <p className="mt-1">{patient.insurance.primary.memberId}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Group Number</p>
+                        <p className="mt-1">{patient.insurance.primary.groupNumber}</p>
+                      </div>
+                      {patient.insurance.primary.preAuthNotes && (
+                        <div className="col-span-2">
+                          <p className="text-sm font-medium text-gray-700">Pre-authorization Notes</p>
+                          <p className="mt-1">{patient.insurance.primary.preAuthNotes}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {patient.insurance.secondary && (
+                  <div className="bg-gray-50 p-4 rounded-md">
+                    <h4 className="text-lg font-medium text-gray-900 mb-4">Secondary Insurance</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Provider</p>
+                        <p className="mt-1">{patient.insurance.secondary.provider}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Member ID</p>
+                        <p className="mt-1">{patient.insurance.secondary.memberId}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Group Number</p>
+                        <p className="mt-1">{patient.insurance.secondary.groupNumber}</p>
+                      </div>
+                      {patient.insurance.secondary.preAuthNotes && (
+                        <div className="col-span-2">
+                          <p className="text-sm font-medium text-gray-700">Pre-authorization Notes</p>
+                          <p className="mt-1">{patient.insurance.secondary.preAuthNotes}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         );
     }
@@ -2459,4 +2807,4 @@ export default function PatientChart() {
       </div>
     </div>
   );
-} 
+}

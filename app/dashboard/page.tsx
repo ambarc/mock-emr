@@ -34,7 +34,7 @@ export default function DashboardPage() {
         {/* Today's Schedule Section */}
         <div className="space-y-6">
           <section className="bg-white p-6 rounded-lg border border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Today's Schedule</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Today&apos;s Schedule</h2>
             <div className="space-y-3">
               {/* Appointments will be populated here */}
             </div>
