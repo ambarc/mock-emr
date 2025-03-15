@@ -81,7 +81,7 @@ function Dashboard() {
                     <div>
                       <h3 className="font-medium">{patient.name}</h3>
                       <div className="text-sm text-gray-500">
-                        DOB: {new Date(patient.dob).toLocaleDateString()}
+                        DOB: {patient.dob}
                       </div>
                       <div className="text-sm text-gray-500">
                         Last Visit: {new Date(patient.lastVisit).toLocaleDateString()}
