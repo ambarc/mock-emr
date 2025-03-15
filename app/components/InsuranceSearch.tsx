@@ -19,8 +19,9 @@ const InsuranceSearch = forwardRef<InsuranceSearchHandle, InsuranceSearchProps>(
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [focusedIndex, setFocusedIndex] = useState(-1);
     const [hasSearched, setHasSearched] = useState(false);
-    const [insuranceAddress, setInsuranceAddress] = useState('');
-    const [insurancePhone, setInsurancePhone] = useState('');
+    // Temporarily commented out - verify if needed for future insurance details feature
+    // const [insuranceAddress, setInsuranceAddress] = useState('');
+    // const [insurancePhone, setInsurancePhone] = useState('');
     const [noMatchChecked, setNoMatchChecked] = useState(false);
     const suggestionsRef = useRef<HTMLDivElement>(null);
     const [searchResults, setSearchResults] = useState<InsurancePlan[]>([]);
@@ -210,7 +211,7 @@ const InsuranceSearch = forwardRef<InsuranceSearchHandle, InsuranceSearchProps>(
                         className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                       />
                       <span className="text-sm text-gray-700">
-                        I've entered all available information and can't find a match
+                        I&apos;ve entered all available information and can&apos;t find a match
                       </span>
                     </label>
                     {noMatchChecked && (

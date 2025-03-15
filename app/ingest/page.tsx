@@ -54,7 +54,7 @@ export default function IntakeSurveyReview() {
               <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-md">
                 <div>
                   <p className="text-sm font-medium text-gray-700">Height</p>
-                  <p className="mt-1 text-gray-900">5'6" (167.6 cm)</p>
+                  <p className="mt-1 text-gray-900">5&apos;6&quot; (167.6 cm)</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-700">Current Weight</p>
