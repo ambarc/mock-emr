@@ -8,6 +8,7 @@ import { Medications } from './components/Medications';
 import { TaskBar } from './components/TaskBar';
 import { CareManagement } from './components/CareManagement';
 import { store } from './utils/store';
+import { EMRNav, EMRHeader } from './components/EMRHeader';
 
 type SectionType = 
   | 'find'
@@ -53,57 +54,8 @@ export default function Home() {
 
   return (
     <div className="emr-layout">
-      {/* Top Navigation */}
-      <nav className="emr-nav">
-        <a href="/" className="emr-brand">oneEMR</a>
-        <div className="emr-nav-items">
-          <a href="/clinical" className="emr-nav-item">Clinical</a>
-          <a href="/schedule" className="emr-nav-item">Schedule</a>
-          <a href="/billing" className="emr-nav-item">Billing</a>
-        </div>
-        <div className="emr-nav-right">
-          <div className="patient-search">
-            <span className="patient-search-icon">🔍</span>
-            <input 
-              type="text" 
-              placeholder="Search patients by name, DOB, or MRN..."
-              defaultValue="#3316"
-              aria-label="Search patients"
-            />
-          </div>
-          <div className="user-id">embott3</div>
-          <a href="/logout" className="logout-btn">Log out</a>
-        </div>
-      </nav>
-
-      {/* Header */}
-      <header className="emr-header">
-        <div className="header-left">
-          <div className="patient-avatar">
-            <div className="avatar-circle">CJ</div>
-          </div>
-          <div className="patient-info">
-            <div className="patient-name">Connor JONES</div>
-            <div className="patient-details">
-              <div className="patient-demographics">30y M DOB: 05-18-1992</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="header-sections">
-          <div className="header-section" data-section="contact">
-            <div className="section-label">CONTACT</div>
-            <div className="section-content">
-              <a href="tel:847-345-4390">Mobile(847) 345-4390</a>
-            </div>
-          </div>
-
-          <div className="header-section" data-section="appointments">
-            <div className="section-label">APPOINTMENTS</div>
-            <div className="section-content">Next<span className="content-value">N/A</span></div>
-          </div>
-        </div>
-      </header>
+      <EMRNav />
+      <EMRHeader />
 
       {/* Sidebar */}
       <nav className="emr-sidebar">
@@ -127,7 +79,7 @@ export default function Home() {
           onClick={() => handleSectionClick('medications')}
         >
           <i className="fa fa-medkit icon"></i>
-          <span className="label">Medications</span>
+          <span className="label">Meds</span>
         </button>
         <button 
           className="sidebar-item"
@@ -199,14 +151,17 @@ export default function Home() {
             <section className="info-section" onClick={() => handleSectionClick('allergies')}>
               <h2>Allergies</h2>
               <div className="section-content">
-                <div>Penicillins</div>
-                <div>sulfur dioxide</div>
+                {store.get('allergies').map((allergy, index) => (
+                  <div key={index}>{allergy.name}</div>
+                ))}
               </div>
             </section>
             <section className="info-section" onClick={() => handleSectionClick('problems')}>
               <h2>Problems</h2>
               <div className="section-content">
-                <div>diabetes mellitus</div>
+                {store.get('problems').map((problem, index) => (
+                  <div key={index}>{problem.name}</div>
+                ))}
               </div>
             </section>
             <section className="info-section" onClick={() => handleSectionClick('medications')}>

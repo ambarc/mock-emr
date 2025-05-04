@@ -125,13 +125,15 @@ body {
 /* EMR Header Styles */
 .emr-header {
   grid-column: 1 / -1;
+  grid-row: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
+  padding: 8px 16px;
   background: white;
   border-bottom: 1px solid var(--border-color);
   height: 48px;
+  z-index: 900;
 }
 
 .header-left {
@@ -258,26 +260,30 @@ body {
 
 /* EMR Sidebar Styles */
 .emr-sidebar {
-  grid-row: 2 / -1;
   grid-column: 1;
+  grid-row: 3;
   background: white;
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   padding: 8px 0;
+  width: var(--sidebar-width);
 }
 
 .sidebar-item {
   width: 100%;
-  padding: 8px 0;
+  height: 48px;
+  padding: 4px 0;
   border: none;
   background: none;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  color: var(--text-primary);
+  justify-content: center;
+  gap: 2px;
+  color: var(--text-secondary);
+  font-size: 11px;
 }
 
 .sidebar-item:hover {
@@ -289,20 +295,27 @@ body {
 }
 
 .sidebar-item .icon {
-  font-size: 16px;
+  font-size: 14px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-item .label {
   font-size: 10px;
   text-align: center;
+  line-height: 1.2;
+  max-width: 100%;
+  padding: 0 2px;
 }
 
 /* Main Content Area */
 .main-content {
-  grid-row: 2 / -1;
   grid-column: 2;
+  grid-row: 3;
   padding: 16px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .content-area {
@@ -368,10 +381,10 @@ body {
 /* Layout */
 .emr-layout {
   display: grid;
-  grid-template-rows: auto auto 1fr;
-  grid-template-columns: 48px 1fr;
-  height: 100vh;
-  background: #f5f5f5;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 100vh;
+  background: var(--emr-bg);
 }
 
 .content-wrapper {
@@ -659,14 +672,15 @@ body {
 /* Task Bar */
 .task-bar {
   grid-column: 1 / -1;
+  grid-row: 4;
+  height: 32px;
+  background: var(--background);
   border-top: 1px solid var(--border-color);
-  background: white;
-  padding: 4px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 12px;
-  color: var(--text-secondary);
+  padding: 0 16px;
+  z-index: 800;
 }
 
 .task-select {
@@ -781,13 +795,15 @@ body {
 /* Top Level Navigation Bar */
 .emr-nav {
   grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
+  grid-row: 1;
   background: var(--header-bg);
   color: var(--header-text);
+  padding: 0 16px;
   height: 32px;
-  padding: 0 8px;
-  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
 }
 
 .emr-brand {
