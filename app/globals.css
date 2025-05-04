@@ -1126,3 +1126,177 @@ body {
 .insurance-form .submit-btn:hover {
   background: #0056b3;
 }
+
+/* Appointments Dashboard Styles */
+.appointments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.appointment-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.appointment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-time {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: var(--emr-purple);
+}
+
+.appointment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.patient-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.appointment-type,
+.appointment-provider {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.appointment-status {
+  align-self: flex-start;
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: white;
+  font-size: 0.8em;
+  text-transform: capitalize;
+}
+
+.appointment-count {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-left: 8px;
+  font-weight: normal;
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.appointment-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 1fr auto;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  text-decoration: none;
+  color: inherit;
+  align-items: center;
+}
+
+.appointment-row:hover {
+  background: #f8f8f8;
+}
+
+.appointment-date {
+  color: var(--emr-purple);
+  font-weight: 500;
+}
+
+.appointment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.appointment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.appointment-reason {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.appointment-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.appointment-verification {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 150px;
+}
+
+.verification-badge {
+  font-size: 0.8em;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.verification-badge.insurance {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.verification-badge.copay {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+/* Clinic Stats Styles */
+.clinic-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.stat-item {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-item label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 1.5em;
+  font-weight: 500;
+  color: var(--emr-purple);
+}
