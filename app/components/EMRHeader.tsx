@@ -19,7 +19,7 @@ export const EMRNav = () => {
             aria-label="Search patients"
           />
         </div>
-        <div className="user-id">schoudhury13</div>
+        <div className="user-id">embott3</div>
         <a href="/logout" className="logout-btn">Log out</a>
       </div>
     </nav>

@@ -342,7 +342,7 @@ body {
 /* Main Content Area */
 .main-content {
   margin-left: var(--sidebar-width);
-  padding-top: 115px;
+  padding-top: 25px;
   min-height: calc(100vh - 24px);
   background: #e8e8e8;
   position: relative;
@@ -362,7 +362,9 @@ body {
   gap: 0.5rem;
   color: #4a90e2;
   font-size: 0.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  background: #f0f0f0;
+  padding: 0.5rem 1rem;
 }
 
 .info-sections {
@@ -394,7 +396,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 24px;
+  padding-top: 16px;
 }
 
 /* Patient Page Styles */
@@ -449,24 +451,25 @@ body {
   display: none;
 }
 
-/* Patient Info Sections */
-.patient-info-sections {
+/* Patient Info Sections - OLD LAYOUT - Commented out */
+/* .patient-info-sections {
   display: flex;
   gap: 0.75rem;
   padding: 0.5rem;
-}
+} */
 
-.info-column {
+/* .info-column {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-}
+} */
 
-.info-section {
+.info-section { /* Combined styles for info cards */
   background: white;
   border: 1px solid var(--emr-border);
   border-radius: 2px;
+  padding: 1rem; /* Added padding from rule below */
 }
 
 .info-section h2 {
@@ -718,10 +721,7 @@ body {
 
 /* Care Management */
 .care-management {
-  background: white;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-left: 1.5rem;
+  /* Removed card styles - background applied to .right-content */
   width: 300px;
 }
 
@@ -763,12 +763,16 @@ body {
 /* Main Content Layout */
 .content-wrapper {
   display: flex;
+  align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
-  background: #e8e8e8;
+  background: white;
 }
 
 .left-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   flex: 1;
   background: white;
   border-radius: 4px;
@@ -777,48 +781,48 @@ body {
 }
 
 .right-content {
-  width: 300px;
+  flex: 1;
+  background: var(--emr-bg);
+}
+
+/* Styling for the moved Personal Info header */
+.personal-info {
+  margin-bottom: 0.5rem;
+  background: #f0f0f0;
+  padding: 0.5rem 1rem;
 }
 
 .info-header {
   background: none;
   border: none;
+  padding: 0;
   color: #4a90e2;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: none;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
-.info-sections {
+/* Style the icon */
+.info-header i {
+  color: #4a90e2;
+  font-size: 1.1rem;
+}
+
+/* Redundant rule - Commented out */
+/* .info-sections {
   background: white;
   border: 1px solid var(--emr-border);
   border-radius: 4px;
-}
+} */
 
-.info-section {
+/* .info-section {
   padding: 1rem;
   border-bottom: 1px solid var(--emr-border);
-}
-
-.info-section:last-child {
-  border-bottom: none;
-}
-
-.info-section h2 {
-  font-size: 0.9rem;
-  font-weight: normal;
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.info-section .section-content {
-  color: #666;
-  font-size: 0.9rem;
-}
+} */
 
 /* Top Level Navigation Bar */
 .emr-nav {

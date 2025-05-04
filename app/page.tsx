@@ -118,43 +118,41 @@ export default function Home() {
       </SidePanel>
 
       <div className="main-content">
+        <div className="personal-info">
+          <button className="info-header">
+            <i className="fa fa-plus-circle"></i> PERSONAL INFO
+          </button>
+        </div>
         <div className="content-wrapper">
           <div className="left-content">
-            <div className="personal-info">
-              <button className="info-header">
-                <i className="fa fa-plus-circle"></i> PERSONAL INFO
-              </button>
-            </div>
-            <div className="info-sections">
-              <section className="info-section">
-                <h2>Allergies</h2>
-                <div className="section-content">
-                  <div>Penicillins</div>
-                  <div>sulfur dioxide</div>
-                </div>
-              </section>
-              <section className="info-section">
-                <h2>Problems</h2>
-                <div className="section-content">
-                  <div>diabetes mellitus</div>
-                </div>
-              </section>
-              <section className="info-section">
-                <h2>Medications</h2>
-                <div className="section-content">
-                  <div>flaxseed</div>
-                  <div>hydroxychloroquine</div>
-                  <div>lisinopril</div>
-                  <div>losartan</div>
-                  <div>metformin</div>
-                  <div>multivitamin</div>
-                  <div>rosuvastatin</div>
-                  <div>Tylenol</div>
-                  <div>Vitamin D3</div>
-                  <div>Wegovy</div>
-                </div>
-              </section>
-            </div>
+            <section className="info-section">
+              <h2>Allergies</h2>
+              <div className="section-content">
+                <div>Penicillins</div>
+                <div>sulfur dioxide</div>
+              </div>
+            </section>
+            <section className="info-section">
+              <h2>Problems</h2>
+              <div className="section-content">
+                <div>diabetes mellitus</div>
+              </div>
+            </section>
+            <section className="info-section">
+              <h2>Medications</h2>
+              <div className="section-content">
+                <div>flaxseed</div>
+                <div>hydroxychloroquine</div>
+                <div>lisinopril</div>
+                <div>losartan</div>
+                <div>metformin</div>
+                <div>multivitamin</div>
+                <div>rosuvastatin</div>
+                <div>Tylenol</div>
+                <div>Vitamin D3</div>
+                <div>Wegovy</div>
+              </div>
+            </section>
           </div>
           <div className="right-content">
             <CareManagement />
