@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Medications.css';
+import { store } from '../utils/store';
 
 interface ActiveIngredient {
   name: string;
@@ -15,6 +16,13 @@ interface Medication {
   labeler_name: string;
   product_ndc: string;
   score: number;
+  dosage?: string;
+  frequency?: string;
+  route?: string;
+  duration?: string;
+  startDate?: string;
+  status?: 'Active' | 'Historical';
+  note?: string;
 }
 
 interface SearchResponse {
@@ -22,17 +30,6 @@ interface SearchResponse {
   total: number;
   page: number;
   pageSize: number;
-}
-
-interface MedicationFormData {
-  medication: Medication;
-  dosage: string;
-  frequency: string;
-  route: string;
-  duration?: string;
-  startDate?: string;
-  status: 'Active' | 'Historical';
-  note?: string;
 }
 
 // Helper function to format medication display
@@ -49,12 +46,29 @@ export function Medications() {
   const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  // Load medications from store on mount
+  useEffect(() => {
+    const storedMeds = store.get('medications');
+    setMedications(storedMeds);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearching(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Debounced search function
   useEffect(() => {
     if (!searchTerm) {
       setSearchResults([]);
-      setIsSearching(false);
       return;
     }
 
@@ -74,7 +88,6 @@ export function Medications() {
         
         const data: SearchResponse = await response.json();
         setSearchResults(data.medications);
-        setIsSearching(true);
       } catch (error) {
         console.error('Search error:', error);
         setError(error instanceof Error ? error.message : 'Failed to search medications');
@@ -87,42 +100,48 @@ export function Medications() {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const handleSearchFocus = () => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
     setIsSearching(true);
   };
 
   const handleMedicationSelect = (medication: Medication) => {
     setSelectedMedication(medication);
-    setIsSearching(false);
     setSearchTerm('');
+    setSearchResults([]);
+    setIsSearching(false);
   };
 
-  const handleAddMedication = (formData: MedicationFormData) => {
-    setMedications([...medications, formData.medication]);
+  const handleAddMedication = (medication: Medication) => {
+    // Add to local state and store
+    const updatedMeds = [...medications, medication];
+    setMedications(updatedMeds);
+    store.set('medications', updatedMeds);
     setSelectedMedication(null);
   };
 
   return (
     <div className="medications-list">
       <div className="list-header">
-        <div className="search-container">
+        <div className="search-container" ref={searchRef}>
           <div className="search-bar">
             <input 
               type="text" 
               placeholder="Search medications..." 
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onFocus={handleSearchFocus}
+              onChange={handleSearchChange}
+              onFocus={() => setIsSearching(true)}
             />
             {loading && <div className="search-spinner" />}
           </div>
           
-          {isSearching && searchTerm && (
+          {isSearching && (
             <div className="search-results">
               {error && (
                 <div className="search-error">{error}</div>
               )}
-              {!error && searchResults.length === 0 && !loading && (
+              {!error && searchResults.length === 0 && !loading && searchTerm && (
                 <div className="no-results">No medications found</div>
               )}
               {searchResults.map((med) => (
@@ -179,19 +198,24 @@ function MedicationForm({
   onCancel 
 }: { 
   medication: Medication;
-  onSubmit: (data: MedicationFormData) => void;
+  onSubmit: (medication: Medication) => void;
   onCancel: () => void;
 }) {
-  const [formData, setFormData] = useState<MedicationFormData>({
-    medication,
+  const [formData, setFormData] = useState<Medication>({
+    ...medication,
     dosage: '1',
     frequency: 'every day',
     route: 'by oral route',
     status: 'Active'
   });
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
   return (
-    <div className="medication-form">
+    <form className="medication-form" onSubmit={handleSubmit}>
       <h3>{formatMedicationDisplay(medication)}</h3>
       
       <div className="form-group">
@@ -281,9 +305,9 @@ function MedicationForm({
       </div>
 
       <div className="form-actions">
-        <button onClick={() => onSubmit(formData)}>Add</button>
-        <button onClick={onCancel}>Cancel</button>
+        <button type="submit">Add Medication</button>
+        <button type="button" onClick={onCancel}>Cancel</button>
       </div>
-    </div>
+    </form>
   );
 } 
