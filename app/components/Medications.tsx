@@ -149,8 +149,6 @@ export function Medications() {
         </div>
 
         <div className="list-options">
-          <span>View medications from other sources</span>
-          <span>Arrange by: Name</span>
         </div>
       </div>
 
@@ -204,16 +202,6 @@ function MedicationForm({
   return (
     <form className="medication-form" onSubmit={handleSubmit}>
       <h3>{formatMedicationDisplay(medication)}</h3>
-      
-      <div className="form-group">
-        <label>
-          <input 
-            type="checkbox" 
-            checked={true} 
-            readOnly 
-          /> Structured
-        </label>
-      </div>
 
       <div className="form-group inline-inputs">
         <label>Take</label>
