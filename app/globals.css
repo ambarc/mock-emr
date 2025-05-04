@@ -9,12 +9,19 @@
 }
 
 :root {
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --border-color: #ccc;
+  --bg-hover: #f0f0f0;
+  --bg-active: #e6e6e6;
+  --header-bg: #00438c;
+  --header-text: #fff;
   --background: #ffffff;
   --foreground: #171717;
   --emr-purple: #0d47a1;
   --emr-purple-dark: #002171;
   --emr-purple-light: #1976d2;
-  --emr-border: #ccc;
   --emr-bg: #f5f5f5;
   --emr-text: #333;
   --header-height: 60px;
@@ -29,19 +36,15 @@
 }
 
 body {
-  color: var(--foreground);
+  font-family: var(--font-family);
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.3;
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   min-height: 100vh;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background: var(--emr-bg);
-  color: var(--emr-text);
 }
 
 /* Top Navigation */
@@ -92,30 +95,22 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
-  padding: 0.15rem 0.5rem;
-  gap: 0.5rem;
-  min-width: 200px;
 }
 
 .patient-search input {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 0.75rem;
-  width: 100%;
-  padding: 0;
-  outline: none;
-}
-
-.patient-search input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  height: 24px;
+  padding: 0 8px 0 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  font-size: 13px;
+  width: 300px;
 }
 
 .patient-search-icon {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.75rem;
+  position: absolute;
+  left: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 .patient-search:hover {
@@ -129,108 +124,73 @@ body {
 
 /* EMR Header Styles */
 .emr-header {
-  position: fixed;
-  top: 24px;
-  left: 0;
-  right: 0;
-  background: var(--emr-purple);
-  height: 45px;
-  z-index: 1000;
+  grid-column: 1 / -1;
   display: flex;
-  align-items: stretch;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: white;
+  border-bottom: 1px solid var(--border-color);
+  height: 48px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--emr-purple);
-  min-width: 280px;
-  position: relative;
-}
-
-.header-left::after {
-  content: '';
-  position: absolute;
-  right: -20px;
-  top: 0;
-  width: 20px;
-  height: 100%;
-  background: var(--emr-purple);
-  clip-path: polygon(0 0, 0 100%, 100% 0);
+  gap: 8px;
 }
 
 .patient-avatar {
   width: 32px;
   height: 32px;
-  background: #e74c3c;
-  border-radius: 3px;
+  border-radius: 50%;
+  background: var(--header-bg);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .patient-info {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 .patient-name {
   font-weight: 500;
-  font-size: 0.9rem;
-  color: white;
-  text-transform: uppercase;
-  line-height: 1.2;
+  font-size: 14px;
 }
 
-.patient-details {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.2;
+.patient-demographics {
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 .header-sections {
   display: flex;
-  flex: 1;
-  align-items: stretch;
-  padding: 0 1.5rem;
-  gap: 3rem;
-  margin-left: 1rem;
-  color: rgba(255, 255, 255, 0.95);
+  gap: 24px;
 }
 
 .header-section {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-width: 160px;
-  opacity: 0.95;
-  background: none;
 }
 
 .section-label {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.85);
-  text-transform: uppercase;
-  margin-bottom: 0.1rem;
-  font-weight: normal;
-  background: none;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
 }
 
 .section-content {
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 0.85rem;
-  background: none;
+  font-size: 13px;
 }
 
-.content-label {
-  color: rgba(255, 255, 255, 0.85);
+.section-content a {
+  color: var(--text-primary);
+  text-decoration: none;
 }
 
 /* Make all header section values white with high opacity */
@@ -298,66 +258,51 @@ body {
 
 /* EMR Sidebar Styles */
 .emr-sidebar {
-  position: fixed;
-  top: 69px;
-  left: 0;
-  width: var(--sidebar-width);
-  background: #fff;
-  height: calc(100vh - 69px);
-  padding: 0;
+  grid-row: 2 / -1;
+  grid-column: 1;
+  background: white;
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  z-index: 900;
-  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
 }
 
 .sidebar-item {
+  width: 100%;
+  padding: 8px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.75rem 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  width: 100%;
-  gap: 0.25rem;
-  position: relative;
-  user-select: none;
-  transition: background-color 0.2s;
-}
-
-.sidebar-item:active {
-  background: #e0e0e0;
-}
-
-.sidebar-item .icon,
-.sidebar-item .label {
-  color: #666;
-  pointer-events: none;
-  position: relative;
-  z-index: 902;
+  gap: 4px;
+  color: var(--text-primary);
 }
 
 .sidebar-item:hover {
-  background: #f5f5f5;
+  background: var(--bg-hover);
+}
+
+.sidebar-item.active {
+  background: var(--bg-active);
 }
 
 .sidebar-item .icon {
-  font-size: 1.25rem;
+  font-size: 16px;
 }
 
 .sidebar-item .label {
-  font-size: 0.7rem;
+  font-size: 10px;
   text-align: center;
 }
 
 /* Main Content Area */
 .main-content {
-  margin-left: var(--sidebar-width);
-  padding: 1rem;
-  flex: 1;
-  background: var(--emr-bg);
-  min-height: calc(100vh - 69px);
+  grid-row: 2 / -1;
+  grid-column: 2;
+  padding: 16px;
+  overflow: auto;
 }
 
 .content-area {
@@ -365,14 +310,7 @@ body {
 }
 
 .personal-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #4a90e2;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  background: #f0f0f0;
-  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
 }
 
 .info-sections {
@@ -383,71 +321,63 @@ body {
 
 .info-section {
   background: white;
-  border: 1px solid var(--emr-border);
-  border-radius: 2px;
-  position: relative;
+  border: 1px solid var(--border-color);
+  margin-bottom: 16px;
 }
 
 .info-section h2 {
-  padding: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: normal;
-  color: #333;
-  margin: 0;
-  border-bottom: 1px solid #e0e0e0;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px;
+  background: #f8f8f8;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.info-section h2 .fa-cog {
+.section-icon {
+  font-size: 0.8rem;
   color: #666;
-  font-size: 0.85rem;
 }
 
-.section-content {
-  padding: 0.5rem;
-  font-size: 0.85rem;
-}
-
-.section-content > div {
-  padding: 0.35rem 0;
+.item {
+  padding: 0.25rem 0.5rem;
   border-bottom: 1px solid #eee;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  line-height: 1.3;
 }
 
-.section-content > div:last-child {
+.item:last-child {
   border-bottom: none;
 }
 
 .med-active {
-  padding-left: 1rem !important;
+  color: var(--text-primary);
 }
 
 .med-active::before {
-  content: '';
-  position: absolute;
-  left: 0.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
-  background: #4a90e2;
-  border-radius: 50%;
+  content: "•";
+  color: #28a745;
+  margin-right: 4px;
 }
 
 /* Layout */
 .emr-layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding-top: 69px;  /* Account for fixed header */
-  position: relative;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  grid-template-columns: 48px 1fr;
+  height: 100vh;
+  background: #f5f5f5;
 }
 
 .content-wrapper {
-  display: flex;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 16px;
 }
 
 .left-content {
@@ -530,16 +460,15 @@ body {
 
 .info-section { /* Combined styles for info cards */
   background: white;
-  border: 1px solid var(--emr-border);
-  border-radius: 2px;
+  border: 1px solid var(--border-color);
   padding: 1rem; /* Added padding from rule below */
 }
 
 .info-section h2 {
-  background: #f0f0f0;
+  background: #f8f8f8;
   padding: 0.25rem 0.5rem;
   font-size: 0.9rem;
-  border-bottom: 1px solid var(--emr-border);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -596,7 +525,7 @@ body {
   width: 400px;
   height: 100vh;
   background: white;
-  border-right: 1px solid var(--emr-border);
+  border-right: 1px solid var(--border-color);
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   z-index: 800;
@@ -608,7 +537,7 @@ body {
 
 .side-panel-header {
   padding: 1rem;
-  border-bottom: 1px solid var(--emr-border);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -667,13 +596,13 @@ body {
 
 .list-header {
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--emr-border);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .search-bar input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid var(--emr-border);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 0.9rem;
 }
@@ -693,7 +622,7 @@ body {
 
 .medication-item {
   padding: 0.75rem;
-  border-bottom: 1px solid var(--emr-border);
+  border-bottom: 1px solid var(--border-color);
   position: relative;
 }
 
@@ -729,18 +658,15 @@ body {
 
 /* Task Bar */
 .task-bar {
-  position: fixed;
-  bottom: 0;
-  left: var(--sidebar-width);
-  right: 0;
-  height: 30px;
-  background: #f0f0f0;
-  border-top: 1px solid var(--emr-border);
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--border-color);
+  background: white;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 0.5rem;
-  z-index: 1000;
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 .task-select {
@@ -833,17 +759,17 @@ body {
 }
 
 .info-header {
-  background: none;
-  border: none;
-  padding: 0;
-  color: #4a90e2;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-transform: none;
-  cursor: pointer;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  padding: 8px;
+  background: #f8f8f8;
+  border: 1px solid var(--border-color);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 /* Style the icon */
@@ -854,49 +780,39 @@ body {
 
 /* Top Level Navigation Bar */
 .emr-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 24px;
-  background: var(--emr-purple-dark);
+  grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  padding: 0 0.5rem;
-  z-index: 1200;
-  font-size: 0.75rem;
+  background: var(--header-bg);
+  color: var(--header-text);
+  height: 32px;
+  padding: 0 8px;
+  font-size: 13px;
 }
 
 .emr-brand {
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  padding: 0 0.5rem;
   font-weight: 500;
+  color: var(--header-text);
+  text-decoration: none;
+  margin-right: 16px;
 }
 
 .emr-nav-items {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-left: 1rem;
+  gap: 16px;
 }
 
 .emr-nav-item {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--header-text);
   text-decoration: none;
-  padding: 0.15rem 0.5rem;
-}
-
-.emr-nav-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
+  padding: 4px 8px;
 }
 
 .emr-nav-right {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 16px;
 }
 
 .user-id {
@@ -984,7 +900,7 @@ body {
 
 .detail-panel-header {
   padding: 1rem;
-  border-bottom: 1px solid var(--emr-border);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1034,7 +950,7 @@ body {
 
 .detail-actions {
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--emr-border);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .detail-action-btn {
@@ -1062,7 +978,7 @@ body {
 
 .detail-item {
   padding: 0.75rem;
-  border: 1px solid var(--emr-border);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   background: white;
 }
