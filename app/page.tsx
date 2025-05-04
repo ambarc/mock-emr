@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { EMRNav, EMRHeader } from './components/EMRHeader';
+import { EMRNav } from './components/EMRHeader';
+import { ClinicHeader } from './components/ClinicHeader';
 import { TaskBar } from './components/TaskBar';
 import Link from 'next/link';
 
@@ -125,7 +126,7 @@ export default function Home({ params }: PageProps) {
   return (
     <div className="emr-layout">
       <EMRNav />
-      <EMRHeader />
+      <ClinicHeader />
 
       {/* Main Content */}
       <main className="main-content">
