@@ -1,6 +1,6 @@
 import { Medication } from './types';
 import MiniSearch from 'minisearch';
-import medicationsData from './data.json';
+import medicationsData from './medications-small.json';
 
 interface SearchDocument {
   id: string;
@@ -41,11 +41,11 @@ try {
   });
 
   // Index all medications
-  const medications: Medication[] = (medicationsData as any).results || [];
+  const medications = medicationsData.results;
   
   // Create a Map to deduplicate medications by product_ndc
   const uniqueMedications = new Map();
-  medications.forEach(med => {
+  medications.forEach((med: Medication) => {
     if (!uniqueMedications.has(med.product_ndc)) {
       uniqueMedications.set(med.product_ndc, med);
     }
@@ -100,7 +100,7 @@ export function searchMedications({
   return {
     medications: results.slice(start, end).map(result => ({
       ...result,
-      score: result.score
+      score: result.score || 0
     })),
     total,
     page,
@@ -110,10 +110,10 @@ export function searchMedications({
 
 // Get unique dosage forms for filtering
 export function getDosageForms(): string[] {
-  return [...new Set(medications.map(med => med.dosage_form))].sort();
+  return [...new Set(medicationsData.results.map((med: Medication) => med.dosage_form))].sort();
 }
 
 // Get medication by NDC
 export function getMedicationByNDC(ndc: string): Medication | undefined {
-  return medications.find(med => med.product_ndc === ndc);
+  return medicationsData.results.find((med: Medication) => med.product_ndc === ndc);
 } 

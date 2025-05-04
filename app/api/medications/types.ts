@@ -13,15 +13,17 @@ export interface Package {
 export interface Medication {
   product_ndc: string;
   generic_name: string;
-  labeler_name: string;
   brand_name: string;
-  active_ingredients: ActiveIngredient[];
-  finished: boolean;
-  packaging: Package[];
-  listing_expiration_date: string;
-  marketing_category: string;
+  labeler_name: string;
   dosage_form: string;
-  spl_id: string;
+  packaging: Array<{
+    package_ndc: string;
+    description: string;
+  }>;
+  active_ingredients: Array<{
+    name: string;
+    strength: string;
+  }>;
 }
 
 export interface SearchResponse {

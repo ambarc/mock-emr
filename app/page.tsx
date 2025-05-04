@@ -64,7 +64,7 @@ export default function Home() {
     <div className="emr-layout">
       {/* Top Navigation */}
       <nav className="emr-nav">
-        <a href="/" className="emr-brand">athenaOne</a>
+        <a href="/" className="emr-brand">oneEMR</a>
         <div className="emr-nav-items">
           <a href="/clinical" className="emr-nav-item">Clinical</a>
           <a href="/schedule" className="emr-nav-item">Schedule</a>

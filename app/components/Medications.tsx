@@ -46,7 +46,6 @@ export function Medications() {
   const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const searchRef = useRef<HTMLDivElement>(null);
 
   // Load medications from store on mount
   useEffect(() => {
@@ -54,21 +53,11 @@ export function Medications() {
     setMedications(storedMeds);
   }, []);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsSearching(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   // Debounced search function
   useEffect(() => {
     if (!searchTerm) {
       setSearchResults([]);
+      setIsSearching(false);
       return;
     }
 
@@ -88,6 +77,7 @@ export function Medications() {
         
         const data: SearchResponse = await response.json();
         setSearchResults(data.medications);
+        setIsSearching(true);
       } catch (error) {
         console.error('Search error:', error);
         setError(error instanceof Error ? error.message : 'Failed to search medications');
@@ -100,17 +90,14 @@ export function Medications() {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
+  const handleSearchFocus = () => {
     setIsSearching(true);
   };
 
   const handleMedicationSelect = (medication: Medication) => {
     setSelectedMedication(medication);
-    setSearchTerm('');
-    setSearchResults([]);
     setIsSearching(false);
+    setSearchTerm('');
   };
 
   const handleAddMedication = (medication: Medication) => {
@@ -124,24 +111,24 @@ export function Medications() {
   return (
     <div className="medications-list">
       <div className="list-header">
-        <div className="search-container" ref={searchRef}>
+        <div className="search-container">
           <div className="search-bar">
             <input 
               type="text" 
               placeholder="Search medications..." 
               value={searchTerm}
-              onChange={handleSearchChange}
-              onFocus={() => setIsSearching(true)}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={handleSearchFocus}
             />
             {loading && <div className="search-spinner" />}
           </div>
           
-          {isSearching && (
+          {isSearching && searchTerm && (
             <div className="search-results">
               {error && (
                 <div className="search-error">{error}</div>
               )}
-              {!error && searchResults.length === 0 && !loading && searchTerm && (
+              {!error && searchResults.length === 0 && !loading && (
                 <div className="no-results">No medications found</div>
               )}
               {searchResults.map((med) => (

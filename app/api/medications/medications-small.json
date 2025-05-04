@@ -1,0 +1,148 @@
+{
+  "results": [
+    {
+      "product_ndc": "57844-0204",
+      "generic_name": "semaglutide",
+      "brand_name": "Wegovy",
+      "labeler_name": "Novo Nordisk",
+      "dosage_form": "INJECTION, SOLUTION",
+      "packaging": [{"package_ndc": "57844-0204-01", "description": "1 SYRINGE in 1 CARTON"}],
+      "active_ingredients": [{"name": "semaglutide", "strength": "2.4 mg/0.75mL"}]
+    },
+    {
+      "product_ndc": "00024-5901",
+      "generic_name": "tirzepatide",
+      "brand_name": "Zepbound",
+      "labeler_name": "Eli Lilly and Company",
+      "dosage_form": "INJECTION, SOLUTION",
+      "packaging": [{"package_ndc": "00024-5901-01", "description": "1 SYRINGE in 1 CARTON"}],
+      "active_ingredients": [{"name": "tirzepatide", "strength": "2.5 mg/0.5mL"}]
+    },
+    {
+      "product_ndc": "00088-2220",
+      "generic_name": "phentermine hydrochloride",
+      "brand_name": "Adipex-P",
+      "labeler_name": "Gate Pharmaceuticals",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00088-2220-30", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "phentermine hydrochloride", "strength": "37.5 mg"}]
+    },
+    {
+      "product_ndc": "42291-0318",
+      "generic_name": "phentermine hydrochloride",
+      "brand_name": null,
+      "labeler_name": "AvKARE",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "42291-0318-30", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "phentermine hydrochloride", "strength": "37.5 mg"}]
+    },
+    {
+      "product_ndc": "00002-7726",
+      "generic_name": "insulin glargine",
+      "brand_name": "Lantus",
+      "labeler_name": "Sanofi-Aventis",
+      "dosage_form": "INJECTION, SOLUTION",
+      "packaging": [{"package_ndc": "00002-7726-01", "description": "1 VIAL in 1 CARTON"}],
+      "active_ingredients": [{"name": "insulin glargine", "strength": "100 units/mL"}]
+    },
+    {
+      "product_ndc": "00006-0277",
+      "generic_name": "sitagliptin",
+      "brand_name": "Januvia",
+      "labeler_name": "Merck Sharp & Dohme",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00006-0277-31", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "sitagliptin phosphate", "strength": "100 mg"}]
+    },
+    {
+      "product_ndc": "00378-1115",
+      "generic_name": "lisinopril",
+      "brand_name": "Zestril",
+      "labeler_name": "AstraZeneca",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00378-1115-01", "description": "100 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "lisinopril", "strength": "10 mg"}]
+    },
+    {
+      "product_ndc": "68180-0513",
+      "generic_name": "lisinopril",
+      "brand_name": null,
+      "labeler_name": "Lupin Pharmaceuticals",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "68180-0513-01", "description": "100 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "lisinopril", "strength": "10 mg"}]
+    },
+    {
+      "product_ndc": "00006-0074",
+      "generic_name": "losartan potassium",
+      "brand_name": "Cozaar",
+      "labeler_name": "Merck Sharp & Dohme",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00006-0074-31", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "losartan potassium", "strength": "50 mg"}]
+    },
+    {
+      "product_ndc": "68180-0977",
+      "generic_name": "losartan potassium",
+      "brand_name": null,
+      "labeler_name": "Lupin Pharmaceuticals",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "68180-0977-31", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "losartan potassium", "strength": "50 mg"}]
+    },
+    {
+      "product_ndc": "00003-0222",
+      "generic_name": "metformin hydrochloride",
+      "brand_name": "Glucophage",
+      "labeler_name": "Bristol-Myers Squibb",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00003-0222-60", "description": "60 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "metformin hydrochloride", "strength": "500 mg"}]
+    },
+    {
+      "product_ndc": "65162-0175",
+      "generic_name": "metformin hydrochloride",
+      "brand_name": null,
+      "labeler_name": "Amneal Pharmaceuticals",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "65162-0175-60", "description": "60 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "metformin hydrochloride", "strength": "500 mg"}]
+    },
+    {
+      "product_ndc": "00071-0155",
+      "generic_name": "atorvastatin calcium",
+      "brand_name": "Lipitor",
+      "labeler_name": "Pfizer",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00071-0155-23", "description": "90 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "atorvastatin calcium", "strength": "20 mg"}]
+    },
+    {
+      "product_ndc": "65162-0715",
+      "generic_name": "atorvastatin calcium",
+      "brand_name": null,
+      "labeler_name": "Amneal Pharmaceuticals",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "65162-0715-90", "description": "90 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "atorvastatin calcium", "strength": "20 mg"}]
+    },
+    {
+      "product_ndc": "SUP-VD3-2000",
+      "generic_name": "vitamin d3",
+      "brand_name": "Nature Made Vitamin D3",
+      "labeler_name": "Nature Made",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "SUP-VD3-2000-90", "description": "90 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "cholecalciferol", "strength": "2000 IU"}]
+    },
+    {
+      "product_ndc": "SUP-VD3-2000-GEN",
+      "generic_name": "vitamin d3",
+      "brand_name": null,
+      "labeler_name": "Basic Care",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "SUP-VD3-2000-90-GEN", "description": "90 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "cholecalciferol", "strength": "2000 IU"}]
+    }
+  ]
+} 
