@@ -291,7 +291,8 @@ body {
 }
 
 .sidebar-item.active {
-  background: var(--bg-active);
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .sidebar-item .icon {

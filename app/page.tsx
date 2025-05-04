@@ -74,8 +74,7 @@ export default function Home() {
           <span className="label">Problems</span>
         </button>
         <button
-          style={{background: activeSection === 'medications' ? '#444' : 'transparent' }} 
-          className="sidebar-item"
+          className={`sidebar-item ${activeSection === 'medications' ? 'active' : ''}`}
           onClick={() => handleSectionClick('medications')}
         >
           <i className="fa fa-medkit icon"></i>
