@@ -1,18 +1,30 @@
 .medications-list {
   padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
 .search-container {
   position: relative;
   width: 100%;
   max-width: 400px;
+  z-index: 1000;
 }
 
 .search-bar {
   position: relative;
   display: flex;
   align-items: center;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .search-spinner {
@@ -31,24 +43,14 @@
   100% { transform: rotate(360deg); }
 }
 
-.search-bar input {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
 .search-results {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  position: fixed;
+  max-height: 60vh;
+  width: 400px;
   background: white;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  max-height: 300px;
   overflow-y: auto;
   z-index: 1000;
 }
@@ -57,23 +59,45 @@
   padding: 12px;
   cursor: pointer;
   border-bottom: 1px solid #eee;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  transition: background-color 0.2s;
+  background: white;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .search-result-item:hover {
   background-color: #f8f9fa;
 }
 
-.search-result-item strong {
+.result-name {
+  font-weight: 500;
   color: #333;
-  font-size: 14px;
+  margin-bottom: 4px;
+  white-space: normal;
+  line-height: 1.3;
 }
 
-.search-result-item span {
+.result-details {
   color: #666;
+  font-size: 13px;
+  margin-bottom: 2px;
+  white-space: normal;
+  line-height: 1.3;
+}
+
+.result-manufacturer {
+  color: #888;
   font-size: 12px;
+  white-space: normal;
+  line-height: 1.3;
+}
+
+.search-error {
+  padding: 12px;
+  color: #dc3545;
+  text-align: center;
+  font-size: 14px;
+  background-color: #fff5f5;
 }
 
 .no-results {

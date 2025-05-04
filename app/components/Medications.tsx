@@ -1,16 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import './Medications.css';
-import { Medication, SearchResponse } from '../api/medications/types';
 
-interface MedicationOption {
+interface ActiveIngredient {
   name: string;
-  strength?: string;
-  form?: string;
-  route?: string;
+  strength: string;
+}
+
+interface Medication {
+  id: string;
+  generic_name: string;
+  brand_name: string;
+  active_ingredients: ActiveIngredient[];
+  dosage_form: string;
+  labeler_name: string;
+  product_ndc: string;
+  score: number;
+}
+
+interface SearchResponse {
+  medications: Medication[];
+  total: number;
+  page: number;
+  pageSize: number;
 }
 
 interface MedicationFormData {
-  medication: MedicationOption;
+  medication: Medication;
   dosage: string;
   frequency: string;
   route: string;
@@ -20,87 +35,70 @@ interface MedicationFormData {
   note?: string;
 }
 
+// Helper function to format medication display
+function formatMedicationDisplay(medication: Medication): string {
+  const strength = medication.active_ingredients.map(ing => ing.strength).join(', ');
+  return `${medication.brand_name || medication.generic_name} ${strength} ${medication.dosage_form}`;
+}
+
 export function Medications() {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<Medication[]>([]);
-  const [selectedMedication, setSelectedMedication] = useState<MedicationOption | null>(null);
-  const [dosageForms, setDosageForms] = useState<string[]>([]);
-  const [selectedDosageForm, setSelectedDosageForm] = useState<string>();
+  const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
   const [loading, setLoading] = useState(false);
-
-  // Fetch dosage forms on mount
-  useEffect(() => {
-    fetch('/api/medications', { method: 'OPTIONS' })
-      .then(res => res.json())
-      .then(data => setDosageForms(data.dosageForms))
-      .catch(console.error);
-  }, []);
+  const [error, setError] = useState<string | null>(null);
 
   // Debounced search function
   useEffect(() => {
     if (!searchTerm) {
       setSearchResults([]);
+      setIsSearching(false);
       return;
     }
 
     const timer = setTimeout(async () => {
       setLoading(true);
+      setError(null);
       try {
         const params = new URLSearchParams({
           q: searchTerm,
-          ...(selectedDosageForm && { dosageForm: selectedDosageForm })
         });
         
-        const response = await fetch(`/api/medications?${params}`);
+        const response = await fetch(`/api/medications/search?${params}`);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to search medications');
+        }
+        
         const data: SearchResponse = await response.json();
         setSearchResults(data.medications);
         setIsSearching(true);
       } catch (error) {
         console.error('Search error:', error);
+        setError(error instanceof Error ? error.message : 'Failed to search medications');
+        setSearchResults([]);
       } finally {
         setLoading(false);
       }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [searchTerm, selectedDosageForm]);
+  }, [searchTerm]);
 
   const handleSearchFocus = () => {
     setIsSearching(true);
   };
 
   const handleMedicationSelect = (medication: Medication) => {
-    setSelectedMedication({
-      name: medication.brand_name || medication.generic_name,
-      strength: medication.active_ingredients[0]?.strength,
-      form: medication.dosage_form,
-      route: 'by oral route' // Default, should be determined by dosage form
-    });
+    setSelectedMedication(medication);
     setIsSearching(false);
     setSearchTerm('');
   };
 
   const handleAddMedication = (formData: MedicationFormData) => {
-    const newMedication: Medication = {
-      product_ndc: Date.now().toString(), // Temporary NDC for new medications
-      generic_name: formData.medication.name,
-      brand_name: formData.medication.name,
-      active_ingredients: [{
-        name: formData.medication.name,
-        strength: formData.medication.strength || ''
-      }],
-      dosage_form: formData.medication.form || '',
-      labeler_name: '',
-      finished: true,
-      packaging: [],
-      listing_expiration_date: '',
-      marketing_category: '',
-      spl_id: ''
-    };
-    
-    setMedications([...medications, newMedication]);
+    setMedications([...medications, formData.medication]);
     setSelectedMedication(null);
   };
 
@@ -121,37 +119,32 @@ export function Medications() {
           
           {isSearching && searchTerm && (
             <div className="search-results">
-              {searchResults.map((med, index) => (
+              {error && (
+                <div className="search-error">{error}</div>
+              )}
+              {!error && searchResults.length === 0 && !loading && (
+                <div className="no-results">No medications found</div>
+              )}
+              {searchResults.map((med) => (
                 <div 
-                  key={med.product_ndc} 
+                  key={med.id} 
                   className="search-result-item"
                   onClick={() => handleMedicationSelect(med)}
                 >
-                  <strong>{med.brand_name || med.generic_name}</strong>
-                  {med.active_ingredients.map(ing => ing.strength).join(', ')} {med.dosage_form}
+                  <div className="result-name">{med.brand_name || med.generic_name}</div>
+                  <div className="result-details">
+                    {med.active_ingredients.map(ing => ing.strength).join(', ')} · {med.dosage_form}
+                  </div>
+                  <div className="result-manufacturer">{med.labeler_name}</div>
                 </div>
               ))}
-              {searchResults.length === 0 && !loading && (
-                <div className="no-results">No medications found</div>
-              )}
             </div>
           )}
         </div>
 
         <div className="list-options">
           <span>View medications from other sources</span>
-          <span>
-            Arrange by: Name
-            <select 
-              value={selectedDosageForm} 
-              onChange={(e) => setSelectedDosageForm(e.target.value || undefined)}
-            >
-              <option value="">All Forms</option>
-              {dosageForms.map(form => (
-                <option key={form} value={form}>{form}</option>
-              ))}
-            </select>
-          </span>
+          <span>Arrange by: Name</span>
         </div>
       </div>
 
@@ -164,14 +157,14 @@ export function Medications() {
       )}
 
       <div className="medications">
-        {medications.map((med, index) => (
-          <div key={med.product_ndc} className={`medication-item ${med.finished ? 'active' : ''}`}>
+        {medications.map((med) => (
+          <div key={med.id} className="medication-item active">
             <div className="med-name">
-              {med.finished && <span className="med-dot"></span>}
-              {med.brand_name || med.generic_name}
+              <span className="med-dot"></span>
+              {formatMedicationDisplay(med)}
             </div>
             <div className="med-details">
-              Take {med.active_ingredients.map(ing => ing.strength).join(', ')} {med.dosage_form}
+              {med.labeler_name}
             </div>
           </div>
         ))}
@@ -185,7 +178,7 @@ function MedicationForm({
   onSubmit, 
   onCancel 
 }: { 
-  medication: MedicationOption;
+  medication: Medication;
   onSubmit: (data: MedicationFormData) => void;
   onCancel: () => void;
 }) {
@@ -193,13 +186,13 @@ function MedicationForm({
     medication,
     dosage: '1',
     frequency: 'every day',
-    route: medication.route || 'by oral route',
+    route: 'by oral route',
     status: 'Active'
   });
 
   return (
     <div className="medication-form">
-      <h3>{medication.name.toUpperCase()} {medication.strength}</h3>
+      <h3>{formatMedicationDisplay(medication)}</h3>
       
       <div className="form-group">
         <label>
