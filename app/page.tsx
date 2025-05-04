@@ -7,17 +7,7 @@ import { ProblemsDetail } from './components/section-details/ProblemsDetail';
 import { Medications } from './components/Medications';
 import { TaskBar } from './components/TaskBar';
 import { CareManagement } from './components/CareManagement';
-
-// Mock data
-const mockData = {
-  allergies: [
-    { name: 'Penicillins', severity: 'Severe', reaction: 'Anaphylaxis' },
-    { name: 'sulfur dioxide', severity: 'Moderate', reaction: 'Rash' }
-  ],
-  problems: [
-    { name: 'diabetes mellitus', status: 'Active', dateRecorded: '2023-01-15' }
-  ]
-};
+import { store } from './utils/store';
 
 type SectionType = 
   | 'find'
@@ -36,23 +26,24 @@ type SectionType =
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionType>(null);
-  const [testClick, setTestClick] = useState(0);
-  
+  const [medications, setMedications] = useState<any[]>([]);
+
   useEffect(() => {
-    console.log('Component mounted - checking if updates are working');
+    // Load medications from store
+    const storedMedications = store.get('medications');
+    setMedications(storedMedications);
   }, []);
 
   const handleSectionClick = (section: SectionType) => {
-    console.log('handleSectionClick executing for:', section);
     setActiveSection(section === activeSection ? null : section);
   };
 
   const renderSectionContent = () => {
     switch (activeSection) {
       case 'allergies':
-        return <AllergiesDetail allergies={mockData.allergies} />;
+        return <AllergiesDetail allergies={store.get('allergies')} />;
       case 'problems':
-        return <ProblemsDetail problems={mockData.problems} />;
+        return <ProblemsDetail problems={store.get('problems')} />;
       case 'medications':
         return <Medications />;
       default:
@@ -221,16 +212,14 @@ export default function Home() {
             <section className="info-section" onClick={() => handleSectionClick('medications')}>
               <h2>Medications <i className="fa fa-cog"></i></h2>
               <div className="section-content">
-                <div>flaxseed</div>
-                <div className="med-active">hydroxychloroquine</div>
-                <div className="med-active">lisinopril</div>
-                <div className="med-active">losartan</div>
-                <div className="med-active">metformin</div>
-                <div>multivitamin</div>
-                <div className="med-active">rosuvastatin</div>
-                <div>Tylenol</div>
-                <div>Vitamin D3</div>
-                <div className="med-active">Wegovy</div>
+                {medications.map((med, index) => (
+                  <div key={index} className={med.status === 'Active' ? 'med-active' : ''}>
+                    {med.generic_name || med.brand_name}
+                  </div>
+                ))}
+                {medications.length === 0 && (
+                  <div className="no-data">No medications</div>
+                )}
               </div>
             </section>
           </div>

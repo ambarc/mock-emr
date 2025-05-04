@@ -997,3 +997,10 @@ body {
   color: #666;
   font-size: 0.85rem;
 }
+
+.no-data {
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 4px 0;
+  font-size: 13px;
+}
