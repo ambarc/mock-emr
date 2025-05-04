@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Medications: React.FC = () => {
+export function Medications() {
   const medications = [
     {
       name: 'flaxseed',
@@ -66,7 +66,7 @@ export const Medications: React.FC = () => {
         </div>
         <div className="list-options">
           <span>View medications from other sources</span>
-          <span>Arrange by: Name ▼</span>
+          <span>Arrange by: Name</span>
         </div>
       </div>
       <div className="medications">
@@ -83,4 +83,4 @@ export const Medications: React.FC = () => {
       </div>
     </div>
   );
-}; 
+} 
