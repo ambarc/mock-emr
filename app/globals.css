@@ -188,6 +188,7 @@ body {
 
 .section-content {
   font-size: 13px;
+  color: var(--text-primary);
 }
 
 .section-content a {
@@ -199,7 +200,7 @@ body {
 .header-section .section-content,
 .header-section a,
 .header-section .content-value {
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--text-primary);
   text-decoration: none;
   background: none;
 }
@@ -207,21 +208,20 @@ body {
 /* Specific styles for the contact section */
 .header-section[data-section="contact"] .section-content,
 .header-section[data-section="contact"] a {
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--text-primary);
   font-size: 0.85rem;
   background: none;
   padding: 0;
 }
 
 .header-section[data-section="contact"] a:hover {
-  color: white;
   text-decoration: underline;
 }
 
 /* Ensure all header values are visible */
 .header-sections .section-content,
 .header-sections .content-value {
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--text-primary);
 }
 
 .header-actions {
@@ -851,7 +851,7 @@ body {
 
 /* Update the mobile phone link color */
 .header-section a {
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--text-primary);
   text-decoration: none;
   background: none;
   padding: 0.15rem 0;
@@ -859,11 +859,10 @@ body {
 
 .header-section a:hover {
   text-decoration: underline;
-  color: white;
 }
 
 .header-section[data-section="contact"] a {
-  color: white;
+  color: var(--text-primary);
   background: none;
   font-size: 0.85rem;
 }
