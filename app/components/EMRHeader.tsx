@@ -1,0 +1,90 @@
+import React from 'react';
+
+export const EMRNav = () => {
+  return (
+    <nav className="emr-nav">
+      <a href="/" className="emr-brand">athenaOne</a>
+      <div className="emr-nav-items">
+        <a href="/clinical" className="emr-nav-item">Clinical</a>
+        <a href="/schedule" className="emr-nav-item">Schedule</a>
+        <a href="/billing" className="emr-nav-item">Billing</a>
+      </div>
+      <div className="emr-nav-right">
+        <div className="patient-search">
+          <span className="patient-search-icon">🔍</span>
+          <input 
+            type="text" 
+            placeholder="Search patients by name, DOB, or MRN..."
+            defaultValue="#3316"
+            aria-label="Search patients"
+          />
+        </div>
+        <div className="user-id">schoudhury13</div>
+        <a href="/logout" className="logout-btn">Log out</a>
+      </div>
+    </nav>
+  );
+};
+
+interface EMRHeaderProps {
+  patientName?: string;
+  patientId?: string;
+  dob?: string;
+}
+
+export const EMRHeader: React.FC<EMRHeaderProps> = ({
+  patientName = 'Connor JONES',
+  patientId = '#3316',
+  dob = '05-18-1992'
+}) => {
+  return (
+    <header className="emr-header">
+      <div className="header-left">
+        <div className="patient-avatar">
+          <div className="avatar-circle">CJ</div>
+          <div className="avatar-expand"><i className="fa fa-chevron-down"></i></div>
+        </div>
+        <div className="patient-info">
+          <div className="patient-name">{patientName}</div>
+          <div className="patient-details">
+            <div className="patient-demographics">30y M DOB: {dob}</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="header-sections">
+        <div className="header-section" data-section="contact">
+          <div className="section-label">CONTACT</div>
+          <div className="section-content">
+            <a href="tel:847-345-4390">Mobile(847) 345-4390</a>
+          </div>
+        </div>
+
+        <div className="header-section" data-section="appointments">
+          <div className="section-label">APPOINTMENTS</div>
+          <div className="section-content">Next<span className="content-value">N/A</span></div>
+        </div>
+
+        <div className="header-section" data-section="pharmacy">
+          <div className="section-label">PHARMACY</div>
+          <div className="section-content">CVS/Pharmacy #1347</div>
+        </div>
+
+        <div className="header-section" data-section="insurance">
+          <div className="section-label">INSURANCE</div>
+          <div className="section-content">N/A</div>
+        </div>
+      </div>
+
+      <div className="header-actions">
+        <button className="banner-options">
+          <i className="fa fa-flag"></i>
+          Banner Options
+        </button>
+        <button className="menu-btn">
+          <i className="fa fa-bars"></i>
+        </button>
+      </div>
+    </header>
+  );
+}; 
