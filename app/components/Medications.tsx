@@ -1,12 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Medications.css';
-
-interface Medication {
-  name: string;
-  details: string;
-  isActive: boolean;
-  note?: string;
-}
+import { Medication, SearchResponse } from '../api/medications/types';
 
 interface MedicationOption {
   name: string;
@@ -27,93 +21,83 @@ interface MedicationFormData {
 }
 
 export function Medications() {
-  const [medications, setMedications] = useState<Medication[]>([
-    {
-      name: 'flaxseed',
-      details: 'Take 1 tablet every day',
-      isActive: false,
-      note: 'This medication cannot be associated with an active order type and can no longer be accelerated'
-    },
-    {
-      name: 'hydroxychloroquine 200 mg tablet',
-      details: 'Take 1 tablet every day by oral route.',
-      isActive: true
-    },
-    {
-      name: 'lisinopriL 10 mg tablet',
-      details: 'Take 1 tablet every day by oral route.',
-      isActive: true
-  },
-    {
-      name: 'losartan 25 mg tablet',
-      details: 'Take 1 tablet every day by oral route.',
-      isActive: true
-    },
-    {
-      name: 'metFORMIN 500 mg tablet',
-      details: 'Take 1 tablet every day by oral route.',
-      isActive: true
-    },
-    {
-      name: 'multivitamin',
-      details: 'Take 1 tablet every day',
-      isActive: false,
-      note: 'This medication cannot be associated with an active order type and can no longer be accelerated'
-    },
-    {
-      name: 'rosuvastatin 20 mg tablet',
-      details: 'Take 1 tablet every day by oral route.',
-      isActive: true
-    },
-    {
-      name: 'TylenoL',
-      details: 'Take as needed',
-      isActive: false,
-      note: 'This medication cannot be associated with an active order type and can no longer be accelerated'
-    },
-    {
-      name: 'Vitamin D3',
-      details: 'Take 1 tablet every day',
-      isActive: false,
-      note: 'This medication cannot be associated with an active order type and can no longer be accelerated'
-    },
-    {
-      name: 'Wegovy 2.4 mg/0.75 mL subcutaneous pen injector',
-      details: 'Inject every week by subcutaneous route.',
-      isActive: true
-    }
-  ]);
-
+  const [medications, setMedications] = useState<Medication[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<Medication[]>([]);
   const [selectedMedication, setSelectedMedication] = useState<MedicationOption | null>(null);
-  
-  // Mock medication search results - in real app, this would come from an API
-  const searchResults: MedicationOption[] = [
-    { name: 'losartan', strength: '25 mg', form: 'tablet', route: 'oral' },
-    { name: 'losartan', strength: '50 mg', form: 'tablet', route: 'oral' },
-    { name: 'losartan', strength: '100 mg', form: 'tablet', route: 'oral' },
-    { name: 'losartan', strength: '10 mg/mL', form: 'oral suspension', route: 'oral' },
-  ].filter(med => 
-    med.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [dosageForms, setDosageForms] = useState<string[]>([]);
+  const [selectedDosageForm, setSelectedDosageForm] = useState<string>();
+  const [loading, setLoading] = useState(false);
+
+  // Fetch dosage forms on mount
+  useEffect(() => {
+    fetch('/api/medications', { method: 'OPTIONS' })
+      .then(res => res.json())
+      .then(data => setDosageForms(data.dosageForms))
+      .catch(console.error);
+  }, []);
+
+  // Debounced search function
+  useEffect(() => {
+    if (!searchTerm) {
+      setSearchResults([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({
+          q: searchTerm,
+          ...(selectedDosageForm && { dosageForm: selectedDosageForm })
+        });
+        
+        const response = await fetch(`/api/medications?${params}`);
+        const data: SearchResponse = await response.json();
+        setSearchResults(data.medications);
+        setIsSearching(true);
+      } catch (error) {
+        console.error('Search error:', error);
+      } finally {
+        setLoading(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm, selectedDosageForm]);
 
   const handleSearchFocus = () => {
     setIsSearching(true);
   };
 
-  const handleMedicationSelect = (medication: MedicationOption) => {
-    setSelectedMedication(medication);
+  const handleMedicationSelect = (medication: Medication) => {
+    setSelectedMedication({
+      name: medication.brand_name || medication.generic_name,
+      strength: medication.active_ingredients[0]?.strength,
+      form: medication.dosage_form,
+      route: 'by oral route' // Default, should be determined by dosage form
+    });
     setIsSearching(false);
     setSearchTerm('');
   };
 
   const handleAddMedication = (formData: MedicationFormData) => {
     const newMedication: Medication = {
-      name: `${formData.medication.name} ${formData.medication.strength}`,
-      details: `Take ${formData.dosage} ${formData.frequency} ${formData.route}`,
-      isActive: formData.status === 'Active',
-      note: formData.note
+      product_ndc: Date.now().toString(), // Temporary NDC for new medications
+      generic_name: formData.medication.name,
+      brand_name: formData.medication.name,
+      active_ingredients: [{
+        name: formData.medication.name,
+        strength: formData.medication.strength || ''
+      }],
+      dosage_form: formData.medication.form || '',
+      labeler_name: '',
+      finished: true,
+      packaging: [],
+      listing_expiration_date: '',
+      marketing_category: '',
+      spl_id: ''
     };
     
     setMedications([...medications, newMedication]);
@@ -132,26 +116,42 @@ export function Medications() {
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={handleSearchFocus}
             />
+            {loading && <div className="search-spinner" />}
           </div>
           
           {isSearching && searchTerm && (
             <div className="search-results">
               {searchResults.map((med, index) => (
                 <div 
-                  key={index} 
+                  key={med.product_ndc} 
                   className="search-result-item"
                   onClick={() => handleMedicationSelect(med)}
                 >
-                  <strong>{med.name}</strong> {med.strength} {med.form}
+                  <strong>{med.brand_name || med.generic_name}</strong>
+                  {med.active_ingredients.map(ing => ing.strength).join(', ')} {med.dosage_form}
                 </div>
               ))}
+              {searchResults.length === 0 && !loading && (
+                <div className="no-results">No medications found</div>
+              )}
             </div>
           )}
         </div>
 
         <div className="list-options">
           <span>View medications from other sources</span>
-          <span>Arrange by: Name</span>
+          <span>
+            Arrange by: Name
+            <select 
+              value={selectedDosageForm} 
+              onChange={(e) => setSelectedDosageForm(e.target.value || undefined)}
+            >
+              <option value="">All Forms</option>
+              {dosageForms.map(form => (
+                <option key={form} value={form}>{form}</option>
+              ))}
+            </select>
+          </span>
         </div>
       </div>
 
@@ -165,13 +165,14 @@ export function Medications() {
 
       <div className="medications">
         {medications.map((med, index) => (
-          <div key={index} className={`medication-item ${med.isActive ? 'active' : ''}`}>
+          <div key={med.product_ndc} className={`medication-item ${med.finished ? 'active' : ''}`}>
             <div className="med-name">
-              {med.isActive && <span className="med-dot"></span>}
-              {med.name}
+              {med.finished && <span className="med-dot"></span>}
+              {med.brand_name || med.generic_name}
             </div>
-            {med.note && <div className="med-note">{med.note}</div>}
-            <div className="med-details">{med.details}</div>
+            <div className="med-details">
+              Take {med.active_ingredients.map(ing => ing.strength).join(', ')} {med.dosage_form}
+            </div>
           </div>
         ))}
       </div>
