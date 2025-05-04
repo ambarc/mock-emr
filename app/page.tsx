@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { DetailPanel } from './components/DetailPanel';
-import { AllergiesDetail } from './components/section-details/AllergiesDetail';
+import { Allergies } from './components/Allergies';
 import { Problems } from './components/Problems';
 import { Medications } from './components/Medications';
 import { TaskBar } from './components/TaskBar';
@@ -42,7 +42,7 @@ export default function Home() {
   const renderSectionContent = () => {
     switch (activeSection) {
       case 'allergies':
-        return <AllergiesDetail allergies={store.get('allergies')} />;
+        return <Allergies allergies={store.get('allergies')} />;
       case 'problems':
         return <Problems problems={store.get('problems')} />;
       case 'medications':
