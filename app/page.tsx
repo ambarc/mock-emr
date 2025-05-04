@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { DetailPanel } from './components/DetailPanel';
 import { AllergiesDetail } from './components/section-details/AllergiesDetail';
-import { ProblemsDetail } from './components/section-details/ProblemsDetail';
+import { Problems } from './components/Problems';
 import { Medications } from './components/Medications';
 import { TaskBar } from './components/TaskBar';
 import { CareManagement } from './components/CareManagement';
@@ -44,7 +44,7 @@ export default function Home() {
       case 'allergies':
         return <AllergiesDetail allergies={store.get('allergies')} />;
       case 'problems':
-        return <ProblemsDetail problems={store.get('problems')} />;
+        return <Problems problems={store.get('problems')} />;
       case 'medications':
         return <Medications />;
       default:

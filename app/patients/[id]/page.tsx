@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { mockPatients, Patient, Allergy, Problem, Medication, Surgery, ClinicalNote, WeightEntry, Exercise, Insurance, SubstanceHistory } from '@/app/lib/mockPatientData';
 import { useParams } from 'next/navigation';
+import { Problems } from '@/app/components/Problems';
 
 const formatPhoneNumber = (value: string) => {
   // Remove all non-digit characters
@@ -696,75 +697,7 @@ export default function PatientChart() {
       case 'Problems':
         return (
           <div className="space-y-6">
-            {/* Add New Problem Form */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Problem</h3>
-              <form onSubmit={handleAddProblem} className="space-y-4">
-                <div>
-                  <label htmlFor="problem-name" className="block text-sm font-medium text-gray-700">
-                    Problem Name
-                  </label>
-                  <input
-                    type="text"
-                    id="problem-name"
-                    value={newProblem.name}
-                    onChange={(e) => setNewProblem({ ...newProblem, name: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="problem-code" className="block text-sm font-medium text-gray-700">
-                    ICD-10 Code
-                  </label>
-                  <input
-                    type="text"
-                    id="problem-code"
-                    value={newProblem.code}
-                    onChange={(e) => setNewProblem({ ...newProblem, code: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="problem-date" className="block text-sm font-medium text-gray-700">
-                    Date Added
-                  </label>
-                  <input
-                    type="date"
-                    id="problem-date"
-                    value={newProblem.dateAdded}
-                    onChange={(e) => setNewProblem({ ...newProblem, dateAdded: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                  >
-                    Add Problem
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Existing Problems List */}
-            <div className="space-y-4">
-              {patient.problems.map(problem => (
-                <div key={problem.id} className="p-4 bg-gray-50 rounded-md">
-                  <div className="font-medium text-gray-900">{problem.name}</div>
-                  <div className="text-sm text-gray-900">ICD-10: {problem.code}</div>
-                  <div className="text-sm text-gray-900">
-                    Added: {new Date(problem.dateAdded).toLocaleDateString()}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Problems />
           </div>
         );
 

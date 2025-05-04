@@ -15,7 +15,7 @@ export function ProblemsDetail({ problems }: ProblemsDetailProps) {
     <div className="section-detail">
       <div className="detail-actions">
         <button className="detail-action-btn">
-          <i className="fa fa-plus"></i> Add Problem
+          <i className="fa fa-plus"></i> Add Problem!
         </button>
       </div>
       <div className="detail-list">
