@@ -1,6 +1,33 @@
 {
   "results": [
     {
+      "product_ndc": "00006-0074",
+      "generic_name": "losartan potassium",
+      "brand_name": "Losartan",
+      "labeler_name": "Merck Sharp & Dohme",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00006-0074-31", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "losartan potassium", "strength": "50 mg"}]
+    },
+    {
+      "product_ndc": "00003-0222",
+      "generic_name": "metformin hydrochloride",
+      "brand_name": "Metformin",
+      "labeler_name": "Bristol-Myers Squibb",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00003-0222-60", "description": "60 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "metformin hydrochloride", "strength": "500 mg"}]
+    },
+    {
+      "product_ndc": "00071-0154",
+      "generic_name": "atorvastatin calcium",
+      "brand_name": "Atorvastatin",
+      "labeler_name": "Pfizer",
+      "dosage_form": "TABLET",
+      "packaging": [{"package_ndc": "00071-0154-23", "description": "90 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "atorvastatin calcium", "strength": "10 mg"}]
+    },
+    {
       "product_ndc": "57844-0204",
       "generic_name": "semaglutide",
       "brand_name": "Wegovy",
@@ -12,29 +39,11 @@
     {
       "product_ndc": "00024-5901",
       "generic_name": "tirzepatide",
-      "brand_name": "Zepbound",
+      "brand_name": "Mounjaro",
       "labeler_name": "Eli Lilly and Company",
       "dosage_form": "INJECTION, SOLUTION",
       "packaging": [{"package_ndc": "00024-5901-01", "description": "1 SYRINGE in 1 CARTON"}],
       "active_ingredients": [{"name": "tirzepatide", "strength": "2.5 mg/0.5mL"}]
-    },
-    {
-      "product_ndc": "00088-2220",
-      "generic_name": "phentermine hydrochloride",
-      "brand_name": "Adipex-P",
-      "labeler_name": "Gate Pharmaceuticals",
-      "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "00088-2220-30", "description": "30 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "phentermine hydrochloride", "strength": "37.5 mg"}]
-    },
-    {
-      "product_ndc": "42291-0318",
-      "generic_name": "phentermine hydrochloride",
-      "brand_name": null,
-      "labeler_name": "AvKARE",
-      "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "42291-0318-30", "description": "30 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "phentermine hydrochloride", "strength": "37.5 mg"}]
     },
     {
       "product_ndc": "00002-7726",
@@ -57,92 +66,74 @@
     {
       "product_ndc": "00378-1115",
       "generic_name": "lisinopril",
-      "brand_name": "Zestril",
+      "brand_name": "Lisinopril",
       "labeler_name": "AstraZeneca",
       "dosage_form": "TABLET",
       "packaging": [{"package_ndc": "00378-1115-01", "description": "100 TABLETS in 1 BOTTLE"}],
       "active_ingredients": [{"name": "lisinopril", "strength": "10 mg"}]
     },
     {
-      "product_ndc": "68180-0513",
-      "generic_name": "lisinopril",
-      "brand_name": null,
-      "labeler_name": "Lupin Pharmaceuticals",
+      "product_ndc": "00186-5020",
+      "generic_name": "empagliflozin",
+      "brand_name": "Jardiance",
+      "labeler_name": "Boehringer Ingelheim",
       "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "68180-0513-01", "description": "100 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "lisinopril", "strength": "10 mg"}]
+      "packaging": [{"package_ndc": "00186-5020-30", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "empagliflozin", "strength": "10 mg"}]
     },
     {
-      "product_ndc": "00006-0074",
-      "generic_name": "losartan potassium",
-      "brand_name": "Cozaar",
-      "labeler_name": "Merck Sharp & Dohme",
+      "product_ndc": "00007-3169",
+      "generic_name": "rosuvastatin calcium",
+      "brand_name": "Rosuvastatin",
+      "labeler_name": "AstraZeneca",
       "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "00006-0074-31", "description": "30 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "losartan potassium", "strength": "50 mg"}]
+      "packaging": [{"package_ndc": "00007-3169-30", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "rosuvastatin calcium", "strength": "20 mg"}]
     },
     {
-      "product_ndc": "68180-0977",
-      "generic_name": "losartan potassium",
-      "brand_name": null,
-      "labeler_name": "Lupin Pharmaceuticals",
-      "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "68180-0977-31", "description": "30 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "losartan potassium", "strength": "50 mg"}]
+      "product_ndc": "00310-0751",
+      "generic_name": "metoprolol succinate",
+      "brand_name": "Metoprolol ER",
+      "labeler_name": "AstraZeneca",
+      "dosage_form": "TABLET, EXTENDED RELEASE",
+      "packaging": [{"package_ndc": "00310-0751-30", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "metoprolol succinate", "strength": "25 mg"}]
     },
     {
-      "product_ndc": "00003-0222",
-      "generic_name": "metformin hydrochloride",
-      "brand_name": "Glucophage",
-      "labeler_name": "Bristol-Myers Squibb",
+      "product_ndc": "00093-0058",
+      "generic_name": "amlodipine besylate",
+      "brand_name": "Amlodipine",
+      "labeler_name": "Teva Pharmaceuticals",
       "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "00003-0222-60", "description": "60 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "metformin hydrochloride", "strength": "500 mg"}]
+      "packaging": [{"package_ndc": "00093-0058-01", "description": "90 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "amlodipine besylate", "strength": "5 mg"}]
     },
     {
-      "product_ndc": "65162-0175",
-      "generic_name": "metformin hydrochloride",
-      "brand_name": null,
-      "labeler_name": "Amneal Pharmaceuticals",
+      "product_ndc": "00074-3579",
+      "generic_name": "pioglitazone hydrochloride",
+      "brand_name": "Pioglitazone",
+      "labeler_name": "Takeda Pharmaceuticals",
       "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "65162-0175-60", "description": "60 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "metformin hydrochloride", "strength": "500 mg"}]
+      "packaging": [{"package_ndc": "00074-3579-30", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "pioglitazone hydrochloride", "strength": "30 mg"}]
     },
     {
-      "product_ndc": "00071-0155",
-      "generic_name": "atorvastatin calcium",
-      "brand_name": "Lipitor",
-      "labeler_name": "Pfizer",
+      "product_ndc": "00085-1288",
+      "generic_name": "carvedilol",
+      "brand_name": "Carvedilol",
+      "labeler_name": "GlaxoSmithKline",
       "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "00071-0155-23", "description": "90 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "atorvastatin calcium", "strength": "20 mg"}]
+      "packaging": [{"package_ndc": "00085-1288-30", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "carvedilol", "strength": "12.5 mg"}]
     },
     {
-      "product_ndc": "65162-0715",
-      "generic_name": "atorvastatin calcium",
-      "brand_name": null,
-      "labeler_name": "Amneal Pharmaceuticals",
+      "product_ndc": "00088-2220",
+      "generic_name": "phentermine hydrochloride",
+      "brand_name": "Adipex-P",
+      "labeler_name": "Gate Pharmaceuticals",
       "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "65162-0715-90", "description": "90 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "atorvastatin calcium", "strength": "20 mg"}]
-    },
-    {
-      "product_ndc": "SUP-VD3-2000",
-      "generic_name": "vitamin d3",
-      "brand_name": "Nature Made Vitamin D3",
-      "labeler_name": "Nature Made",
-      "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "SUP-VD3-2000-90", "description": "90 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "cholecalciferol", "strength": "2000 IU"}]
-    },
-    {
-      "product_ndc": "SUP-VD3-2000-GEN",
-      "generic_name": "vitamin d3",
-      "brand_name": null,
-      "labeler_name": "Basic Care",
-      "dosage_form": "TABLET",
-      "packaging": [{"package_ndc": "SUP-VD3-2000-90-GEN", "description": "90 TABLETS in 1 BOTTLE"}],
-      "active_ingredients": [{"name": "cholecalciferol", "strength": "2000 IU"}]
+      "packaging": [{"package_ndc": "00088-2220-30", "description": "30 TABLETS in 1 BOTTLE"}],
+      "active_ingredients": [{"name": "phentermine hydrochloride", "strength": "37.5 mg"}]
     }
   ]
 } 

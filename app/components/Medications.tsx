@@ -47,10 +47,21 @@ export function Medications() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load medications from store on mount
+  // Load medications from store and subscribe to updates
   useEffect(() => {
+    // Load initial medications
     const storedMeds = store.get('medications');
     setMedications(storedMeds);
+
+    // Subscribe to medication updates
+    const unsubscribe = store.subscribe((domain, items) => {
+      if (domain === 'medications') {
+        setMedications(items);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   // Debounced search function
@@ -101,10 +112,8 @@ export function Medications() {
   };
 
   const handleAddMedication = (medication: Medication) => {
-    // Add to local state and store
-    const updatedMeds = [...medications, medication];
-    setMedications(updatedMeds);
-    store.set('medications', updatedMeds);
+    // Add to store - local state will be updated via subscription
+    store.add('medications', medication);
     setSelectedMedication(null);
   };
 

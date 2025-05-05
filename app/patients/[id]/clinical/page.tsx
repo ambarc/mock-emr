@@ -36,9 +36,19 @@ export default function ClinicalPage({ params }: PageProps) {
   const [medications, setMedications] = useState<any[]>([]);
 
   useEffect(() => {
-    // Load medications from store - in future this should be patient-specific using patientId
+    // Load initial medications
     const storedMedications = store.get('medications');
     setMedications(storedMedications);
+
+    // Subscribe to medication updates
+    const unsubscribe = store.subscribe((domain, items) => {
+      if (domain === 'medications') {
+        setMedications(items);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, [patientId]);
 
   const handleSectionClick = (section: SectionType) => {
