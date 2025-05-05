@@ -1136,6 +1136,23 @@ body {
   background: var(--bg-hover);
 }
 
+/* Insurance Form Error Styles */
+.error-message {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.insurance-form input.error,
+.insurance-form select.error {
+  border-color: #dc2626;
+}
+
+.insurance-form .submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 /* Appointments Dashboard Styles */
 .appointments-grid {
   display: grid;
@@ -1596,4 +1613,211 @@ body {
 
 .view-toggle-btn:hover {
   background: var(--bg-hover);
+}
+
+/* Insurance Autocomplete Styles */
+.insurance-autocomplete {
+  position: relative;
+  width: 100%;
+}
+
+.insurance-search-input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid var(--border-color);
+  font-size: 13px;
+  height: 28px;
+}
+
+.insurance-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-top: none;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.insurance-result-item {
+  padding: 8px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.insurance-result-item:last-child {
+  border-bottom: none;
+}
+
+.insurance-result-item:hover {
+  background: var(--bg-hover);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.provider-name {
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.provider-code {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.result-details {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.detail-row {
+  display: flex;
+  gap: 8px;
+  line-height: 1.3;
+}
+
+.detail-label {
+  color: var(--text-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 70px;
+}
+
+.detail-value {
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+/* Insurance Card Upload Styles */
+.insurance-card-upload {
+  margin-bottom: 16px;
+}
+
+.upload-label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.upload-container {
+  display: flex;
+  gap: 16px;
+}
+
+.upload-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 4px 12px;
+  font-size: 13px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.upload-btn:hover {
+  background: var(--bg-hover);
+}
+
+.upload-btn i {
+  font-size: 13px;
+}
+
+.file-name {
+  font-size: 12px;
+  color: var(--text-secondary);
+  word-break: break-all;
+  padding: 4px 0;
+}
+
+/* Insurance List Styles */
+.insurance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: #f8f8f8;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.insurance-header label {
+  margin: 0;
+  font-weight: 500;
+}
+
+.insurance-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.insurance-details {
+  padding: 8px;
+}
+
+.info-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.info-label {
+  color: var(--text-secondary);
+  min-width: 80px;
+}
+
+.insurance-card-preview {
+  margin-top: 12px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 12px;
+}
+
+.card-images {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.card-image {
+  flex: 1;
+  max-width: 200px;
+}
+
+.image-label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-image img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
 }

@@ -14,6 +14,22 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
+interface InsuranceInfo {
+  id: string;
+  type: string;
+  provider: string;
+  policyNumber: string;
+  groupNumber: string;
+  subscriberName: string;
+  subscriberDOB: string;
+  relationship: string;
+  effectiveDate: string;
+  expirationDate: string;
+  cardFront: string | null;
+  cardBack: string | null;
+  createdAt: string;
+}
+
 type PatientInfo = {
   firstName: string;
   lastName: string;
@@ -56,7 +72,14 @@ type PatientInfo = {
 export default function AdminPage({ params }: PageProps) {
   const { id: patientId } = React.use(params);
   const [activeSection, setActiveSection] = useState<SectionType>(null);
+  const [insuranceInfo, setInsuranceInfo] = useState<InsuranceInfo[]>([]);
   
+  // Load insurance information
+  useEffect(() => {
+    const patientInsurance = store.getPatientInsurance(patientId);
+    setInsuranceInfo(patientInsurance);
+  }, [patientId]);
+
   // In a real app, this would be fetched from an API
   const patientInfo: PatientInfo = {
     firstName: "John",
@@ -103,10 +126,27 @@ export default function AdminPage({ params }: PageProps) {
   const renderSectionContent = () => {
     switch (activeSection) {
       case 'insurance':
-        return <Insurance patientId={patientId} />;
+        return <Insurance 
+          patientId={patientId} 
+          onSave={() => {
+            setActiveSection(null);
+            const patientInsurance = store.getPatientInsurance(patientId);
+            setInsuranceInfo(patientInsurance);
+          }}
+        />;
       default:
         return null;
     }
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   };
 
   return (
@@ -172,7 +212,77 @@ export default function AdminPage({ params }: PageProps) {
                 <i className="fa fa-plus-circle"></i> Add Insurance
               </button>
               <div className="insurance-list">
-                {/* TODO: List existing insurance information */}
+                {insuranceInfo.length > 0 ? (
+                  insuranceInfo.map((insurance) => (
+                    <div key={insurance.id} className="info-group">
+                      <div className="insurance-header">
+                        <label>{insurance.type} Insurance</label>
+                        <div className="insurance-actions">
+                          <button 
+                            className="action-btn"
+                            onClick={() => handleSectionClick('insurance')}
+                          >
+                            <i className="fa fa-pencil"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div className="insurance-details">
+                        <div className="info-row">
+                          <span className="info-label">Provider:</span>
+                          <span className="info-value">{insurance.provider}</span>
+                        </div>
+                        <div className="info-row">
+                          <span className="info-label">Member ID:</span>
+                          <span className="info-value">{insurance.policyNumber}</span>
+                        </div>
+                        {insurance.groupNumber && (
+                          <div className="info-row">
+                            <span className="info-label">Group #:</span>
+                            <span className="info-value">{insurance.groupNumber}</span>
+                          </div>
+                        )}
+                        {insurance.subscriberName && (
+                          <div className="info-row">
+                            <span className="info-label">Subscriber:</span>
+                            <span className="info-value">{insurance.subscriberName}</span>
+                          </div>
+                        )}
+                        <div className="info-row">
+                          <span className="info-label">Effective:</span>
+                          <span className="info-value">{formatDate(insurance.effectiveDate)}</span>
+                        </div>
+                        {insurance.expirationDate && (
+                          <div className="info-row">
+                            <span className="info-label">Expires:</span>
+                            <span className="info-value">{formatDate(insurance.expirationDate)}</span>
+                          </div>
+                        )}
+                        <div className="insurance-card-preview">
+                          {(insurance.cardFront || insurance.cardBack) && (
+                            <div className="card-images">
+                              {insurance.cardFront && (
+                                <div className="card-image">
+                                  <span className="image-label">Front</span>
+                                  <img src={insurance.cardFront} alt="Insurance Card Front" />
+                                </div>
+                              )}
+                              {insurance.cardBack && (
+                                <div className="card-image">
+                                  <span className="image-label">Back</span>
+                                  <img src={insurance.cardBack} alt="Insurance Card Back" />
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="info-group">
+                    <div className="info-value no-data">No insurance information on file</div>
+                  </div>
+                )}
               </div>
             </section>
 
