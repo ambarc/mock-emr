@@ -6,6 +6,7 @@ import { Insurance } from '../../../components/Insurance';
 import { TaskBar } from '../../../components/TaskBar';
 import { store } from '../../../utils/store';
 import { EMRNav, EMRHeader } from '../../../components/EMRHeader';
+import Link from 'next/link';
 
 type SectionType = 'insurance' | null;
 
@@ -151,6 +152,16 @@ export default function AdminPage({ params }: PageProps) {
                 )}
               </div>
             </section>
+
+            {/* View Toggle */}
+            <div className="view-toggle-section">
+              <Link 
+                href={`/patients/${patientId}/clinical`}
+                className="view-toggle-btn"
+              >
+                Switch to Clinical View
+              </Link>
+            </div>
 
             <section className="info-section">
               <h2>Insurance Information</h2>

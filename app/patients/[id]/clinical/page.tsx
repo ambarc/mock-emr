@@ -9,6 +9,7 @@ import { TaskBar } from '../../../components/TaskBar';
 import { CareManagement } from '../../../components/CareManagement';
 import { store } from '../../../utils/store';
 import { EMRNav, EMRHeader } from '../../../components/EMRHeader';
+import Link from 'next/link';
 
 type SectionType = 
   | 'find'
@@ -61,7 +62,7 @@ export default function ClinicalPage({ params }: PageProps) {
     <div className="emr-layout">
       <EMRNav />
       <EMRHeader />
-
+      
       {/* Sidebar */}
       <nav className="emr-sidebar">
         <button 
@@ -150,6 +151,17 @@ export default function ClinicalPage({ params }: PageProps) {
             <i className="fa fa-plus-circle"></i> PERSONAL INFO
           </button>
         </div>
+
+        {/* View Toggle */}
+        <div className="view-toggle-section">
+          <Link 
+            href={`/patients/${patientId}/admin`}
+            className="view-toggle-btn"
+          >
+            Switch to Admin View
+          </Link>
+        </div>
+
         <div className="content-wrapper">
           <div className="left-content">
             <section className="info-section" onClick={() => handleSectionClick('allergies')}>

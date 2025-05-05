@@ -1572,3 +1572,28 @@ body {
   font-size: 12px;
   color: var(--text-secondary);
 }
+
+/* View Toggle Styles */
+.view-toggle-section {
+  padding: 16px;
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.view-toggle-btn {
+  background: white;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 4px 12px;
+  font-size: 13px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.view-toggle-btn:hover {
+  background: var(--bg-hover);
+}
