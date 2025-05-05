@@ -29,6 +29,27 @@ type PatientInfo = {
     work?: string;
   };
   email?: string;
+  preferredProvider?: {
+    name: string;
+    specialty: string;
+    location: string;
+  };
+  preferredPharmacy?: {
+    name: string;
+    address: string;
+    phone: string;
+  };
+  preferredLab?: {
+    name: string;
+    address: string;
+    phone: string;
+  };
+  communicationPreferences?: {
+    appointmentReminders: string;
+    labResults: string;
+    generalCommunication: string;
+    portal: boolean;
+  };
 };
 
 export default function AdminPage({ params }: PageProps) {
@@ -50,7 +71,28 @@ export default function AdminPage({ params }: PageProps) {
       cell: "(555) 123-4567",
       home: "(555) 765-4321"
     },
-    email: "john.doe@email.com"
+    email: "john.doe@email.com",
+    preferredProvider: {
+      name: "Dr. Sarah Johnson",
+      specialty: "Family Medicine",
+      location: "Main Street Clinic"
+    },
+    preferredPharmacy: {
+      name: "CVS Pharmacy",
+      address: "456 Oak St, Anytown, CA 12345",
+      phone: "(555) 987-6543"
+    },
+    preferredLab: {
+      name: "LabCorp",
+      address: "789 Pine St, Anytown, CA 12345",
+      phone: "(555) 246-8135"
+    },
+    communicationPreferences: {
+      appointmentReminders: "Text Message",
+      labResults: "Patient Portal",
+      generalCommunication: "Email",
+      portal: true
+    }
   };
 
   const handleSectionClick = (section: SectionType) => {
@@ -120,6 +162,82 @@ export default function AdminPage({ params }: PageProps) {
               </button>
               <div className="insurance-list">
                 {/* TODO: List existing insurance information */}
+              </div>
+            </section>
+
+            <section className="info-section">
+              <h2>Preferred Provider</h2>
+              <div className="patient-info-grid">
+                <div className="info-group">
+                  <label>Provider Name</label>
+                  <div className="info-value">{patientInfo.preferredProvider?.name}</div>
+                </div>
+                <div className="info-group">
+                  <label>Specialty</label>
+                  <div className="info-value">{patientInfo.preferredProvider?.specialty}</div>
+                </div>
+                <div className="info-group">
+                  <label>Location</label>
+                  <div className="info-value">{patientInfo.preferredProvider?.location}</div>
+                </div>
+              </div>
+            </section>
+
+            <section className="info-section">
+              <h2>Preferred Pharmacy</h2>
+              <div className="patient-info-grid">
+                <div className="info-group">
+                  <label>Pharmacy Name</label>
+                  <div className="info-value">{patientInfo.preferredPharmacy?.name}</div>
+                </div>
+                <div className="info-group">
+                  <label>Address</label>
+                  <div className="info-value">{patientInfo.preferredPharmacy?.address}</div>
+                </div>
+                <div className="info-group">
+                  <label>Phone</label>
+                  <div className="info-value">{patientInfo.preferredPharmacy?.phone}</div>
+                </div>
+              </div>
+            </section>
+
+            <section className="info-section">
+              <h2>Preferred Lab</h2>
+              <div className="patient-info-grid">
+                <div className="info-group">
+                  <label>Lab Name</label>
+                  <div className="info-value">{patientInfo.preferredLab?.name}</div>
+                </div>
+                <div className="info-group">
+                  <label>Address</label>
+                  <div className="info-value">{patientInfo.preferredLab?.address}</div>
+                </div>
+                <div className="info-group">
+                  <label>Phone</label>
+                  <div className="info-value">{patientInfo.preferredLab?.phone}</div>
+                </div>
+              </div>
+            </section>
+
+            <section className="info-section">
+              <h2>Communication Preferences</h2>
+              <div className="patient-info-grid">
+                <div className="info-group">
+                  <label>Appointment Reminders</label>
+                  <div className="info-value">{patientInfo.communicationPreferences?.appointmentReminders}</div>
+                </div>
+                <div className="info-group">
+                  <label>Lab Results</label>
+                  <div className="info-value">{patientInfo.communicationPreferences?.labResults}</div>
+                </div>
+                <div className="info-group">
+                  <label>General Communication</label>
+                  <div className="info-value">{patientInfo.communicationPreferences?.generalCommunication}</div>
+                </div>
+                <div className="info-group">
+                  <label>Patient Portal Access</label>
+                  <div className="info-value">{patientInfo.communicationPreferences?.portal ? 'Enabled' : 'Disabled'}</div>
+                </div>
               </div>
             </section>
           </div>
