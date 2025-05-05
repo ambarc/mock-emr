@@ -33,9 +33,9 @@ interface EMRHeaderProps {
 }
 
 export const EMRHeader: React.FC<EMRHeaderProps> = ({
-  patientName = 'Connor JONES',
+  patientName = 'Jonas Salk',
   patientId = '#3316',
-  dob = '05-18-1992'
+  dob = '10-28-1914'
 }) => {
   return (
     <header className="emr-header">
@@ -56,7 +56,7 @@ export const EMRHeader: React.FC<EMRHeaderProps> = ({
         <div className="header-section" data-section="contact">
           <div className="section-label">CONTACT</div>
           <div className="section-content">
-            <a href="tel:847-345-4390">Mobile(847) 345-4390</a>
+            <a href="tel:847-345-4390">Mobile(619) 555-1955</a>
           </div>
         </div>
 
