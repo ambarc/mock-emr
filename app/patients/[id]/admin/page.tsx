@@ -8,7 +8,7 @@ import { store } from '../../../utils/store';
 import { EMRNav, EMRHeader } from '../../../components/EMRHeader';
 import Link from 'next/link';
 
-type SectionType = 'insurance' | null;
+type SectionType = 'insurance' | 'preferred-provider' | 'primary-care' | 'pharmacy' | 'lab' | null;
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -51,6 +51,15 @@ type PatientInfo = {
     specialty: string;
     location: string;
   };
+  primaryCareProvider?: {
+    name: string;
+    npi: string;
+    practice: string;
+    address: string;
+    phone: string;
+    fax: string;
+    lastVisit: string;
+  };
   preferredPharmacy?: {
     name: string;
     address: string;
@@ -74,13 +83,7 @@ export default function AdminPage({ params }: PageProps) {
   const [activeSection, setActiveSection] = useState<SectionType>(null);
   const [insuranceInfo, setInsuranceInfo] = useState<InsuranceInfo[]>([]);
   
-  // Load insurance information
-  useEffect(() => {
-    const patientInsurance = store.getPatientInsurance(patientId);
-    setInsuranceInfo(patientInsurance);
-  }, [patientId]);
-
-  // In a real app, this would be fetched from an API
+  // Basic patient info only
   const patientInfo: PatientInfo = {
     firstName: "John",
     lastName: "Doe",
@@ -96,21 +99,6 @@ export default function AdminPage({ params }: PageProps) {
       home: "(555) 765-4321"
     },
     email: "john.doe@email.com",
-    preferredProvider: {
-      name: "Dr. Sarah Johnson",
-      specialty: "Family Medicine",
-      location: "Main Street Clinic"
-    },
-    preferredPharmacy: {
-      name: "CVS Pharmacy",
-      address: "456 Oak St, Anytown, CA 12345",
-      phone: "(555) 987-6543"
-    },
-    preferredLab: {
-      name: "LabCorp",
-      address: "789 Pine St, Anytown, CA 12345",
-      phone: "(555) 246-8135"
-    },
     communicationPreferences: {
       appointmentReminders: "Text Message",
       labResults: "Patient Portal",
@@ -118,6 +106,12 @@ export default function AdminPage({ params }: PageProps) {
       portal: true
     }
   };
+
+  // Load insurance information
+  useEffect(() => {
+    const patientInsurance = store.getPatientInsurance(patientId);
+    setInsuranceInfo(patientInsurance);
+  }, [patientId]);
 
   const handleSectionClick = (section: SectionType) => {
     setActiveSection(section === activeSection ? null : section);
@@ -134,6 +128,7 @@ export default function AdminPage({ params }: PageProps) {
             setInsuranceInfo(patientInsurance);
           }}
         />;
+      // TODO: Add other section forms
       default:
         return null;
     }
@@ -287,57 +282,155 @@ export default function AdminPage({ params }: PageProps) {
             </section>
 
             <section className="info-section">
-              <h2>Preferred Provider</h2>
-              <div className="patient-info-grid">
-                <div className="info-group">
-                  <label>Provider Name</label>
-                  <div className="info-value">{patientInfo.preferredProvider?.name}</div>
-                </div>
-                <div className="info-group">
-                  <label>Specialty</label>
-                  <div className="info-value">{patientInfo.preferredProvider?.specialty}</div>
-                </div>
-                <div className="info-group">
-                  <label>Location</label>
-                  <div className="info-value">{patientInfo.preferredProvider?.location}</div>
-                </div>
+              <div className="section-header">
+                <h2>Preferred Provider</h2>
+                <button 
+                  className="add-btn"
+                  onClick={() => handleSectionClick('preferred-provider')}
+                >
+                  <i className="fa fa-plus-circle"></i> Add Provider
+                </button>
               </div>
+              {patientInfo.preferredProvider ? (
+                <div className="patient-info-grid">
+                  <div className="info-group">
+                    <label>Provider Name</label>
+                    <div className="info-value">{patientInfo.preferredProvider.name}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Specialty</label>
+                    <div className="info-value">{patientInfo.preferredProvider.specialty}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Location</label>
+                    <div className="info-value">{patientInfo.preferredProvider.location}</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="info-group">
+                  <div className="info-value no-data">No preferred provider on file</div>
+                </div>
+              )}
             </section>
 
             <section className="info-section">
-              <h2>Preferred Pharmacy</h2>
-              <div className="patient-info-grid">
-                <div className="info-group">
-                  <label>Pharmacy Name</label>
-                  <div className="info-value">{patientInfo.preferredPharmacy?.name}</div>
-                </div>
-                <div className="info-group">
-                  <label>Address</label>
-                  <div className="info-value">{patientInfo.preferredPharmacy?.address}</div>
-                </div>
-                <div className="info-group">
-                  <label>Phone</label>
-                  <div className="info-value">{patientInfo.preferredPharmacy?.phone}</div>
-                </div>
+              <div className="section-header">
+                <h2>Primary Care Provider</h2>
+                <button 
+                  className="add-btn"
+                  onClick={() => handleSectionClick('primary-care')}
+                >
+                  <i className="fa fa-plus-circle"></i> Add PCP
+                </button>
               </div>
+              {patientInfo.primaryCareProvider ? (
+                <div className="patient-info-grid">
+                  <div className="info-group">
+                    <label>Provider Name</label>
+                    <div className="info-value">{patientInfo.primaryCareProvider.name}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>NPI</label>
+                    <div className="info-value">{patientInfo.primaryCareProvider.npi}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Practice</label>
+                    <div className="info-value">{patientInfo.primaryCareProvider.practice}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Address</label>
+                    <div className="info-value">{patientInfo.primaryCareProvider.address}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Phone</label>
+                    <div className="info-value">{patientInfo.primaryCareProvider.phone}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Fax</label>
+                    <div className="info-value">{patientInfo.primaryCareProvider.fax}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Last Visit</label>
+                    <div className="info-value">
+                      {patientInfo.primaryCareProvider.lastVisit && 
+                        new Date(patientInfo.primaryCareProvider.lastVisit).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })
+                      }
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="info-group">
+                  <div className="info-value no-data">No primary care provider on file</div>
+                </div>
+              )}
             </section>
 
             <section className="info-section">
-              <h2>Preferred Lab</h2>
-              <div className="patient-info-grid">
-                <div className="info-group">
-                  <label>Lab Name</label>
-                  <div className="info-value">{patientInfo.preferredLab?.name}</div>
-                </div>
-                <div className="info-group">
-                  <label>Address</label>
-                  <div className="info-value">{patientInfo.preferredLab?.address}</div>
-                </div>
-                <div className="info-group">
-                  <label>Phone</label>
-                  <div className="info-value">{patientInfo.preferredLab?.phone}</div>
-                </div>
+              <div className="section-header">
+                <h2>Preferred Pharmacy</h2>
+                <button 
+                  className="add-btn"
+                  onClick={() => handleSectionClick('pharmacy')}
+                >
+                  <i className="fa fa-plus-circle"></i> Add Pharmacy
+                </button>
               </div>
+              {patientInfo.preferredPharmacy ? (
+                <div className="patient-info-grid">
+                  <div className="info-group">
+                    <label>Pharmacy Name</label>
+                    <div className="info-value">{patientInfo.preferredPharmacy.name}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Address</label>
+                    <div className="info-value">{patientInfo.preferredPharmacy.address}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Phone</label>
+                    <div className="info-value">{patientInfo.preferredPharmacy.phone}</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="info-group">
+                  <div className="info-value no-data">No preferred pharmacy on file</div>
+                </div>
+              )}
+            </section>
+
+            <section className="info-section">
+              <div className="section-header">
+                <h2>Preferred Lab</h2>
+                <button 
+                  className="add-btn"
+                  onClick={() => handleSectionClick('lab')}
+                >
+                  <i className="fa fa-plus-circle"></i> Add Lab
+                </button>
+              </div>
+              {patientInfo.preferredLab ? (
+                <div className="patient-info-grid">
+                  <div className="info-group">
+                    <label>Lab Name</label>
+                    <div className="info-value">{patientInfo.preferredLab.name}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Address</label>
+                    <div className="info-value">{patientInfo.preferredLab.address}</div>
+                  </div>
+                  <div className="info-group">
+                    <label>Phone</label>
+                    <div className="info-value">{patientInfo.preferredLab.phone}</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="info-group">
+                  <div className="info-value no-data">No preferred lab on file</div>
+                </div>
+              )}
             </section>
 
             <section className="info-section">
@@ -368,7 +461,7 @@ export default function AdminPage({ params }: PageProps) {
       <DetailPanel
         isOpen={activeSection !== null}
         onClose={() => setActiveSection(null)}
-        title={activeSection ? activeSection.charAt(0).toUpperCase() + activeSection.slice(1) : ''}
+        title={activeSection ? activeSection.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : ''}
       >
         {renderSectionContent()}
       </DetailPanel>

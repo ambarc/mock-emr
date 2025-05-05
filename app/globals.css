@@ -1821,3 +1821,42 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 4px;
 }
+
+/* Section Header Styles */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section-header h2 {
+  margin: 0;
+}
+
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 12px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background: var(--bg-hover);
+}
+
+.add-btn i {
+  font-size: 14px;
+}
+
+.no-data {
+  color: var(--text-secondary);
+  font-style: italic;
+}
