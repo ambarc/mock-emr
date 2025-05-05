@@ -47,7 +47,7 @@ export const EMRHeader: React.FC<EMRHeaderProps> = ({
         <div className="patient-info">
           <div className="patient-name">{patientName}</div>
           <div className="patient-details">
-            <div className="patient-demographics">30y M DOB: {dob}</div>
+            <div className="patient-demographics">110y M DOB: {dob}</div>
           </div>
         </div>
       </div>
@@ -56,13 +56,13 @@ export const EMRHeader: React.FC<EMRHeaderProps> = ({
         <div className="header-section" data-section="contact">
           <div className="section-label">CONTACT</div>
           <div className="section-content">
-            <a href="tel:847-345-4390">Mobile(619) 555-1955</a>
+            <a href="tel:(619) 555-1955">Mobile(619) 555-1955</a>
           </div>
         </div>
 
         <div className="header-section" data-section="appointments">
           <div className="section-label">APPOINTMENTS</div>
-          <div className="section-content">Next<span className="content-value">N/A</span></div>
+          <div className="section-content"><span className="content-value">05/12/2025</span></div>
         </div>
 
         <div className="header-section" data-section="pharmacy">

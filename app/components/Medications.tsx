@@ -261,9 +261,28 @@ function MedicationForm({
         <label>Start date</label>
         <div className="date-input-container">
           <input 
-            type="date"
+            type="text"
+            placeholder="MM/DD/YYYY"
             value={formData.startDate || ''}
-            onChange={(e) => setFormData({...formData, startDate: e.target.value})}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Allow only numbers and forward slashes
+              if (!/^[\d/]*$/.test(value)) return;
+              
+              // Auto-add slashes
+              let formatted = value.replace(/\D/g, ''); // Remove non-digits
+              if (formatted.length > 4) {
+                formatted = formatted.slice(0,2) + '/' + formatted.slice(2,4) + '/' + formatted.slice(4,8);
+              } else if (formatted.length > 2) {
+                formatted = formatted.slice(0,2) + '/' + formatted.slice(2);
+              }
+              
+              // Only update if it's empty or matches date format
+              if (!formatted || /^(\d{2}\/)*\d{0,4}$/.test(formatted)) {
+                setFormData({...formData, startDate: formatted});
+              }
+            }}
+            maxLength={10}
           />
         </div>
       </div>
