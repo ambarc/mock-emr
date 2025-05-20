@@ -62,7 +62,7 @@ export const EMRHeader: React.FC<EMRHeaderProps> = ({
 
         <div className="header-section" data-section="appointments">
           <div className="section-label">APPOINTMENTS</div>
-          <div className="section-content"><span className="content-value">05/12/2025</span></div>
+          <div className="section-content"> <span className="content-value">05/12/2025</span></div>
         </div>
 
         <div className="header-section" data-section="pharmacy">
